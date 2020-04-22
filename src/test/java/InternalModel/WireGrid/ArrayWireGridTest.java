@@ -438,6 +438,144 @@ class ArrayWireGridTest {
     }
 
     @Test
+    void propagateExceptions(){
+        WireGrid wireGrid = new ArrayWireGrid(10, 10);
+        List<Generator> generators = new ArrayList<>();
+        generators.add(new Generator(new Vector2D(-1,0), Orientation.HORIZONTALLY));
+        assertThrows(IllegalArgumentException.class, () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(0,-1), Orientation.HORIZONTALLY));
+        assertThrows(IllegalArgumentException.class, () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(0,0), Orientation.HORIZONTALLY));
+        assertDoesNotThrow( () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(11,0), Orientation.HORIZONTALLY));
+        assertDoesNotThrow( () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(0,11), Orientation.HORIZONTALLY));
+        assertDoesNotThrow( () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
+        assertDoesNotThrow( () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+        assertEquals(11, wireGrid.getWidth());
+
+        generators.clear();
+        generators.add(new Generator(new Vector2D(5,10), Orientation.HORIZONTALLY));
+        assertDoesNotThrow( () -> {
+            wireGrid.propagateGenerators(generators);
+        });
+        assertEquals(11, wireGrid.getHeight());
+    }
+
+    @Test
+    void generatorOutsideOfDimensionsVertically(){
+        WireGrid wireGrid = new ArrayWireGrid(10, 10);
+
+        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+
+        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+
+        List<Generator> generators = new ArrayList<>();
+        generators.add(new Generator(new Vector2D(5,10), Orientation.VERTICALLY));
+        wireGrid.resetWiresToLow();
+        //System.out.println(wireGrid);
+        wireGrid.propagateGenerators(generators);
+        //System.out.println(wireGrid);
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,9), Orientation.VERTICALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(7,4), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(4,7), Orientation.VERTICALLY));
+
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,3), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+    }
+
+    @Test
+    void generatorOutsideOfDimensionsHorizontally(){
+        WireGrid wireGrid = new ArrayWireGrid(10, 10);
+
+        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+
+        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+
+        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+
+        List<Generator> generators = new ArrayList<>();
+        generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
+        wireGrid.resetWiresToLow();
+        //System.out.println(wireGrid);
+        wireGrid.propagateGenerators(generators);
+        //System.out.println(wireGrid);
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,9), Orientation.VERTICALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(7,4), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(4,7), Orientation.VERTICALLY));
+
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,3), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+    }
+
+    @Test
     void toStringTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
@@ -466,7 +604,7 @@ class ArrayWireGridTest {
         wireGrid.resetWiresToLow();
         //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        System.out.println(wireGrid);
+        //System.out.println(wireGrid);
 
         String expected = "+ + + + + + + + + + \n" +
                 "                    \n" +

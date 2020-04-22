@@ -34,8 +34,8 @@ public final class ArrayWireGrid implements WireGrid{
     public void setElement(Vector2D pos, Wire wire){
         int x = pos.getX();
         int y = pos.getY();
-        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal y: "+x+" for y >= 0");
+        if(x < 0) throw new IllegalArgumentException("Illegal pos.x: "+x+" for pos.x >= 0");
+        if(y < 0) throw new IllegalArgumentException("Illegal pos.y: "+x+" for pos.y >= 0");
 
         if(x > getWidth()) extendGridX(x-getWidth()+1);
         if(y > getHeight()) extendGridY(y-getHeight()+1);
@@ -73,18 +73,38 @@ public final class ArrayWireGrid implements WireGrid{
     public void propagateGenerators(List<Generator> generators){
         Deque<Vector2D> stack = new ArrayDeque<>();
         for (int i = 0; i < generators.size(); i++) {
-            stack.add(generators.get(i).getPos());
+            Generator generator = generators.get(i);
+            if(generator.getPos().getX() < 0) throw new IllegalArgumentException("Illegal argument 'generators'. Generator at index "+i+
+                    " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
+            if(generator.getPos().getY() < 0) throw new IllegalArgumentException("Illegal argument 'generators'. Generator at index "+i+
+                    " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
+
+            //Generators out of wires' sight won't do anything
+            if(generator.getPos().getX() > getWidth()) continue;
+            if(generator.getPos().getY() > getHeight()) continue;
+
+            stack.add(generator.getPos());
         }
 
         for (int i = 0; i < generators.size(); i++) {
             Generator generator = generators.get(i);
             Vector2D pos = generator.getPos();
+
+            //Generators out of wires' sight won't do anything
+            if(generator.getPos().getX() > getWidth()) continue;
+            if(generator.getPos().getY() > getHeight()) continue;
+
+            //When differs by one it's ok because it's possible to create wire that goes from existing array outside
+            if(generator.getPos().getX() == getWidth()) extendGridX(1);
+            if(generator.getPos().getY() == getHeight()) extendGridY(1);
+
             if(generator.getOrientation() == Orientation.HORIZONTALLY){
                 if(wires.get(pos.getX()).get(pos.getY()).getRightWire() == Wire.State.LOW){
                     wires.get(pos.getX()).get(pos.getY()).setRightWire(Wire.State.HIGH);
                     stack.add(new Vector2D(pos.getX()+1, pos.getY()));
                 }
-                if(wires.get(pos.getX()-1).get(pos.getY()).getRightWire() == Wire.State.LOW){
+                if(pos.getX() - 1 >= 0
+                        && wires.get(pos.getX()-1).get(pos.getY()).getRightWire() == Wire.State.LOW){
                     wires.get(pos.getX()-1).get(pos.getY()).setRightWire(Wire.State.HIGH);
                     stack.add(new Vector2D(pos.getX()-1, pos.getY()));
                 }
@@ -94,12 +114,15 @@ public final class ArrayWireGrid implements WireGrid{
                     wires.get(pos.getX()).get(pos.getY()).setDownWire(Wire.State.HIGH);
                     stack.add(new Vector2D(pos.getX(), pos.getY()+1));
                 }
-                if(wires.get(pos.getX()).get(pos.getY()-1).getDownWire() == Wire.State.LOW){
+                if(pos.getY() - 1 >= 0 &&
+                        wires.get(pos.getX()).get(pos.getY()-1).getDownWire() == Wire.State.LOW){
                     wires.get(pos.getX()).get(pos.getY()-1).setDownWire(Wire.State.HIGH);
                     stack.add(new Vector2D(pos.getX(), pos.getY()-1));
                 }
             }
         }
+
+        //TODO: document throws in WireGrid
 
         while(!stack.isEmpty()){
             Vector2D pos = stack.pop();
