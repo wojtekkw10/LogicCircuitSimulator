@@ -3,18 +3,21 @@
  */
 package InternalModel;
 
-import InternalModel.LogicElements.LogicElement;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class App {
 
     public static void main(String[] args) {
         Simulation s = new Simulation();
 
-        System.out.println(s.wireGrid);
+        ArrayList<Integer> a = new ArrayList<>();
+        a.add(5);
+        //System.out.println(a.get(-1));
+
+        System.out.println(s.arrayWireGrid);
         s.simulate(1);
-        System.out.println(s.wireGrid);
+        System.out.println(s.arrayWireGrid);
+
+        //TODO: write down design decisions
     }
 }
