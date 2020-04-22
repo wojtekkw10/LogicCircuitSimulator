@@ -32,7 +32,7 @@ public interface WireGrid {
      * Otherwise the signal can turn to wires on the sides.
      * @param generators list of generators
      */
-    void propagateGenerators(List<Vector2D> generators);
+    void propagateGenerators(List<Generator> generators);
 
     /**
      * Returns a LogicState at a given point in the grid.
@@ -63,3 +63,5 @@ public interface WireGrid {
      */
     int getHeight();
 }
+//TODO: bedzie potrzbne update element
+//TODO: add design decision here

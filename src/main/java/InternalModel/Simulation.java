@@ -3,6 +3,7 @@ package InternalModel;
 import InternalModel.LogicElements.LogicElement;
 import InternalModel.LogicElements.LogicOne;
 import InternalModel.WireGrid.ArrayWireGrid;
+import InternalModel.WireGrid.Generator;
 import InternalModel.WireGrid.Wire;
 import InternalModel.WireGrid.WireGrid;
 
@@ -57,7 +58,7 @@ public class Simulation {
         //Visually they are at the edge of the logic gate - you can connect to it only from one side so crossing are nonexistent
         //We can assume it's always TOUCHING
 
-        List<Vector2D> generators = new ArrayList<>();
+        List<Generator> generators = new ArrayList<>();
 
         for (int i = 0; i < logicElements.size(); i++) {
             LogicElement element = logicElements.get(i);
@@ -73,7 +74,7 @@ public class Simulation {
             LogicState result = element.computeValue(inputStates);
             Vector2D outputPos = element.getOutput();
 
-            if(result == LogicState.HIGH) generators.add(outputPos);
+            if(result == LogicState.HIGH) generators.add(new Generator(outputPos, Orientation.HORIZONTALLY));
         }
 
         //Propagate the high state throughout the wires
