@@ -4,10 +4,7 @@ import InternalModel.LogicState;
 import InternalModel.Orientation;
 import InternalModel.Vector2D;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public final class ArrayWireGrid implements WireGrid{
     List<List<Wire>> wires = new ArrayList<>();
@@ -216,6 +213,43 @@ public final class ArrayWireGrid implements WireGrid{
     @Override
     public int getHeight() {
         return wires.get(0).size();
+    }
+
+    @Override
+    public Iterator2D<Wire> getIterator() {
+        return new MainIterator();
+    }
+
+    //TODO: docs - not static because it needs access to wires, if it was static it would need an instance of the wireGrid. Non-static has it by default.
+    private class MainIterator implements Iterator2D<Wire>{
+        int currentX = -1;
+        int currentY = 0;
+
+        @Override
+        public boolean hasNext() {
+            if(currentX < getWidth() - 1) return true;
+            else{
+                if(currentY < getHeight() - 1) return true;
+                else return false;
+            }
+        }
+
+        @Override
+        public Wire next() {
+            if(!hasNext()) throw new NoSuchElementException("WireGrid has no more elements");
+
+            if(currentX < getWidth() - 1) currentX++;
+            else{
+                currentY++;
+                currentX = 0;
+            }
+            return wires.get(currentX).get(currentY);
+        }
+
+        @Override
+        public Vector2D currentPosition() {
+            return new Vector2D(currentX, currentY);
+        }
     }
 
     @Override

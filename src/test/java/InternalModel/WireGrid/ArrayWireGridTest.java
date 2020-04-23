@@ -6,7 +6,9 @@ import InternalModel.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -628,6 +630,56 @@ class ArrayWireGridTest {
                 "          \u001B[33;1m| \u001B[0m        \n";
 
         assertEquals(expected, wireGrid.toString());
+    }
+
+    @Test
+    void iteratorTest(){
+        //Arrange
+        WireGrid wireGrid = new ArrayWireGrid(2, 2);
+        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(1,1), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
+        Iterator2D<Wire> iterator = wireGrid.getIterator();
+
+        //Act & Assert
+        assertTrue(iterator.hasNext());
+        Wire w = iterator.next();
+        Vector2D pos = iterator.currentPosition();
+        assertEquals(Wire.State.HIGH, w.getRightWire());
+        assertEquals(Wire.State.LOW, w.getDownWire());
+        assertEquals(Wire.WireCrossing.TOUCHING, w.isTouching());
+        assertEquals(0, pos.getX());
+        assertEquals(0, pos.getY());
+
+        assertTrue(iterator.hasNext());
+        w = iterator.next();
+        pos = iterator.currentPosition();
+        assertEquals(Wire.State.NONE, w.getRightWire());
+        assertEquals(Wire.State.NONE, w.getDownWire());
+        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(1, pos.getX());
+        assertEquals(0, pos.getY());
+
+        assertTrue(iterator.hasNext());
+        w = iterator.next();
+        pos = iterator.currentPosition();
+        assertEquals(Wire.State.NONE, w.getRightWire());
+        assertEquals(Wire.State.NONE, w.getDownWire());
+        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(0, pos.getX());
+        assertEquals(1, pos.getY());
+
+        assertTrue(iterator.hasNext());
+        w = iterator.next();
+        pos = iterator.currentPosition();
+        assertEquals(Wire.State.LOW, w.getRightWire());
+        assertEquals(Wire.State.HIGH, w.getDownWire());
+        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(1, pos.getX());
+        assertEquals(1, pos.getY());
+
+        assertFalse(iterator.hasNext());
+
+        assertThrows(NoSuchElementException.class, iterator::next);
     }
 
 

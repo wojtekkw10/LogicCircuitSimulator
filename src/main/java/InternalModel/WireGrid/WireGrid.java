@@ -4,6 +4,7 @@ import InternalModel.LogicState;
 import InternalModel.Orientation;
 import InternalModel.Vector2D;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -62,6 +63,17 @@ public interface WireGrid {
      * @return upper bound in y direction
      */
     int getHeight();
+
+    /**
+     * Iterator for all wire grid elements.
+     * @return wire iterator
+     */
+    Iterator2D<Wire> getIterator();
+
+    //updaetWire
+    //update Crossing
 }
 //TODO: bedzie potrzbne update element
-//TODO: add design decision here
+//TODO: add design decisions here for WireGrid
+//TODO: Think about iterator for its elements (the output elements would need (x,y), because it looses its square structure)
+//  Do iteratora mozna dodac metoda Vector2D getPosition();
