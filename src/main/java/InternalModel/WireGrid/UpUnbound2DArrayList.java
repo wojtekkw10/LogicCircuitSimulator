@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class UpUnbound2DArrayList<T> {
+class UpUnbound2DArrayList<T> {
     List<List<T>> array = new ArrayList<>();
     private final Supplier<? extends T> ctor;
 

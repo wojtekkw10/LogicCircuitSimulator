@@ -1,0 +1,34 @@
+Mamy interface WireGrid, który udostępnia następujące metody:
+- setElement() - konieczne ponieważ musimy mieć możliwość edytowania siatki przewodów.
+W przeciwnym razie nasz WireGrid byłby immutable i konieczne byłoby każdorazowe kopiowanie całej tablicy przy każdej zmianie elementu,
+co wpływa niekorzystnie na ilość zurzytej pamięci, a także na ilość operacji kopiowania.
+- resetWiresToLow() - powinno być zawsze wykonane przed propagategenerators(), ale nie jest w samej funkcji propagategenerators(), ponieważ
+propagategenerators() może być wykonywana przez developera wielowątkowo. Taka struktura pozwala developerowi na większą kontrolę nad wireGrid.
+Inną zaleta jest fakt, że developer nie musi też mieć gotowych wszystkich generatorów w trakcie wywoływania propagateGenerators().
+Ta funkcja może być wywoływana stopniowo.
+- propagateGenerators() - konieczna, jest to jedno z głównych zadań tego interfejsu.
+- getState() - konieczny w przypadku, gdy developer stawia bramki logiczne na mapie i potrzebuje poznać stan sygnału w danym punkcie.
+Da się uzyskać ten sam efekt używając funkcji getElement(),
+ale jest to funkcjonalność często używana i developer powinien mieć do niej dostęp.
+- getElement() - podstwowa funkcjonalność. Developer powinien mieć możliwość sprawdzenia co znajduje się na siatce.
+- getIterator() - z definicji nasza siatka jest nieograniczona w górę, więc ciężko mówić o wysokości i szerokości.
+Musi być więc dostarczony iterator, który zwróci nam elementy w taki sposób,
+jakby siatka była ograniczona przez najdalej położone elementy.
+- updateWire() oraz updateCrossing() - podstawowa funkcjonalność
+
+Mamy klasę Wire. Jest to klasa immutable oraz final służąca za pojemnik na dane. Definiuje ona podstawową jednostkę w siatce.
+Zawiera typ połączenia, stan sygnału na prawo od połączenia oraz stan sygnału w dół od połączenia.
+Klasa Wire jest wykorzystywana w interfejsie WireGrid, tzn. devloper implementujący interfejs WireGrid musi stosować się do tego schematu.
+Jest to najprostszy i najbardziej intuicyjny schemat, który unika powtarzania danych. Moglibyśmy oddzielić typ połączenia oraz stan sygnałów
+do dwóch (trzech) różncyh tablic (ogólnie pojemników), jednakże dane te prawie zawsze przetwarzane są razem. Mają również cechę wspólną
+tj położenie w siatce. Dlatego też umieszczone zostały w jednym obiekcie.
+
+Mamy interejs Iterator2D, który oprócz zwykłych funkcji oferuje również funkcję Position, która pozwala ustalić gdzie dany element się znajduje.
+Jest to zrobione tak dlatego, ponieważ developer musi wiedzieć gdzie dany element się znajduje. Iterator ukrywa dane szczegóły implementacyjne.
+Więc dlaczego jednocześnie ukrywamy implementację oraz ją odsłaniamy? Nie wiemy w jaki sposób osoba implementująca interfejs WireGrid
+będzie reprezentowała dane. Może to być lista w której elementy posiadają swoją pozycję oraz referencje do innych,
+więc wszystko działa szybko. Waruenk braku górengo ograniczenia też jest zachowany. Wtedy developer ma możliwość zwrócenia
+danych poprzez iterator w prawidłowy sposób.
+Wewnętrzna implementacja to może być również tablica. Wtedy elementy nie muszą przechowywać
+
+//TODO: dodać InternalWIre oraz 'External'Wire. Internal dla tablicy, external dla usera pakietu. External ma dodatkowo pozycje
