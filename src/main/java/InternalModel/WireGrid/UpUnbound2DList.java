@@ -6,7 +6,7 @@ import InternalModel.Vector2D;
  * Interface for unbounded 2D arrays
  * @param <T> type of array element
  */
-public interface UpUnbound2DList<T> {
+interface UpUnbound2DList<T> {
 
     /**
      * Returns element from array. Because of possible optimizations, should NEVER be used to change object's state.
