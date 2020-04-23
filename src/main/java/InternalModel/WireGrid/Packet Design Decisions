@@ -15,6 +15,7 @@ ale jest to funkcjonalność często używana i developer powinien mieć do niej
 Musi być więc dostarczony iterator, który zwróci nam elementy w taki sposób,
 jakby siatka była ograniczona przez najdalej położone elementy.
 - updateWire() oraz updateCrossing() - podstawowa funkcjonalność
+- getWidth oraz getHeight są do iterowania po tablicy
 
 Mamy klasę Wire. Jest to klasa immutable oraz final służąca za pojemnik na dane. Definiuje ona podstawową jednostkę w siatce.
 Zawiera typ połączenia, stan sygnału na prawo od połączenia oraz stan sygnału w dół od połączenia.

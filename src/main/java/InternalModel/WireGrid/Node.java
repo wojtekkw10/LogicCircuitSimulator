@@ -6,7 +6,7 @@ import javax.annotation.concurrent.Immutable;
  * Wire class. The most basic unit in logic circuit grid.
  */
 @Immutable
-final public class  Wire{
+final public class Node {
     /**
      * State of the wire
      */
@@ -40,40 +40,58 @@ final public class  Wire{
     }
 
     /**
-     * State of the wire to right from this point
+     * State of the wire to right from this node
      */
     private final State right;
 
     /**
-     * State of the wire downwards from this point
+     * State of the wire downwards from this node
      */
     private final State down;
 
     /**
-     * Whether or not the wires are touching at this point
+     * Whether or not the wires are touching at this node
      */
     private final WireCrossing isTouching;
 
-    public Wire(){
+    /**
+     * Creates a default node with no wires in it and NOT_TOUCHING crossing
+     */
+    public Node(){
         right = State.NONE;
         down = State.NONE;
         isTouching = WireCrossing.NOT_TOUCHING;
     }
 
-    public Wire(State right, State down, WireCrossing wireCrossing){
+    /**
+     * Creates a node
+     * @param right signal state of the wire to the right of the node
+     * @param down signal state of the wire down of the node
+     * @param wireCrossing the way wires cross at this node
+     */
+    public Node(State right, State down, WireCrossing wireCrossing){
         this.right = right;
         this.down = down;
         this.isTouching = wireCrossing;
     }
 
+    /**
+     * @return signal state of the wire to the right
+     */
     public final State getRightWire() {
         return right;
     }
 
+    /**
+     * @return signal state of the wire down of the node
+     */
     public final State getDownWire() {
         return down;
     }
 
+    /**
+     * @return the way the wires are crossing
+     */
     public WireCrossing isTouching() {
         return isTouching;
     }

@@ -6,7 +6,6 @@ import InternalModel.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -33,21 +32,21 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(5, 10);
 
         //Act
-        Wire wire = new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING);
-        wireGrid.setElement(new Vector2D(2,5), wire);
+        Node node = new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING);
+        wireGrid.setElement(new Vector2D(2,5), node);
 
         //Assert
-        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(2,5)).getRightWire());
-        assertEquals(Wire.State.LOW, wireGrid.getElement(new Vector2D(2,5)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(2,5)).isTouching());
+        assertEquals(Node.State.HIGH, wireGrid.getElement(new Vector2D(2,5)).getRightWire());
+        assertEquals(Node.State.LOW, wireGrid.getElement(new Vector2D(2,5)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(2,5)).isTouching());
 
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(1,5)).getRightWire());
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(1,5)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(1,5)).isTouching());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(1,5)).getRightWire());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(1,5)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(1,5)).isTouching());
 
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(4,9)).getRightWire());
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(4,9)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(4,9)).isTouching());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(4,9)).getRightWire());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(4,9)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(4,9)).isTouching());
     }
 
     @Test
@@ -59,13 +58,13 @@ class ArrayWireGridTest {
         assertEquals(2, wireGrid.getWidth());
         assertEquals(2, wireGrid.getHeight());
 
-        Wire wire = new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING);
-        wireGrid.setElement(new Vector2D(5,10), wire);
+        Node node = new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING);
+        wireGrid.setElement(new Vector2D(5,10), node);
 
         //Assert
-        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(5,10)).getRightWire());
-        assertEquals(Wire.State.LOW, wireGrid.getElement(new Vector2D(5,10)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(5,10)).isTouching());
+        assertEquals(Node.State.HIGH, wireGrid.getElement(new Vector2D(5,10)).getRightWire());
+        assertEquals(Node.State.LOW, wireGrid.getElement(new Vector2D(5,10)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(5,10)).isTouching());
         assertEquals(6, wireGrid.getWidth());
         assertEquals(11, wireGrid.getHeight());
     }
@@ -74,13 +73,13 @@ class ArrayWireGridTest {
     void getElementOutsideOfInitialDimensionsTest(){
         WireGrid wireGrid = new ArrayWireGrid(2, 2);
 
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(1,10)).getRightWire());
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(1,10)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(1,10)).isTouching());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(1,10)).getRightWire());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(1,10)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(1,10)).isTouching());
 
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(10,1)).getRightWire());
-        assertEquals(Wire.State.NONE, wireGrid.getElement(new Vector2D(10,1)).getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(10,1)).isTouching());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(10,1)).getRightWire());
+        assertEquals(Node.State.NONE, wireGrid.getElement(new Vector2D(10,1)).getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(10,1)).isTouching());
     }
 
     @Test
@@ -90,11 +89,11 @@ class ArrayWireGridTest {
 
         //Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.setElement(new Vector2D(-1, 2), new Wire());
+            wireGrid.setElement(new Vector2D(-1, 2), new Node());
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.setElement(new Vector2D(0, -1), new Wire());
+            wireGrid.setElement(new Vector2D(0, -1), new Node());
         });
     }
 
@@ -146,7 +145,7 @@ class ArrayWireGridTest {
     void getStateWithinDimensionsHorizontallyNotTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
         LogicState stateHLeft = wireGrid.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
         LogicState stateVLeft = wireGrid.getState(new Vector2D(5,5), Orientation.VERTICALLY);
@@ -166,7 +165,7 @@ class ArrayWireGridTest {
     void getStateWithinDimensionsVerticallyNotTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.LOW, Node.State.HIGH, Node.WireCrossing.NOT_TOUCHING));
 
         LogicState stateHUp = wireGrid.getState(new Vector2D(5,4), Orientation.HORIZONTALLY);
         LogicState stateVUp = wireGrid.getState(new Vector2D(5,4), Orientation.VERTICALLY);
@@ -186,7 +185,7 @@ class ArrayWireGridTest {
     void getStateWithinDimensionsHorizontallyTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
         LogicState stateHLeft = wireGrid.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
         LogicState stateVLeft = wireGrid.getState(new Vector2D(5,5), Orientation.VERTICALLY);
@@ -206,7 +205,7 @@ class ArrayWireGridTest {
     void getStateWithinDimensionsVerticallyTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.LOW, Node.State.HIGH, Node.WireCrossing.TOUCHING));
 
         LogicState stateHUp = wireGrid.getState(new Vector2D(5,4), Orientation.HORIZONTALLY);
         LogicState stateVUp = wireGrid.getState(new Vector2D(5,4), Orientation.VERTICALLY);
@@ -227,7 +226,7 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
         //Vertically
-        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(0,0), new Node(Node.State.LOW, Node.State.HIGH, Node.WireCrossing.NOT_TOUCHING));
 
         LogicState stateH = wireGrid.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
         LogicState stateV = wireGrid.getState(new Vector2D(0,0), Orientation.VERTICALLY);
@@ -236,7 +235,7 @@ class ArrayWireGridTest {
         assertEquals(LogicState.LOW, stateH);
 
         //Horizontally
-        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(0,0), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
         stateH = wireGrid.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
         stateV = wireGrid.getState(new Vector2D(0,0), Orientation.VERTICALLY);
@@ -250,7 +249,7 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
         //Vertically
-        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(0,0), new Node(Node.State.LOW, Node.State.HIGH, Node.WireCrossing.TOUCHING));
 
         LogicState stateH = wireGrid.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
         LogicState stateV = wireGrid.getState(new Vector2D(0,0), Orientation.VERTICALLY);
@@ -259,7 +258,7 @@ class ArrayWireGridTest {
         assertEquals(LogicState.HIGH, stateH);
 
         //Horizontally
-        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(0,0), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
         stateH = wireGrid.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
         stateV = wireGrid.getState(new Vector2D(0,0), Orientation.VERTICALLY);
@@ -273,8 +272,8 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
         //Horizontally
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.HIGH, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.NONE, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.HIGH, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(6,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(6,5), Orientation.VERTICALLY));
@@ -283,8 +282,8 @@ class ArrayWireGridTest {
         wireGrid = new ArrayWireGrid(10, 10);
 
         //Horizontally
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.NONE, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.HIGH, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(5,5), Orientation.VERTICALLY));
@@ -294,15 +293,15 @@ class ArrayWireGridTest {
     void resetWiresToLowTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.HIGH, Wire.State.HIGH, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(1,1), new Wire(Wire.State.HIGH, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.HIGH, Node.State.HIGH, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(1,1), new Node(Node.State.HIGH, Node.State.HIGH, Node.WireCrossing.NOT_TOUCHING));
 
-        Iterator2D<Wire> it = wireGrid.getIterator();
+        Iterator2D<Node> it = wireGrid.getIterator();
 
         boolean containsHigh = false;
         while(it.hasNext()) {
-            Wire wire = it.next();
-            if (wire.getRightWire() == Wire.State.HIGH || wire.getDownWire() == Wire.State.HIGH)
+            Node node = it.next();
+            if (node.getRightWire() == Node.State.HIGH || node.getDownWire() == Node.State.HIGH)
                 containsHigh = true;
             int x = it.currentPosition().getX();
             int y = it.currentPosition().getY();
@@ -318,8 +317,8 @@ class ArrayWireGridTest {
 
         containsHigh = false;
         while(it.hasNext()) {
-            Wire wire = it.next();
-            if (wire.getRightWire() == Wire.State.HIGH || wire.getDownWire() == Wire.State.HIGH)
+            Node node = it.next();
+            if (node.getRightWire() == Node.State.HIGH || node.getDownWire() == Node.State.HIGH)
                 containsHigh = true;
             int x = it.currentPosition().getX();
             int y = it.currentPosition().getY();
@@ -337,25 +336,25 @@ class ArrayWireGridTest {
     void propagationNotTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,6), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
@@ -404,25 +403,25 @@ class ArrayWireGridTest {
     void propagationTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,6), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
@@ -498,25 +497,25 @@ class ArrayWireGridTest {
     void generatorOutsideOfDimensionsVertically(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,6), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,10), Orientation.VERTICALLY));
@@ -543,25 +542,25 @@ class ArrayWireGridTest {
     void generatorOutsideOfDimensionsHorizontally(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,6), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
@@ -588,25 +587,25 @@ class ArrayWireGridTest {
     void toStringTest(){
         WireGrid wireGrid = new ArrayWireGrid(10, 10);
 
-        wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.LOW, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(6,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(7,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(7,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(8,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(9,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(6,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(7,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(7,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(8,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(9,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,6), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,7), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(4,7), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(5,8), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,9), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,6), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,7), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(4,7), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(5,8), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,9), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(5,4), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(5,3), new Wire(Wire.State.NONE, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,4), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(5,3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
-        wireGrid.setElement(new Vector2D(4,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
-        wireGrid.setElement(new Vector2D(3,5), new Wire(Wire.State.LOW, Wire.State.NONE, Wire.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(4,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        wireGrid.setElement(new Vector2D(3,5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.VERTICALLY));
@@ -643,44 +642,44 @@ class ArrayWireGridTest {
     void iteratorTest(){
         //Arrange
         WireGrid wireGrid = new ArrayWireGrid(2, 2);
-        wireGrid.setElement(new Vector2D(0,0), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
-        wireGrid.setElement(new Vector2D(1,1), new Wire(Wire.State.LOW, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
-        Iterator2D<Wire> iterator = wireGrid.getIterator();
+        wireGrid.setElement(new Vector2D(0,0), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        wireGrid.setElement(new Vector2D(1,1), new Node(Node.State.LOW, Node.State.HIGH, Node.WireCrossing.NOT_TOUCHING));
+        Iterator2D<Node> iterator = wireGrid.getIterator();
 
         //Act & Assert
         assertTrue(iterator.hasNext());
-        Wire w = iterator.next();
+        Node w = iterator.next();
         Vector2D pos = iterator.currentPosition();
-        assertEquals(Wire.State.HIGH, w.getRightWire());
-        assertEquals(Wire.State.LOW, w.getDownWire());
-        assertEquals(Wire.WireCrossing.TOUCHING, w.isTouching());
+        assertEquals(Node.State.HIGH, w.getRightWire());
+        assertEquals(Node.State.LOW, w.getDownWire());
+        assertEquals(Node.WireCrossing.TOUCHING, w.isTouching());
         assertEquals(0, pos.getX());
         assertEquals(0, pos.getY());
 
         assertTrue(iterator.hasNext());
         w = iterator.next();
         pos = iterator.currentPosition();
-        assertEquals(Wire.State.NONE, w.getRightWire());
-        assertEquals(Wire.State.NONE, w.getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(Node.State.NONE, w.getRightWire());
+        assertEquals(Node.State.NONE, w.getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, w.isTouching());
         assertEquals(1, pos.getX());
         assertEquals(0, pos.getY());
 
         assertTrue(iterator.hasNext());
         w = iterator.next();
         pos = iterator.currentPosition();
-        assertEquals(Wire.State.NONE, w.getRightWire());
-        assertEquals(Wire.State.NONE, w.getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(Node.State.NONE, w.getRightWire());
+        assertEquals(Node.State.NONE, w.getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, w.isTouching());
         assertEquals(0, pos.getX());
         assertEquals(1, pos.getY());
 
         assertTrue(iterator.hasNext());
         w = iterator.next();
         pos = iterator.currentPosition();
-        assertEquals(Wire.State.LOW, w.getRightWire());
-        assertEquals(Wire.State.HIGH, w.getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, w.isTouching());
+        assertEquals(Node.State.LOW, w.getRightWire());
+        assertEquals(Node.State.HIGH, w.getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, w.isTouching());
         assertEquals(1, pos.getX());
         assertEquals(1, pos.getY());
 
@@ -694,24 +693,24 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(2, 2);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.updateWire(new Vector2D(-1,0), Orientation.HORIZONTALLY, Wire.State.LOW);
+            wireGrid.updateWire(new Vector2D(-1,0), Orientation.HORIZONTALLY, Node.State.LOW);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.updateWire(new Vector2D(0,-1), Orientation.HORIZONTALLY, Wire.State.LOW);
+            wireGrid.updateWire(new Vector2D(0,-1), Orientation.HORIZONTALLY, Node.State.LOW);
         });
 
-        wireGrid.updateWire(new Vector2D(0,0), Orientation.HORIZONTALLY, Wire.State.LOW);
-        wireGrid.updateWire(new Vector2D(1,1), Orientation.VERTICALLY, Wire.State.HIGH);
-        wireGrid.updateWire(new Vector2D(100,100), Orientation.VERTICALLY, Wire.State.HIGH);
-        wireGrid.updateCrossing(new Vector2D(0,1), Wire.WireCrossing.TOUCHING);
-        wireGrid.updateCrossing(new Vector2D(100,100), Wire.WireCrossing.TOUCHING);
+        wireGrid.updateWire(new Vector2D(0,0), Orientation.HORIZONTALLY, Node.State.LOW);
+        wireGrid.updateWire(new Vector2D(1,1), Orientation.VERTICALLY, Node.State.HIGH);
+        wireGrid.updateWire(new Vector2D(100,100), Orientation.VERTICALLY, Node.State.HIGH);
+        wireGrid.updateCrossing(new Vector2D(0,1), Node.WireCrossing.TOUCHING);
+        wireGrid.updateCrossing(new Vector2D(100,100), Node.WireCrossing.TOUCHING);
 
-        assertEquals(Wire.State.LOW, wireGrid.getElement(new Vector2D(0,0)).getRightWire());
-        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(1,1)).getDownWire());
-        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(100,100)).getDownWire());
-        assertEquals(Wire.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(0,1)).isTouching());
-        assertEquals(Wire.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(100,100)).isTouching());
+        assertEquals(Node.State.LOW, wireGrid.getElement(new Vector2D(0,0)).getRightWire());
+        assertEquals(Node.State.HIGH, wireGrid.getElement(new Vector2D(1,1)).getDownWire());
+        assertEquals(Node.State.HIGH, wireGrid.getElement(new Vector2D(100,100)).getDownWire());
+        assertEquals(Node.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(0,1)).isTouching());
+        assertEquals(Node.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(100,100)).isTouching());
 
     }
 

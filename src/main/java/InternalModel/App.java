@@ -17,7 +17,5 @@ public class App {
         System.out.println(s.arrayWireGrid);
         s.simulate(1);
         System.out.println(s.arrayWireGrid);
-
-        //TODO: write down design decisions
     }
 }

@@ -8,24 +8,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class UpUnbound2DArrayListTest {
     @Test
     void setAndGetElementTest(){
-        UpUnbound2DArrayList<Wire> array = new UpUnbound2DArrayList<>(Wire::new);
+        UpUnbound2DArrayList<Node> array = new UpUnbound2DArrayList<>(Node::new);
 
-        array.set(new Vector2D(100, 100), new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING));
+        array.set(new Vector2D(100, 100), new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.TOUCHING));
 
-        Wire wire = array.get(new Vector2D(100, 100));
-        assertEquals(Wire.State.HIGH, wire.getRightWire());
-        assertEquals(Wire.State.LOW, wire.getDownWire());
-        assertEquals(Wire.WireCrossing.TOUCHING, wire.isTouching());
+        Node node = array.get(new Vector2D(100, 100));
+        assertEquals(Node.State.HIGH, node.getRightWire());
+        assertEquals(Node.State.LOW, node.getDownWire());
+        assertEquals(Node.WireCrossing.TOUCHING, node.isTouching());
 
-        wire = array.get(new Vector2D(50,50));
-        assertEquals(Wire.State.NONE, wire.getRightWire());
-        assertEquals(Wire.State.NONE, wire.getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wire.isTouching());
+        node = array.get(new Vector2D(50,50));
+        assertEquals(Node.State.NONE, node.getRightWire());
+        assertEquals(Node.State.NONE, node.getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, node.isTouching());
 
-        wire = array.get(new Vector2D(1000,1000));
-        assertEquals(Wire.State.NONE, wire.getRightWire());
-        assertEquals(Wire.State.NONE, wire.getDownWire());
-        assertEquals(Wire.WireCrossing.NOT_TOUCHING, wire.isTouching());
+        node = array.get(new Vector2D(1000,1000));
+        assertEquals(Node.State.NONE, node.getRightWire());
+        assertEquals(Node.State.NONE, node.getDownWire());
+        assertEquals(Node.WireCrossing.NOT_TOUCHING, node.isTouching());
 
         assertThrows(IllegalArgumentException.class, () -> {
             array.get(new Vector2D(-1, 0));

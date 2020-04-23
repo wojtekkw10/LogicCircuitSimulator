@@ -7,10 +7,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * ArrayList that behaves like it has infinite length
+ * @param <T> type of the object in the array
+ */
 class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
+    /**
+     * Stores objects of type T
+     */
     List<List<T>> array = new ArrayList<>();
+
+    /**
+     * Provides constructor for creating default (empty) objects in the array
+     */
     private final Supplier<? extends T> ctor;
 
+    /**
+     * Most basic constructor. Creates an array with one element
+     * @param ctor constructor of the object of type T
+     */
     UpUnbound2DArrayList(Supplier<? extends T> ctor) {
         this.ctor = Objects.requireNonNull(ctor);
         List<T> column = new ArrayList<>();
@@ -18,6 +33,12 @@ class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
         array.add(column);
     }
 
+    /**
+     * Creates an arrau of specified size
+     * @param ctor constructor of the object of type T
+     * @param initialWidth initial width of the array
+     * @param initialHeight initial height of the array
+     */
     UpUnbound2DArrayList(Supplier<? extends T> ctor, int initialWidth, int initialHeight) {
         this.ctor = Objects.requireNonNull(ctor);
         for (int i = 0; i < initialWidth; i++) {
@@ -55,6 +76,10 @@ class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
         return array.get(x).get(y);
     }
 
+    /**
+     * Increases width of the array
+     * @param amount number of elements by which the array is extended
+     */
     private void extendGridX(int amount){
         int columnSize = array.get(0).size();
         for(int i=0; i<amount; i++){
@@ -65,6 +90,11 @@ class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
             array.add(column);
         }
     }
+
+    /**
+     * Increases height of the array
+     * @param amount number of elements by which the array is extended
+     */
     private void extendGridY(int amount){
         for(int i=0; i<array.size(); i++){
             for (int j = 0; j < amount; j++) {
