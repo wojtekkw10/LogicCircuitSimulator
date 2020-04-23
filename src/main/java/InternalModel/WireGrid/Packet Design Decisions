@@ -23,12 +23,19 @@ Jest to najprostszy i najbardziej intuicyjny schemat, który unika powtarzania d
 do dwóch (trzech) różncyh tablic (ogólnie pojemników), jednakże dane te prawie zawsze przetwarzane są razem. Mają również cechę wspólną
 tj położenie w siatce. Dlatego też umieszczone zostały w jednym obiekcie.
 
-Mamy interejs Iterator2D, który oprócz zwykłych funkcji oferuje również funkcję Position, która pozwala ustalić gdzie dany element się znajduje.
-Jest to zrobione tak dlatego, ponieważ developer musi wiedzieć gdzie dany element się znajduje. Iterator ukrywa dane szczegóły implementacyjne.
-Więc dlaczego jednocześnie ukrywamy implementację oraz ją odsłaniamy? Nie wiemy w jaki sposób osoba implementująca interfejs WireGrid
-będzie reprezentowała dane. Może to być lista w której elementy posiadają swoją pozycję oraz referencje do innych,
-więc wszystko działa szybko. Waruenk braku górengo ograniczenia też jest zachowany. Wtedy developer ma możliwość zwrócenia
-danych poprzez iterator w prawidłowy sposób.
-Wewnętrzna implementacja to może być również tablica. Wtedy elementy nie muszą przechowywać
+Mamy interfejs Iterator2D, który oprócz zwykłych funkcji oferuje również funkcję Position, która pozwala ustalić gdzie dany element się znajduje.
+Jest to zrobione tak dlatego, ponieważ developer musi wiedzieć gdzie dany element się znajduje. Iterator ukrywa takie dane.
+Dlaczego iterator jest obecny? Być może developer chce przejść po obiektach w specyficzny sposób. Tego nie wiemy. WireGrid to jest tablica
+z pewnymi dodatkowymi funkcjami, więc dostała iterator.
 
-//TODO: dodać InternalWIre oraz 'External'Wire. Internal dla tablicy, external dla usera pakietu. External ma dodatkowo pozycje
+Iterator konkretny jest non-static ponieważ potrzebuje dane z wewnątrz klasy. W przeciwnym wypadku potrzebowaliśmy przekazać instację tablicy
+przez konstruktor ale iterator by nie miał dostępu do wewnętrznej tablicy. (ma dostęp taki jak developer).
+
+WireGrid ma być nieograniczony w góre, więc potrzebne były metody do zarządzania pamięcią. te metody znalazły się w osobnej klasie.
+(Single Responsibility Principle)
+
+Mamy interface UpUnbound2DList. Ma podstawowe metody.
+
+Ten interace jest implementowany w taki sposob, że jeżeli pobieramy element spoza zainicjalizowanej przestrzeni to dostajemy element
+domyślny. Jeżeli ustawiamy element poza tą przestzrenią to tablica się automatycznie zwiększa.
+W przeciwnym wypadku tablica zahcowuje sie jak normalna tablica.

@@ -7,7 +7,7 @@ import InternalModel.Vector2D;
 import java.util.*;
 
 public final class ArrayWireGrid implements WireGrid{
-    UpUnbound2DArrayList<Wire> wires;
+    UpUnbound2DList<Wire> wires;
 
     /**
      * Creates a wireGrid of given width and height
@@ -106,8 +106,6 @@ public final class ArrayWireGrid implements WireGrid{
                 }
             }
         }
-
-        //TODO: document throws in WireGrid
 
         while(!stack.isEmpty()){
             Vector2D pos = stack.pop();
@@ -225,7 +223,16 @@ public final class ArrayWireGrid implements WireGrid{
         wires.set(pos, newWire);
     }
 
-    //TODO: docs - not static because it needs access to wires, if it was static it would need an instance of the wireGrid. Non-static has it by default.
+    @Override
+    public int getWidth() {
+        return wires.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return wires.getHeight();
+    }
+
     private class MainIterator implements Iterator2D<Wire>{
         int currentX = -1;
         int currentY = 0;
