@@ -33,8 +33,7 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(5, 10);
 
         //Act
-        Wire wire = new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.TOUCHING);
-        wire.setIsTouching(Wire.WireCrossing.NOT_TOUCHING);
+        Wire wire = new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING);
         wireGrid.setElement(new Vector2D(2,5), wire);
 
         //Assert

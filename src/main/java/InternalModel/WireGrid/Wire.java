@@ -1,5 +1,8 @@
 package InternalModel.WireGrid;
 
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
 final public class  Wire{
     public enum State{
         HIGH,
@@ -12,10 +15,10 @@ final public class  Wire{
         NOT_TOUCHING,
     }
 
-    private State right;
-    private State down;
+    private final State right;
+    private final State down;
 
-    private WireCrossing isTouching;
+    private final WireCrossing isTouching;
 
     public Wire(){
         right = State.NONE;
@@ -29,24 +32,12 @@ final public class  Wire{
         this.isTouching = wireCrossing;
     }
 
-    public final void setRightWire(State right) {
-        this.right = right;
-    }
-
-    public final void setDownWire(State down) {
-        this.down = down;
-    }
-
     public final State getRightWire() {
         return right;
     }
 
     public final State getDownWire() {
         return down;
-    }
-
-    public void setIsTouching(WireCrossing isTouching) {
-        this.isTouching = isTouching;
     }
 
     public WireCrossing isTouching() {
