@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-class UpUnbound2DArrayList<T> {
+class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
     List<List<T>> array = new ArrayList<>();
     private final Supplier<? extends T> ctor;
 
@@ -18,6 +18,18 @@ class UpUnbound2DArrayList<T> {
         array.add(column);
     }
 
+    UpUnbound2DArrayList(Supplier<? extends T> ctor, int initialWidth, int initialHeight) {
+        this.ctor = Objects.requireNonNull(ctor);
+        for (int i = 0; i < initialWidth; i++) {
+            List<T> column = new ArrayList<>();
+            for (int j = 0; j < initialHeight; j++) {
+                column.add(ctor.get());
+            }
+            array.add(column);
+        }
+    }
+
+    @Override
     public void set(Vector2D pos, T element){
         int x = pos.getX();
         int y = pos.getY();
@@ -30,6 +42,7 @@ class UpUnbound2DArrayList<T> {
         array.get(x).set(y, element);
     }
 
+    @Override
     public T get(Vector2D pos){
         int x = pos.getX();
         int y = pos.getY();
@@ -60,10 +73,12 @@ class UpUnbound2DArrayList<T> {
         }
     }
 
-    private int getWidth(){
+    @Override
+    public int getWidth(){
         return array.size();
     }
-    private int getHeight(){
+    @Override
+    public int getHeight(){
         return array.get(0).size();
     }
 }

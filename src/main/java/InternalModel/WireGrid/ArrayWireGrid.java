@@ -7,7 +7,7 @@ import InternalModel.Vector2D;
 import java.util.*;
 
 public final class ArrayWireGrid implements WireGrid{
-    List<List<Wire>> wires = new ArrayList<>();
+    UpUnbound2DArrayList<Wire> wires;
 
     /**
      * Creates a wireGrid of given width and height
@@ -19,54 +19,28 @@ public final class ArrayWireGrid implements WireGrid{
         if(initialWidth < 1) throw new IllegalArgumentException("Illegal initialWidth: "+initialWidth+" for initialWidth > 0");
         if(initialHeight < 1) throw new IllegalArgumentException("Illegal initialHeight: "+initialHeight+" for initialHeight > 0");
 
-        for (int i = 0; i < initialWidth; i++) {
-            List<Wire> column = new ArrayList<>();
-            for (int j = 0; j < initialHeight; j++) {
-                column.add(new Wire());
-            }
-            wires.add(column);
-        }
+        wires = new UpUnbound2DArrayList<>(Wire::new, initialWidth, initialHeight);
     }
-
-    //TODO: rozdzielić zarządzanie przewodami od zarzadzania pamięcią
 
     @Override
     public void setElement(Vector2D pos, Wire wire){
-        int x = pos.getX();
-        int y = pos.getY();
-        if(x < 0) throw new IllegalArgumentException("Illegal pos.x: "+x+" for pos.x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal pos.y: "+x+" for pos.y >= 0");
-
-        if(x > getWidth()) extendGridX(x-getWidth()+1);
-        if(y > getHeight()) extendGridY(y-getHeight()+1);
-
-        wires.get(x).set(y, wire);
-    }
-
-    private void extendGridX(int amount){
-        int columnSize = wires.get(0).size();
-        for(int i=0; i<amount; i++){
-            List<Wire> column = new ArrayList<>();
-            for (int j = 0; j < columnSize; j++) {
-                column.add(new Wire());
-            }
-            wires.add(column);
-        }
-    }
-    private void extendGridY(int amount){
-        for(int i=0; i<wires.size(); i++){
-            for (int j = 0; j < amount; j++) {
-                wires.get(i).add(new Wire());
-            }
-        }
+        wires.set(pos, wire);
     }
 
     @Override
     public void resetWiresToLow(){
-        for (int i = 0; i < wires.size(); i++) {
-            for (int j = 0; j < wires.get(i).size(); j++) {
-                if(wires.get(i).get(j).getRightWire() != Wire.State.NONE) wires.get(i).get(j).setRightWire(Wire.State.LOW);
-                if(wires.get(i).get(j).getDownWire() != Wire.State.NONE) wires.get(i).get(j).setDownWire(Wire.State.LOW);
+        for (int i = 0; i < wires.getWidth(); i++) {
+            for (int j = 0; j < wires.getHeight(); j++) {
+                if(wires.get(new Vector2D(i, j)).getRightWire() != Wire.State.NONE) {
+                    Wire wire = wires.get(new Vector2D(i, j));
+                    Wire newWire = new Wire(Wire.State.LOW, wire.getDownWire(), wire.isTouching());
+                    wires.set(new Vector2D(i, j), newWire);
+                }
+                if(wires.get(new Vector2D(i, j)).getDownWire() != Wire.State.NONE) {
+                    Wire wire = wires.get(new Vector2D(i, j));
+                    Wire newWire = new Wire(wire.getRightWire(), Wire.State.LOW, wire.isTouching());
+                    wires.set(new Vector2D(i, j), newWire);
+                }
             }
         }
     }
@@ -83,8 +57,8 @@ public final class ArrayWireGrid implements WireGrid{
                     " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
 
             //Generators out of wires' sight won't do anything
-            if(generator.getPos().getX() > getWidth()) continue;
-            if(generator.getPos().getY() > getHeight()) continue;
+            if(generator.getPos().getX() > wires.getWidth()) continue;
+            if(generator.getPos().getY() > wires.getHeight()) continue;
 
             stack.add(generator.getPos());
         }
@@ -94,32 +68,40 @@ public final class ArrayWireGrid implements WireGrid{
             Vector2D pos = generator.getPos();
 
             //Generators out of wires' sight won't do anything
-            if(generator.getPos().getX() > getWidth()) continue;
-            if(generator.getPos().getY() > getHeight()) continue;
-
-            //When differs by one it's ok because it's possible to create wire that goes from existing array outside
-            if(generator.getPos().getX() == getWidth()) extendGridX(1);
-            if(generator.getPos().getY() == getHeight()) extendGridY(1);
+            if(generator.getPos().getX() > wires.getWidth()) continue;
+            if(generator.getPos().getY() > wires.getHeight()) continue;
 
             if(generator.getOrientation() == Orientation.HORIZONTALLY){
-                if(wires.get(pos.getX()).get(pos.getY()).getRightWire() == Wire.State.LOW){
-                    wires.get(pos.getX()).get(pos.getY()).setRightWire(Wire.State.HIGH);
+                if(wires.get(pos).getRightWire() == Wire.State.LOW){
+                    Wire wire = wires.get(pos);
+                    Wire newWire = new Wire(Wire.State.HIGH, wire.getDownWire(), wire.isTouching());
+                    wires.set(pos, newWire);
+
                     stack.add(new Vector2D(pos.getX()+1, pos.getY()));
                 }
                 if(pos.getX() - 1 >= 0
-                        && wires.get(pos.getX()-1).get(pos.getY()).getRightWire() == Wire.State.LOW){
-                    wires.get(pos.getX()-1).get(pos.getY()).setRightWire(Wire.State.HIGH);
+                        && wires.get(new Vector2D(pos.getX()-1, pos.getY())).getRightWire() == Wire.State.LOW){
+                    Wire wire = wires.get(new Vector2D(pos.getX()-1, pos.getY()));
+                    Wire newWire = new Wire(Wire.State.HIGH, wire.getDownWire(), wire.isTouching());
+                    wires.set(new Vector2D(pos.getX()-1, pos.getY()), newWire);
+
                     stack.add(new Vector2D(pos.getX()-1, pos.getY()));
                 }
             }
             else{
-                if(wires.get(pos.getX()).get(pos.getY()).getDownWire() == Wire.State.LOW){
-                    wires.get(pos.getX()).get(pos.getY()).setDownWire(Wire.State.HIGH);
+                if(wires.get(pos).getDownWire() == Wire.State.LOW){
+                    Wire wire = wires.get(pos);
+                    Wire newWire = new Wire(wire.getRightWire(), Wire.State.HIGH, wire.isTouching());
+                    wires.set(pos, newWire);
+
                     stack.add(new Vector2D(pos.getX(), pos.getY()+1));
                 }
                 if(pos.getY() - 1 >= 0 &&
-                        wires.get(pos.getX()).get(pos.getY()-1).getDownWire() == Wire.State.LOW){
-                    wires.get(pos.getX()).get(pos.getY()-1).setDownWire(Wire.State.HIGH);
+                        wires.get(new Vector2D(pos.getX(), pos.getY()-1)).getDownWire() == Wire.State.LOW){
+                    Wire wire = wires.get(new Vector2D(pos.getX(), pos.getY()-1));
+                    Wire newWire = new Wire(wire.getRightWire(), Wire.State.HIGH, wire.isTouching());
+                    wires.set(new Vector2D(pos.getX(), pos.getY()-1), newWire);
+
                     stack.add(new Vector2D(pos.getX(), pos.getY()-1));
                 }
             }
@@ -132,28 +114,40 @@ public final class ArrayWireGrid implements WireGrid{
             int x = pos.getX();
             int y = pos.getY();
 
-            if(x+1 < getWidth()
-            && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-            && wires.get(x+1).get(y).getRightWire() == Wire.State.LOW){
-                wires.get(x+1).get(y).setRightWire(Wire.State.HIGH);
+            if(x+1 < wires.getWidth()
+                    && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
+                    && wires.get(new Vector2D(x+1, y)).getRightWire() == Wire.State.LOW){
+                Wire wire = wires.get(new Vector2D(pos.getX()+1, pos.getY()));
+                Wire newWire = new Wire(Wire.State.HIGH, wire.getDownWire(), wire.isTouching());
+                wires.set(new Vector2D(pos.getX()+1, pos.getY()), newWire);
+
                 stack.add(new Vector2D(x+1, y));
             }
-            if(y+1 < getHeight()
+            if(y+1 < wires.getHeight()
                     && getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && wires.get(x).get(y+1).getDownWire() == Wire.State.LOW){
-                wires.get(x).get(y+1).setDownWire(Wire.State.HIGH);
+                    && wires.get(new Vector2D(x, y+1)).getDownWire() == Wire.State.LOW){
+                Wire wire = wires.get(new Vector2D(pos.getX(), pos.getY()+1));
+                Wire newWire = new Wire(wire.getRightWire(), Wire.State.HIGH, wire.isTouching());
+                wires.set(new Vector2D(pos.getX(), pos.getY()+1), newWire);
+
                 stack.add(new Vector2D(x, y+1));
             }
             if(x-1 >= 0
                     && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && wires.get(x-1).get(y).getRightWire() == Wire.State.LOW){
-                wires.get(x-1).get(y).setRightWire(Wire.State.HIGH);
+                    && wires.get(new Vector2D(x-1, y)).getRightWire() == Wire.State.LOW){
+                Wire wire = wires.get(new Vector2D(pos.getX()-1, pos.getY()));
+                Wire newWire = new Wire(Wire.State.HIGH, wire.getDownWire() , wire.isTouching());
+                wires.set(new Vector2D(pos.getX()-1, pos.getY()), newWire);
+
                 stack.add(new Vector2D(x-1, y));
             }
             if(y-1 >= 0
                     && getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && wires.get(x).get(y-1).getDownWire() == Wire.State.LOW){
-                wires.get(x).get(y-1).setDownWire(Wire.State.HIGH);
+                    && wires.get(new Vector2D(x, y-1)).getDownWire() == Wire.State.LOW){
+                Wire wire = wires.get(new Vector2D(pos.getX(), pos.getY()-1));
+                Wire newWire = new Wire(wire.getRightWire(), Wire.State.HIGH, wire.isTouching());
+                wires.set(new Vector2D(pos.getX(), pos.getY()-1), newWire);
+
                 stack.add(new Vector2D(x, y-1));
             }
         }
@@ -203,21 +197,7 @@ public final class ArrayWireGrid implements WireGrid{
 
     @Override
     public Wire getElement(Vector2D pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal y: "+y+" for y >= 0");
-
-        if(x > getWidth() || y > getHeight()) return new Wire();
-        return wires.get(x).get(y);
-    }
-
-    public int getWidth() {
-        return wires.size();
-    }
-
-    public int getHeight() {
-        return wires.get(0).size();
+        return wires.get(pos);
     }
 
     @Override
@@ -227,31 +207,22 @@ public final class ArrayWireGrid implements WireGrid{
 
     @Override
     public void updateWire(Vector2D pos, Orientation orientation, Wire.State state) {
-        int x = pos.getX();
-        int y = pos.getY();
-        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal y: "+y+" for y >= 0");
-
-        if(x > getWidth()) extendGridX(x-getWidth()+1);
-        if(y > getHeight()) extendGridY(y-getHeight()+1);
-
+        Wire wire = wires.get(pos);
         if(orientation == Orientation.HORIZONTALLY){
-            wires.get(x).get(y).setRightWire(state);
+            Wire newWire = new Wire(state, wire.getDownWire(), wire.isTouching());
+            wires.set(pos, newWire);
         }
-        else wires.get(x).get(y).setDownWire(state);
+        else {
+            Wire newWire = new Wire(wire.getRightWire(), state, wire.isTouching());
+            wires.set(pos, newWire);
+        }
     }
 
     @Override
     public void updateCrossing(Vector2D pos, Wire.WireCrossing crossing) {
-        int x = pos.getX();
-        int y = pos.getY();
-        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal y: "+y+" for y >= 0");
-
-        if(x > getWidth()) extendGridX(x-getWidth()+1);
-        if(y > getHeight()) extendGridY(y-getHeight()+1);
-
-        wires.get(x).get(y).setIsTouching(crossing);
+        Wire wire = wires.get(pos);
+        Wire newWire = new Wire(wire.getRightWire(), wire.getDownWire(), crossing);
+        wires.set(pos, newWire);
     }
 
     //TODO: docs - not static because it needs access to wires, if it was static it would need an instance of the wireGrid. Non-static has it by default.
@@ -261,9 +232,9 @@ public final class ArrayWireGrid implements WireGrid{
 
         @Override
         public boolean hasNext() {
-            if(currentX < getWidth() - 1) return true;
+            if(currentX < wires.getWidth() - 1) return true;
             else{
-                if(currentY < getHeight() - 1) return true;
+                if(currentY < wires.getHeight() - 1) return true;
                 else return false;
             }
         }
@@ -272,12 +243,12 @@ public final class ArrayWireGrid implements WireGrid{
         public Wire next() {
             if(!hasNext()) throw new NoSuchElementException("WireGrid has no more elements");
 
-            if(currentX < getWidth() - 1) currentX++;
+            if(currentX < wires.getWidth() - 1) currentX++;
             else{
                 currentY++;
                 currentX = 0;
             }
-            return wires.get(currentX).get(currentY);
+            return wires.get(new Vector2D(currentX, currentY));
         }
 
         @Override
@@ -293,19 +264,19 @@ public final class ArrayWireGrid implements WireGrid{
         String highStateColor = "\u001b[33;1m";
         String reset = "\u001b[0m";
 
-        for (int i = 0; i < wires.get(0).size(); i++) {
-            for (int j = 0; j < wires.size(); j++) {
-                if(wires.get(j).get(i).isTouching() == Wire.WireCrossing.TOUCHING) stringBuilder.append("*");
+        for (int i = 0; i < wires.getHeight(); i++) {
+            for (int j = 0; j < wires.getWidth(); j++) {
+                if(wires.get(new Vector2D(j, i)).isTouching() == Wire.WireCrossing.TOUCHING) stringBuilder.append("*");
                 else stringBuilder.append("+");
 
-                if(wires.get(j).get(i).getRightWire() == Wire.State.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);
-                else if(wires.get(j).get(i).getRightWire() == Wire.State.LOW) stringBuilder.append(lowStateColor).append("-").append(reset);
+                if(wires.get(new Vector2D(j, i)).getRightWire() == Wire.State.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);
+                else if(wires.get(new Vector2D(j, i)).getRightWire() == Wire.State.LOW) stringBuilder.append(lowStateColor).append("-").append(reset);
                 else stringBuilder.append(" ");
             }
             stringBuilder.append("\n");
-            for (int j = 0; j < wires.size(); j++) {
-                if(wires.get(j).get(i).getDownWire() == Wire.State.HIGH) stringBuilder.append(highStateColor).append("| ").append(reset);
-                else if(wires.get(j).get(i).getDownWire() == Wire.State.LOW) stringBuilder.append(lowStateColor).append("| ").append(reset);
+            for (int j = 0; j < wires.getWidth(); j++) {
+                if(wires.get(new Vector2D(j, i)).getDownWire() == Wire.State.HIGH) stringBuilder.append(highStateColor).append("| ").append(reset);
+                else if(wires.get(new Vector2D(j, i)).getDownWire() == Wire.State.LOW) stringBuilder.append(lowStateColor).append("| ").append(reset);
                 else stringBuilder.append("  ");
             }
             stringBuilder.append("\n");
