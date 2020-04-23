@@ -57,8 +57,6 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid(2, 2);
 
         //Act
-        assertEquals(2, wireGrid.getWidth());
-        assertEquals(2, wireGrid.getHeight());
 
         Wire wire = new Wire(Wire.State.HIGH, Wire.State.LOW, Wire.WireCrossing.NOT_TOUCHING);
         wireGrid.setElement(new Vector2D(5,10), wire);
@@ -67,8 +65,6 @@ class ArrayWireGridTest {
         assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(5,10)).getRightWire());
         assertEquals(Wire.State.LOW, wireGrid.getElement(new Vector2D(5,10)).getDownWire());
         assertEquals(Wire.WireCrossing.NOT_TOUCHING, wireGrid.getElement(new Vector2D(5,10)).isTouching());
-        assertEquals(6, wireGrid.getWidth());
-        assertEquals(11, wireGrid.getHeight());
     }
 
     @Test
@@ -298,14 +294,19 @@ class ArrayWireGridTest {
         wireGrid.setElement(new Vector2D(5,5), new Wire(Wire.State.HIGH, Wire.State.HIGH, Wire.WireCrossing.TOUCHING));
         wireGrid.setElement(new Vector2D(1,1), new Wire(Wire.State.HIGH, Wire.State.HIGH, Wire.WireCrossing.NOT_TOUCHING));
 
+        Iterator2D<Wire> it = wireGrid.getIterator();
+
         boolean containsHigh = false;
-        for (int i = 0; i < wireGrid.getWidth(); i++) {
-            for (int j = 0; j < wireGrid.getHeight(); j++) {
-                if(wireGrid.getState(new Vector2D(i, j), Orientation.VERTICALLY) == LogicState.HIGH)
-                    containsHigh = true;
-                if(wireGrid.getState(new Vector2D(i, j), Orientation.HORIZONTALLY) == LogicState.HIGH)
-                    containsHigh = true;
-            }
+        while(it.hasNext()) {
+            Wire wire = it.next();
+            if (wire.getRightWire() == Wire.State.HIGH || wire.getDownWire() == Wire.State.HIGH)
+                containsHigh = true;
+            int x = it.currentPosition().getX();
+            int y = it.currentPosition().getY();
+            if(wireGrid.getState(new Vector2D(x, y), Orientation.VERTICALLY) == LogicState.HIGH)
+                containsHigh = true;
+            if(wireGrid.getState(new Vector2D(x, y), Orientation.HORIZONTALLY) == LogicState.HIGH)
+                containsHigh = true;
         }
 
         assertTrue(containsHigh);
@@ -313,13 +314,16 @@ class ArrayWireGridTest {
         wireGrid.resetWiresToLow();
 
         containsHigh = false;
-        for (int i = 0; i < wireGrid.getWidth(); i++) {
-            for (int j = 0; j < wireGrid.getHeight(); j++) {
-                if(wireGrid.getState(new Vector2D(i, j), Orientation.VERTICALLY) == LogicState.HIGH)
-                    containsHigh = true;
-                if(wireGrid.getState(new Vector2D(i, j), Orientation.HORIZONTALLY) == LogicState.HIGH)
-                    containsHigh = true;
-            }
+        while(it.hasNext()) {
+            Wire wire = it.next();
+            if (wire.getRightWire() == Wire.State.HIGH || wire.getDownWire() == Wire.State.HIGH)
+                containsHigh = true;
+            int x = it.currentPosition().getX();
+            int y = it.currentPosition().getY();
+            if(wireGrid.getState(new Vector2D(x, y), Orientation.VERTICALLY) == LogicState.HIGH)
+                containsHigh = true;
+            if(wireGrid.getState(new Vector2D(x, y), Orientation.HORIZONTALLY) == LogicState.HIGH)
+                containsHigh = true;
         }
 
         assertFalse(containsHigh);
@@ -477,14 +481,12 @@ class ArrayWireGridTest {
         assertDoesNotThrow( () -> {
             wireGrid.propagateGenerators(generators);
         });
-        assertEquals(11, wireGrid.getWidth());
 
         generators.clear();
         generators.add(new Generator(new Vector2D(5,10), Orientation.HORIZONTALLY));
         assertDoesNotThrow( () -> {
             wireGrid.propagateGenerators(generators);
         });
-        assertEquals(11, wireGrid.getHeight());
     }
 
     @Test
@@ -680,6 +682,32 @@ class ArrayWireGridTest {
         assertFalse(iterator.hasNext());
 
         assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @Test
+    void updateTest(){
+        WireGrid wireGrid = new ArrayWireGrid(2, 2);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            wireGrid.updateWire(new Vector2D(-1,0), Orientation.HORIZONTALLY, Wire.State.LOW);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            wireGrid.updateWire(new Vector2D(0,-1), Orientation.HORIZONTALLY, Wire.State.LOW);
+        });
+
+        wireGrid.updateWire(new Vector2D(0,0), Orientation.HORIZONTALLY, Wire.State.LOW);
+        wireGrid.updateWire(new Vector2D(1,1), Orientation.VERTICALLY, Wire.State.HIGH);
+        wireGrid.updateWire(new Vector2D(100,100), Orientation.VERTICALLY, Wire.State.HIGH);
+        wireGrid.updateCrossing(new Vector2D(0,1), Wire.WireCrossing.TOUCHING);
+        wireGrid.updateCrossing(new Vector2D(100,100), Wire.WireCrossing.TOUCHING);
+
+        assertEquals(Wire.State.LOW, wireGrid.getElement(new Vector2D(0,0)).getRightWire());
+        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(1,1)).getDownWire());
+        assertEquals(Wire.State.HIGH, wireGrid.getElement(new Vector2D(100,100)).getDownWire());
+        assertEquals(Wire.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(0,1)).isTouching());
+        assertEquals(Wire.WireCrossing.TOUCHING, wireGrid.getElement(new Vector2D(100,100)).isTouching());
+
     }
 
 

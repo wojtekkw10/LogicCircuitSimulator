@@ -78,7 +78,6 @@ public class Simulation {
         }
 
         //Propagate the high state throughout the wires
-        arrayWireGrid.resetWiresToLow();
         arrayWireGrid.propagateGenerators(generators);
 
 

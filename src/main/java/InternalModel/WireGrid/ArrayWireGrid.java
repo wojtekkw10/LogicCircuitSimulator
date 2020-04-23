@@ -28,6 +28,9 @@ public final class ArrayWireGrid implements WireGrid{
         }
     }
 
+    //TODO: rozdzielić zarządzanie przewodami od zarzadzania pamięcią
+
+    @Override
     public void setElement(Vector2D pos, Wire wire){
         int x = pos.getX();
         int y = pos.getY();
@@ -58,6 +61,7 @@ public final class ArrayWireGrid implements WireGrid{
         }
     }
 
+    @Override
     public void resetWiresToLow(){
         for (int i = 0; i < wires.size(); i++) {
             for (int j = 0; j < wires.get(i).size(); j++) {
@@ -67,7 +71,9 @@ public final class ArrayWireGrid implements WireGrid{
         }
     }
 
+    @Override
     public void propagateGenerators(List<Generator> generators){
+        resetWiresToLow();
         Deque<Vector2D> stack = new ArrayDeque<>();
         for (int i = 0; i < generators.size(); i++) {
             Generator generator = generators.get(i);
@@ -153,6 +159,7 @@ public final class ArrayWireGrid implements WireGrid{
         }
     }
 
+    @Override
     public LogicState getState(Vector2D pos, Orientation orientation){
         int x = pos.getX();
         int y = pos.getY();
@@ -172,8 +179,8 @@ public final class ArrayWireGrid implements WireGrid{
             }
             if(x-1>=0){
                 Wire wireToLeft = getElement(new Vector2D(x-1, y));
-                if(wireToLeft.getRightWire() == Wire.State.HIGH) return LogicState.HIGH;
-            }
+                if(wireToLeft.getRightWire() == Wire.State.HIGH)
+                    return LogicState.HIGH; }
         }
         else{
             if(orientation == Orientation.VERTICALLY){
@@ -205,12 +212,10 @@ public final class ArrayWireGrid implements WireGrid{
         return wires.get(x).get(y);
     }
 
-    @Override
     public int getWidth() {
         return wires.size();
     }
 
-    @Override
     public int getHeight() {
         return wires.get(0).size();
     }
@@ -218,6 +223,35 @@ public final class ArrayWireGrid implements WireGrid{
     @Override
     public Iterator2D<Wire> getIterator() {
         return new MainIterator();
+    }
+
+    @Override
+    public void updateWire(Vector2D pos, Orientation orientation, Wire.State state) {
+        int x = pos.getX();
+        int y = pos.getY();
+        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
+        if(y < 0) throw new IllegalArgumentException("Illegal y: "+y+" for y >= 0");
+
+        if(x > getWidth()) extendGridX(x-getWidth()+1);
+        if(y > getHeight()) extendGridY(y-getHeight()+1);
+
+        if(orientation == Orientation.HORIZONTALLY){
+            wires.get(x).get(y).setRightWire(state);
+        }
+        else wires.get(x).get(y).setDownWire(state);
+    }
+
+    @Override
+    public void updateCrossing(Vector2D pos, Wire.WireCrossing crossing) {
+        int x = pos.getX();
+        int y = pos.getY();
+        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
+        if(y < 0) throw new IllegalArgumentException("Illegal y: "+y+" for y >= 0");
+
+        if(x > getWidth()) extendGridX(x-getWidth()+1);
+        if(y > getHeight()) extendGridY(y-getHeight()+1);
+
+        wires.get(x).get(y).setIsTouching(crossing);
     }
 
     //TODO: docs - not static because it needs access to wires, if it was static it would need an instance of the wireGrid. Non-static has it by default.

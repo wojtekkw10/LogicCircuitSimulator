@@ -52,4 +52,9 @@ final public class  Wire{
     public WireCrossing isTouching() {
         return isTouching;
     }
+
+    //TODO: docs gdyby nie wire to bysmy musieli miec osobną klasę na crossing i na wire
+    //  musielibysmy miec dwie rózne tablice na to
+    //  przy wyciaganiu trzeba by miec iterator zwracający osobno pozycje, crossing, i wire up i right // czyli tak jak jest teraz
+    //  albo pozycje, crossing, tylko jeden wire w zaleznosci od wiersza (wtedy zwrocimy ten sam crossing dla down i right
 }
