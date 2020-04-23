@@ -13,22 +13,24 @@ public class NotGate extends LogicElement{
 
     @Override
     public List<Vector2D> getInputPositions() {
-        //TODO: przelozyc do konstruktora
         List<Vector2D> inputPositions = new ArrayList<>();
         inputPositions.add(new Vector2D(this.position.getX(), this.position.getY()));
         return inputPositions;
     }
 
     @Override
-    public LogicState computeValue(List<LogicState> states) {
+    public ArrayList<LogicState> computeValues(List<LogicState> states) {
+        ArrayList<LogicState> outputStates = new ArrayList<>();
         LogicState state1 = states.get(0);
-        if(state1 == LogicState.HIGH) return LogicState.LOW;
-        else return LogicState.HIGH;
+        if(state1 == LogicState.HIGH) outputStates.add(LogicState.LOW);
+        else outputStates.add(LogicState.HIGH);
+        return outputStates;
     }
 
     @Override
-    public Vector2D getOutput() {
-        //TODO: przelozyc do konstruktora
-        return new Vector2D(this.position.getX()+1, this.position.getY());
+    public ArrayList<Vector2D> getOutputPositions() {
+        ArrayList<Vector2D> outputPositions = new ArrayList<>();
+        outputPositions.add(new Vector2D(this.position.getX()+1, this.position.getY()));
+        return outputPositions;
     }
 }

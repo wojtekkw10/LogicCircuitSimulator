@@ -17,11 +17,14 @@ public abstract class LogicElement {
 
     public abstract List<Vector2D> getInputPositions();
 
-    public abstract LogicState computeValue(List<LogicState> states);
+    public abstract ArrayList<LogicState> computeValues(List<LogicState> states);
 
-    public abstract Vector2D getOutput(); // returns (x,y)
+    public abstract ArrayList<Vector2D> getOutputPositions(); // returns (x,y)
 
     public LogicElement(int x, int y){
         position = new Vector2D(x,y);
+    }
+
+    public void move(){
     }
 }

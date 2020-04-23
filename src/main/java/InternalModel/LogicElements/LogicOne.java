@@ -20,12 +20,16 @@ public class LogicOne extends LogicElement {
     }
 
     @Override
-    public LogicState computeValue(List<LogicState> states) {
-        return LogicState.HIGH;
+    public ArrayList<LogicState> computeValues(List<LogicState> states) {
+        ArrayList<LogicState> outputStates = new ArrayList<>();
+        outputStates.add(LogicState.HIGH);
+        return outputStates;
     }
 
     @Override
-    public Vector2D getOutput() {
-        return new Vector2D(this.position.getX(),this.position.getY());
+    public ArrayList<Vector2D> getOutputPositions() {
+        ArrayList<Vector2D> outputs = new ArrayList<>();
+        outputs.add(new Vector2D(this.position.getX(),this.position.getY()));
+        return outputs;
     }
 }

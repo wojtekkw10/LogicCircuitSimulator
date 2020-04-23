@@ -2,6 +2,7 @@ package InternalModel;
 
 import InternalModel.LogicElements.LogicElement;
 import InternalModel.LogicElements.LogicOne;
+import InternalModel.LogicElements.NotGate;
 import InternalModel.WireGrid.ArrayWireGrid;
 import InternalModel.WireGrid.Generator;
 import InternalModel.WireGrid.Node;
@@ -41,12 +42,18 @@ public class Simulation {
         arrayWireGrid.setElement(new Vector2D(3, 1), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
 
 
-        arrayWireGrid.setElement(new Vector2D(10, 3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setElement(new Vector2D(10, 4), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(10, 3), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(10, 4), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setElement(new Vector2D(11, 4), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(12, 4), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(11, 3), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(12, 3), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(13, 3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(13, 4), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
         //TODO: check arguments
-        logicElements.add(new LogicOne(5,2));
+        //logicElements.add(new LogicOne(0,0));
+        logicElements.add(new NotGate(11,3));
     }
 
     void simulate(int numberOfTicks){
@@ -71,13 +78,14 @@ public class Simulation {
                 inputStates.add(inputState);
             }
 
-            LogicState result = element.computeValue(inputStates);
-            Vector2D outputPos = element.getOutput();
-
-            if(result == LogicState.HIGH) generators.add(new Generator(outputPos, Orientation.HORIZONTALLY));
+            List<LogicState> results = element.computeValues(inputStates);
+            ArrayList<Vector2D> outputPos = element.getOutputPositions();
+            for (int j = 0; j < results.size(); j++) {
+                if(results.get(j) == LogicState.HIGH) generators.add(new Generator(outputPos.get(j), Orientation.HORIZONTALLY));
+            }
         }
-
         //Propagate the high state throughout the wires
+        arrayWireGrid.resetWiresToLow();
         arrayWireGrid.propagateGenerators(generators);
 
 

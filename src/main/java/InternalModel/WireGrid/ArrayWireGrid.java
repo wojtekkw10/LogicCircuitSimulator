@@ -121,21 +121,21 @@ public final class ArrayWireGrid implements WireGrid{
             int x = pos.getX();
             int y = pos.getY();
 
-            if(x+1 < nodes.getWidth()
+            if(x+1 <= nodes.getWidth()
                     && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x+1, y)).getRightWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX()+1, pos.getY()));
+                    && nodes.get(new Vector2D(x, y)).getRightWire() == Node.State.LOW){
+                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()));
                 Node newNode = new Node(Node.State.HIGH, node.getDownWire(), node.isTouching());
-                nodes.set(new Vector2D(pos.getX()+1, pos.getY()), newNode);
+                nodes.set(new Vector2D(pos.getX(), pos.getY()), newNode);
 
                 stack.add(new Vector2D(x+1, y));
             }
-            if(y+1 < nodes.getHeight()
+            if(y+1 <= nodes.getHeight()
                     && getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x, y+1)).getDownWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()+1));
+                    && nodes.get(new Vector2D(x, y)).getDownWire() == Node.State.LOW){
+                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()));
                 Node newNode = new Node(node.getRightWire(), Node.State.HIGH, node.isTouching());
-                nodes.set(new Vector2D(pos.getX(), pos.getY()+1), newNode);
+                nodes.set(new Vector2D(pos.getX(), pos.getY()), newNode);
 
                 stack.add(new Vector2D(x, y+1));
             }
