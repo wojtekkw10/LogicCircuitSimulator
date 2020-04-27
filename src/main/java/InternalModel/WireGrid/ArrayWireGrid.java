@@ -3,7 +3,8 @@ package InternalModel.WireGrid;
 import InternalModel.LogicState;
 import InternalModel.Orientation;
 import InternalModel.Vector2D;
-
+import InternalModel.WireGrid.Unbound2DList.Unbound2DList;
+import InternalModel.WireGrid.Unbound2DList.Unbound2DListHashMap;
 import java.util.*;
 
 /**
@@ -13,20 +14,7 @@ public final class ArrayWireGrid implements WireGrid{
     /**
      * Stores node data
      */
-    UpUnbound2DList<Node> nodes;
-
-    /**
-     * Creates a wireGrid of given width and height
-     * @param initialWidth initial width of the grid
-     * @param initialHeight initial height of the grid
-     * @throws IllegalArgumentException if specified width or height is less than 1
-     */
-    public ArrayWireGrid(int initialWidth, int initialHeight){
-        if(initialWidth < 1) throw new IllegalArgumentException("Illegal initialWidth: "+initialWidth+" for initialWidth > 0");
-        if(initialHeight < 1) throw new IllegalArgumentException("Illegal initialHeight: "+initialHeight+" for initialHeight > 0");
-
-        nodes = new UpUnbound2DArrayList<>(Node::new, initialWidth, initialHeight);
-    }
+    Unbound2DList<Node> nodes = new Unbound2DListHashMap<>();
 
     @Override
     public void setNode(Vector2D pos, Node node){
@@ -35,18 +23,14 @@ public final class ArrayWireGrid implements WireGrid{
 
     @Override
     public void resetWiresToLow(){
-        for (int i = 0; i < nodes.getWidth(); i++) {
-            for (int j = 0; j < nodes.getHeight(); j++) {
-                if(nodes.get(new Vector2D(i, j)).getRightWire() != Node.State.NONE) {
-                    Node node = nodes.get(new Vector2D(i, j));
-                    Node newNode = new Node(Node.State.LOW, node.getDownWire(), node.isTouching());
-                    nodes.set(new Vector2D(i, j), newNode);
-                }
-                if(nodes.get(new Vector2D(i, j)).getDownWire() != Node.State.NONE) {
-                    Node node = nodes.get(new Vector2D(i, j));
-                    Node newNode = new Node(node.getRightWire(), Node.State.LOW, node.isTouching());
-                    nodes.set(new Vector2D(i, j), newNode);
-                }
+        Iterator2D<Node> iterator = nodes.iterator();
+        while(iterator.hasNext()){
+            Node current = iterator.next();
+            if(current.getRightWire() == Node.State.HIGH){
+                updateWire(iterator.currentPosition(), Orientation.HORIZONTALLY, Node.State.LOW);
+            }
+            if(current.getDownWire() == Node.State.HIGH){
+                updateWire(iterator.currentPosition(), Orientation.VERTICALLY, Node.State.LOW);
             }
         }
     }
@@ -63,10 +47,6 @@ public final class ArrayWireGrid implements WireGrid{
             if(generator.getPos().getY() < 0) throw new IllegalArgumentException("Illegal argument 'generators'. Generator at index "+i+
                     " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
 
-            //Generators out of wires' sight won't do anything
-            if(generator.getPos().getX() > nodes.getWidth()) continue;
-            if(generator.getPos().getY() > nodes.getHeight()) continue;
-
             stack.add(generator.getPos());
         }
 
@@ -75,21 +55,18 @@ public final class ArrayWireGrid implements WireGrid{
             Generator generator = generators.get(i);
             Vector2D pos = generator.getPos();
 
-            //Generators out of wires' sight won't do anything
-            if(generator.getPos().getX() > nodes.getWidth()) continue;
-            if(generator.getPos().getY() > nodes.getHeight()) continue;
 
             if(generator.getOrientation() == Orientation.HORIZONTALLY){
-                if(nodes.get(pos).getRightWire() == Node.State.LOW){
-                    Node node = nodes.get(pos);
+                if(getNode(pos).getRightWire() == Node.State.LOW){
+                    Node node = getNode(pos);
                     Node newNode = new Node(Node.State.HIGH, node.getDownWire(), node.isTouching());
                     nodes.set(pos, newNode);
 
                     stack.add(new Vector2D(pos.getX()+1, pos.getY()));
                 }
                 if(pos.getX() - 1 >= 0
-                        && nodes.get(new Vector2D(pos.getX()-1, pos.getY())).getRightWire() == Node.State.LOW){
-                    Node node = nodes.get(new Vector2D(pos.getX()-1, pos.getY()));
+                        && getNode(new Vector2D(pos.getX()-1, pos.getY())).getRightWire() == Node.State.LOW){
+                    Node node = getNode(new Vector2D(pos.getX()-1, pos.getY()));
                     Node newNode = new Node(Node.State.HIGH, node.getDownWire(), node.isTouching());
                     nodes.set(new Vector2D(pos.getX()-1, pos.getY()), newNode);
 
@@ -97,16 +74,16 @@ public final class ArrayWireGrid implements WireGrid{
                 }
             }
             else{
-                if(nodes.get(pos).getDownWire() == Node.State.LOW){
-                    Node node = nodes.get(pos);
+                if(getNode(pos).getDownWire() == Node.State.LOW){
+                    Node node = getNode(pos);
                     Node newNode = new Node(node.getRightWire(), Node.State.HIGH, node.isTouching());
                     nodes.set(pos, newNode);
 
                     stack.add(new Vector2D(pos.getX(), pos.getY()+1));
                 }
                 if(pos.getY() - 1 >= 0 &&
-                        nodes.get(new Vector2D(pos.getX(), pos.getY()-1)).getDownWire() == Node.State.LOW){
-                    Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()-1));
+                        getNode(new Vector2D(pos.getX(), pos.getY()-1)).getDownWire() == Node.State.LOW){
+                    Node node = getNode(new Vector2D(pos.getX(), pos.getY()-1));
                     Node newNode = new Node(node.getRightWire(), Node.State.HIGH, node.isTouching());
                     nodes.set(new Vector2D(pos.getX(), pos.getY()-1), newNode);
 
@@ -121,37 +98,33 @@ public final class ArrayWireGrid implements WireGrid{
             int x = pos.getX();
             int y = pos.getY();
 
-            if(x+1 <= nodes.getWidth()
-                    && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x, y)).getRightWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()));
+            if(getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
+                    && getNode(new Vector2D(x, y)).getRightWire() == Node.State.LOW){
+                Node node = getNode(new Vector2D(pos.getX(), pos.getY()));
                 Node newNode = new Node(Node.State.HIGH, node.getDownWire(), node.isTouching());
                 nodes.set(new Vector2D(pos.getX(), pos.getY()), newNode);
 
                 stack.add(new Vector2D(x+1, y));
             }
-            if(y+1 <= nodes.getHeight()
-                    && getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x, y)).getDownWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()));
+            if(getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
+                    && getNode(new Vector2D(x, y)).getDownWire() == Node.State.LOW){
+                Node node = getNode(new Vector2D(pos.getX(), pos.getY()));
                 Node newNode = new Node(node.getRightWire(), Node.State.HIGH, node.isTouching());
                 nodes.set(new Vector2D(pos.getX(), pos.getY()), newNode);
 
                 stack.add(new Vector2D(x, y+1));
             }
-            if(x-1 >= 0
-                    && getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x-1, y)).getRightWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX()-1, pos.getY()));
+            if(getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
+                    && getNode(new Vector2D(x-1, y)).getRightWire() == Node.State.LOW){
+                Node node = getNode(new Vector2D(pos.getX()-1, pos.getY()));
                 Node newNode = new Node(Node.State.HIGH, node.getDownWire() , node.isTouching());
                 nodes.set(new Vector2D(pos.getX()-1, pos.getY()), newNode);
 
                 stack.add(new Vector2D(x-1, y));
             }
-            if(y-1 >= 0
-                    && getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && nodes.get(new Vector2D(x, y-1)).getDownWire() == Node.State.LOW){
-                Node node = nodes.get(new Vector2D(pos.getX(), pos.getY()-1));
+            if(getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
+                    && getNode(new Vector2D(x, y-1)).getDownWire() == Node.State.LOW){
+                Node node = getNode(new Vector2D(pos.getX(), pos.getY()-1));
                 Node newNode = new Node(node.getRightWire(), Node.State.HIGH, node.isTouching());
                 nodes.set(new Vector2D(pos.getX(), pos.getY()-1), newNode);
 
@@ -204,17 +177,17 @@ public final class ArrayWireGrid implements WireGrid{
 
     @Override
     public Node getNode(Vector2D pos) {
-        return nodes.get(pos);
+        return nodes.get(pos).orElse(new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
     }
 
     @Override
     public Iterator2D<Node> getIterator() {
-        return new MainIterator();
+        return nodes.iterator();
     }
 
     @Override
     public void updateWire(Vector2D pos, Orientation orientation, Node.State state) {
-        Node node = nodes.get(pos);
+        Node node = getNode(pos);
         if(orientation == Orientation.HORIZONTALLY){
             Node newNode = new Node(state, node.getDownWire(), node.isTouching());
             nodes.set(pos, newNode);
@@ -227,70 +200,64 @@ public final class ArrayWireGrid implements WireGrid{
 
     @Override
     public void updateCrossing(Vector2D pos, Node.WireCrossing crossing) {
-        Node node = nodes.get(pos);
+        Node node = getNode(pos);
         Node newNode = new Node(node.getRightWire(), node.getDownWire(), crossing);
         nodes.set(pos, newNode);
     }
 
-    public int getWidth() {
-        return nodes.getWidth();
-    }
-
-    public int getHeight() {
-        return nodes.getHeight();
-    }
-
-    private class MainIterator implements Iterator2D<Node>{
-        int currentX = -1;
-        int currentY = 0;
-
-        @Override
-        public boolean hasNext() {
-            if(currentX < nodes.getWidth() - 1) return true;
-            else{
-                if(currentY < nodes.getHeight() - 1) return true;
-                else return false;
-            }
-        }
-
-        @Override
-        public Node next() {
-            if(!hasNext()) throw new NoSuchElementException("WireGrid has no more elements");
-
-            if(currentX < nodes.getWidth() - 1) currentX++;
-            else{
-                currentY++;
-                currentX = 0;
-            }
-            return nodes.get(new Vector2D(currentX, currentY));
-        }
-
-        @Override
-        public Vector2D currentPosition() {
-            return new Vector2D(currentX, currentY);
-        }
-    }
-
     @Override
     public String toString() {
+        Iterator2D<Node> it = nodes.iterator();
+        int lowestX = Integer.MAX_VALUE;
+        int highestX = Integer.MIN_VALUE;
+        int lowestY = Integer.MAX_VALUE;
+        int highestY = Integer.MIN_VALUE;
+
+        while(it.hasNext()){
+            it.next();
+            Vector2D pos = it.currentPosition();
+            if(pos.getX() < lowestX) lowestX = pos.getX();
+            if(pos.getY() < lowestY) lowestY = pos.getY();
+            if(pos.getX() > highestX) highestX = pos.getX();
+            if(pos.getY() > highestY) highestY = pos.getY();
+        }
+        int width = highestX - lowestX + 1;
+        int height = highestY - lowestY + 1;
+
+        ArrayList<ArrayList<Node>> grid = new ArrayList<>();
+        for (int i = 0; i < width; i++) {
+            ArrayList<Node> column = new ArrayList<>();
+            for (int j = 0; j < height; j++) {
+                column.add(new Node());
+            }
+            grid.add(column);
+        }
+
+        it = nodes.iterator();
+        while(it.hasNext()){
+            Node curr = it.next();
+            Vector2D pos = it.currentPosition();
+            grid.get(pos.getX()-lowestX).set(pos.getY()-lowestY, curr);
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         String lowStateColor = "\u001b[38;5;245m";
         String highStateColor = "\u001b[33;1m";
         String reset = "\u001b[0m";
 
-        for (int i = 0; i < nodes.getHeight(); i++) {
-            for (int j = 0; j < nodes.getWidth(); j++) {
-                if(nodes.get(new Vector2D(j, i)).isTouching() == Node.WireCrossing.TOUCHING) stringBuilder.append("*");
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if(grid.get(j).get(i).isTouching() == Node.WireCrossing.TOUCHING) stringBuilder.append("*");
                 else stringBuilder.append("+");
 
-                if(nodes.get(new Vector2D(j, i)).getRightWire() == Node.State.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);
-                else if(nodes.get(new Vector2D(j, i)).getRightWire() == Node.State.LOW) stringBuilder.append(lowStateColor).append("-").append(reset);
+                if(grid.get(j).get(i).getRightWire() == Node.State.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);
+                else if(grid.get(j).get(i).getRightWire() == Node.State.LOW) stringBuilder.append(lowStateColor).append("-").append(reset);
                 else stringBuilder.append(" ");
             }
             stringBuilder.append("\n");
-            for (int j = 0; j < nodes.getWidth(); j++) {
-                if(nodes.get(new Vector2D(j, i)).getDownWire() == Node.State.HIGH) stringBuilder.append(highStateColor).append("| ").append(reset);
-                else if(nodes.get(new Vector2D(j, i)).getDownWire() == Node.State.LOW) stringBuilder.append(lowStateColor).append("| ").append(reset);
+            for (int j = 0; j < width; j++) {
+                if(grid.get(j).get(i).getDownWire() == Node.State.HIGH) stringBuilder.append(highStateColor).append("| ").append(reset);
+                else if(grid.get(j).get(i).getDownWire() == Node.State.LOW) stringBuilder.append(lowStateColor).append("| ").append(reset);
                 else stringBuilder.append("  ");
             }
             stringBuilder.append("\n");

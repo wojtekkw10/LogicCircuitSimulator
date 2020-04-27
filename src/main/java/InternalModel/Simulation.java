@@ -5,13 +5,14 @@ import InternalModel.LogicElements.NotGate;
 import InternalModel.WireGrid.ArrayWireGrid;
 import InternalModel.WireGrid.Generator;
 import InternalModel.WireGrid.Node;
+import InternalModel.WireGrid.Unbound2DList.Unbound2DListHashMap;
 import InternalModel.WireGrid.WireGrid;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
-    public WireGrid arrayWireGrid = new ArrayWireGrid(20, 5);
+    public WireGrid arrayWireGrid = new ArrayWireGrid();
     List<LogicElement> logicElements = new ArrayList<>();
 
     Simulation(){

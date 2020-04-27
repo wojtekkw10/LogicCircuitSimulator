@@ -24,6 +24,7 @@ public class App {
         //TODO: logic gates rotation
         //TODO: Logic gate return (LOGIC_VALUE, position).
         // użycie Optional ph.parent().map(h -> String.valueOf(h.pid())).orElse("N/A"));
+        // change WIreGrid to abstract class with Unbound array
 
 
     }

@@ -7,7 +7,7 @@ import InternalModel.Vector2D;
 import java.util.List;
 
 /**
- * Stores and processes wire data in a logic circuit.
+ * Stores and processes wire data in a logic circuit. The coordinates are unbounded.
  */
 public interface WireGrid {
 
