@@ -57,8 +57,8 @@ class UpUnbound2DArrayList<T> implements UpUnbound2DList<T>{
         if(x < 0) throw new IllegalArgumentException("Illegal pos.x: "+x+" for pos.x >= 0");
         if(y < 0) throw new IllegalArgumentException("Illegal pos.y: "+x+" for pos.y >= 0");
 
-        if(x > getWidth()) extendGridX(x-getWidth()+1);
-        if(y > getHeight()) extendGridY(y-getHeight()+1);
+        if(x >= getWidth()) extendGridX(x-getWidth()+1);
+        if(y >= getHeight()) extendGridY(y-getHeight()+1);
 
         array.get(x).set(y, element);
     }

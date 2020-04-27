@@ -51,9 +51,20 @@ public class Simulation {
         arrayWireGrid.setElement(new Vector2D(13, 3), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setElement(new Vector2D(13, 4), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
+
+        arrayWireGrid.setElement(new Vector2D(10, 5), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(10, 6), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(11, 6), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(12, 6), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(11, 5), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(12, 5), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(13, 5), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setElement(new Vector2D(13, 6), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
+
         //TODO: check arguments
         //logicElements.add(new LogicOne(0,0));
         logicElements.add(new NotGate(11,3));
+        logicElements.add(new NotGate(11,5));
     }
 
     void simulate(int numberOfTicks){

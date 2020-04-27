@@ -17,5 +17,11 @@ public class App {
         System.out.println(s.arrayWireGrid);
         s.simulate(1);
         System.out.println(s.arrayWireGrid);
+        s.simulate(1);
+        System.out.println(s.arrayWireGrid);
+
+        //TODO: Change upUnbound to Unbound
+        //TODO: logic gates rotation
+        //TODO: Logic gate return (LOGIC_VALUE, position).
     }
 }
