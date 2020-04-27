@@ -15,7 +15,7 @@ ale jest to funkcjonalność często używana i developer powinien mieć do niej
 Musi być więc dostarczony iterator, który zwróci nam elementy w taki sposób,
 jakby siatka była ograniczona przez najdalej położone elementy.
 - updateWire() oraz updateCrossing() - podstawowa funkcjonalność
-- getWidth oraz getHeight są do iterowania po tablicy
+- getWidth oraz getHeight są do iterowania po tablicy. Wywalone bo siatka jest nieskończona.
 
 Mamy klasę Wire. Jest to klasa immutable oraz final służąca za pojemnik na dane. Definiuje ona podstawową jednostkę w siatce.
 Zawiera typ połączenia, stan sygnału na prawo od połączenia oraz stan sygnału w dół od połączenia.
@@ -40,3 +40,10 @@ Mamy interface UpUnbound2DList. Ma podstawowe metody.
 Ten interace jest implementowany w taki sposob, że jeżeli pobieramy element spoza zainicjalizowanej przestrzeni to dostajemy element
 domyślny. Jeżeli ustawiamy element poza tą przestzrenią to tablica się automatycznie zwiększa.
 W przeciwnym wypadku tablica zahcowuje sie jak normalna tablica.
+
+Position jest osobno bo
+1. ArrayList ma osobno
+2. Indeksy tablicy mogą przechowywać informacje o obiekcie (u nas pozycje na mapie), gdyby były razem infomacja o pozycji by się duplikowała w przypadku
+implementacji tablicowej (a chcemy żeby programista miał jak najwięskzą swobodę)
+
+WireGrid ma getElement bo może się przydać. Jest to bardzo podstawowa funkcja.

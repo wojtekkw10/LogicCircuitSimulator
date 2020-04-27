@@ -29,7 +29,7 @@ public final class ArrayWireGrid implements WireGrid{
     }
 
     @Override
-    public void setElement(Vector2D pos, Node node){
+    public void setNode(Vector2D pos, Node node){
         nodes.set(pos, node);
     }
 
@@ -169,17 +169,17 @@ public final class ArrayWireGrid implements WireGrid{
         if(y < 0) throw new IllegalArgumentException("Illegal y: "+x+" for y >= 0");
         if(orientation == null) throw new NullPointerException("Argument 'orientation' is null");
 
-        Node node = getElement(pos);
+        Node node = getNode(pos);
 
         if(node.isTouching() == Node.WireCrossing.TOUCHING){
             if(node.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
             if(node.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
             if(y-1>=0){
-                Node upperNode = getElement(new Vector2D(x, y-1));
+                Node upperNode = getNode(new Vector2D(x, y-1));
                 if(upperNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
             }
             if(x-1>=0){
-                Node nodeToLeft = getElement(new Vector2D(x-1, y));
+                Node nodeToLeft = getNode(new Vector2D(x-1, y));
                 if(nodeToLeft.getRightWire() == Node.State.HIGH)
                     return LogicState.HIGH; }
         }
@@ -187,14 +187,14 @@ public final class ArrayWireGrid implements WireGrid{
             if(orientation == Orientation.VERTICALLY){
                 if(node.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
                 if(y-1>=0){
-                    Node upperNode = getElement(new Vector2D(x, y-1));
+                    Node upperNode = getNode(new Vector2D(x, y-1));
                     if(upperNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
                 }
             }
             else{
                 if(node.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
                 if(x-1>=0){
-                    Node nodeToLeft = getElement(new Vector2D(x-1, y));
+                    Node nodeToLeft = getNode(new Vector2D(x-1, y));
                     if(nodeToLeft.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
                 }
             }
@@ -203,7 +203,7 @@ public final class ArrayWireGrid implements WireGrid{
     }
 
     @Override
-    public Node getElement(Vector2D pos) {
+    public Node getNode(Vector2D pos) {
         return nodes.get(pos);
     }
 
@@ -232,12 +232,10 @@ public final class ArrayWireGrid implements WireGrid{
         nodes.set(pos, newNode);
     }
 
-    @Override
     public int getWidth() {
         return nodes.getWidth();
     }
 
-    @Override
     public int getHeight() {
         return nodes.getHeight();
     }
