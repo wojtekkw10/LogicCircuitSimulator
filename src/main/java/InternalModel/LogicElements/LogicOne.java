@@ -8,28 +8,28 @@ import java.util.List;
 
 public class LogicOne extends LogicElement {
 
-    public LogicOne(int x, int y) {
-        super(x, y);
+    public LogicOne(int x, int y, Rotation rotation) {
+        super(x, y, rotation);
     }
 
     @Override
-    public List<Vector2D> getInputPositions() {
-        List<Vector2D> positions = new ArrayList<>();
-        positions.add(new Vector2D(this.position.getX(),this.position.getY()));
+    public ArrayList<Vector2D> getLocalInputPositions() {
+        ArrayList<Vector2D> positions = new ArrayList<>();
+        positions.add(new Vector2D(0,0));
         return positions;
     }
 
     @Override
-    public ArrayList<LogicState> computeValues(List<LogicState> states) {
+    public ArrayList<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
         outputStates.add(LogicState.HIGH);
         return outputStates;
     }
 
     @Override
-    public ArrayList<Vector2D> getOutputPositions() {
+    public ArrayList<Vector2D> getLocalOutputPositions() {
         ArrayList<Vector2D> outputs = new ArrayList<>();
-        outputs.add(new Vector2D(this.position.getX(),this.position.getY()));
+        outputs.add(new Vector2D(0,0));
         return outputs;
     }
 }

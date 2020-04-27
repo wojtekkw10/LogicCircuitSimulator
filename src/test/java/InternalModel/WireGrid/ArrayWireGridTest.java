@@ -43,8 +43,6 @@ class ArrayWireGridTest {
         WireGrid wireGrid = new ArrayWireGrid();
 
         //Act
-        //assertEquals(2, wireGrid.getWidth());
-        //assertEquals(2, wireGrid.getHeight());
 
         Node node = new Node(Node.State.HIGH, Node.State.LOW, Node.WireCrossing.NOT_TOUCHING);
         wireGrid.setNode(new Vector2D(5,10), node);
@@ -53,8 +51,6 @@ class ArrayWireGridTest {
         assertEquals(Node.State.HIGH, wireGrid.getNode(new Vector2D(5,10)).getRightWire());
         assertEquals(Node.State.LOW, wireGrid.getNode(new Vector2D(5,10)).getDownWire());
         assertEquals(Node.WireCrossing.NOT_TOUCHING, wireGrid.getNode(new Vector2D(5,10)).isTouching());
-        //assertEquals(6, wireGrid.getWidth());
-        //assertEquals(11, wireGrid.getHeight());
     }
 
     @Test
@@ -116,10 +112,7 @@ class ArrayWireGridTest {
 
         assertEquals(LogicState.HIGH, stateHRight);
         assertEquals(LogicState.LOW, stateVRight);
-
     }
-
-
 
     @Test
     void getStateWithinDimensionsVerticallyNotTouchingTest(){
@@ -138,7 +131,6 @@ class ArrayWireGridTest {
 
         assertEquals(LogicState.HIGH, stateVDown);
         assertEquals(LogicState.LOW, stateHDown);
-
     }
 
     @Test
@@ -443,14 +435,12 @@ class ArrayWireGridTest {
         assertDoesNotThrow( () -> {
             wireGrid.propagateGenerators(generators);
         });
-        //assertEquals(10, wireGrid.getWidth());
 
         generators.clear();
         generators.add(new Generator(new Vector2D(5,10), Orientation.HORIZONTALLY));
         assertDoesNotThrow( () -> {
             wireGrid.propagateGenerators(generators);
         });
-        //assertEquals(10, wireGrid.getHeight());
     }
 
     @Test

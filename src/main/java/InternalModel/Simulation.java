@@ -1,11 +1,12 @@
 package InternalModel;
 
+import InternalModel.LogicElements.ComputedValue;
 import InternalModel.LogicElements.LogicElement;
 import InternalModel.LogicElements.NotGate;
+import InternalModel.LogicElements.Rotation;
 import InternalModel.WireGrid.ArrayWireGrid;
 import InternalModel.WireGrid.Generator;
 import InternalModel.WireGrid.Node;
-import InternalModel.WireGrid.Unbound2DList.Unbound2DListHashMap;
 import InternalModel.WireGrid.WireGrid;
 
 import java.util.ArrayList;
@@ -61,10 +62,8 @@ public class Simulation {
         arrayWireGrid.setNode(new Vector2D(13, 5), new Node(Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setNode(new Vector2D(13, 6), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
-        //TODO: check arguments
-        //logicElements.add(new LogicOne(0,0));
-        logicElements.add(new NotGate(11,3));
-        logicElements.add(new NotGate(11,5));
+        logicElements.add(new NotGate(11,3, Rotation.LEFT));
+        logicElements.add(new NotGate(11,5, Rotation.RIGHT));
     }
 
     void simulate(int numberOfTicks){
@@ -89,10 +88,9 @@ public class Simulation {
                 inputStates.add(inputState);
             }
 
-            List<LogicState> results = element.computeValues(inputStates);
-            ArrayList<Vector2D> outputPos = element.getOutputPositions();
+            List<ComputedValue> results = element.computeValues(inputStates);
             for (int j = 0; j < results.size(); j++) {
-                if(results.get(j) == LogicState.HIGH) generators.add(new Generator(outputPos.get(j), Orientation.HORIZONTALLY));
+                if(results.get(j).getState() == LogicState.HIGH) generators.add(new Generator(results.get(j).getPos(), Orientation.HORIZONTALLY));
             }
         }
         //Propagate the high state throughout the wires

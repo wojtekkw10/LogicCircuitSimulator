@@ -20,16 +20,11 @@ public class App {
         s.simulate(1);
         System.out.println(s.arrayWireGrid);
 
-        //TODO: Change upUnbound to Unbound
-        //TODO: logic gates rotation
+        //TODO: unit tests with mockito for wireGrid
+        //TODO: logic gates rotation - unit testy
         //TODO: Logic gate return (LOGIC_VALUE, position).
-        // użycie Optional ph.parent().map(h -> String.valueOf(h.pid())).orElse("N/A"));
-        // change WIreGrid to abstract class with Unbound array
+        //TODO: umieść LogicLEemnt w interface
 
 
     }
 }
-
-
-//Iterator<T> for iterator
-//Iterable for collections

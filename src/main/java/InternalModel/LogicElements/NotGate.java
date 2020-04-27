@@ -7,30 +7,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotGate extends LogicElement{
-    public NotGate(int x, int y) {
-        super(x, y);
+    public NotGate(int x, int y, Rotation rotation) {
+        super(x, y, rotation);
     }
 
     @Override
-    public List<Vector2D> getInputPositions() {
-        List<Vector2D> inputPositions = new ArrayList<>();
-        inputPositions.add(new Vector2D(this.position.getX(), this.position.getY()));
+    public ArrayList<Vector2D> getLocalInputPositions() {
+        ArrayList<Vector2D> inputPositions = new ArrayList<>();
+        inputPositions.add(new Vector2D(0,0));
         return inputPositions;
     }
 
     @Override
-    public ArrayList<LogicState> computeValues(List<LogicState> states) {
+    public ArrayList<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
-        LogicState state1 = states.get(0);
-        if(state1 == LogicState.HIGH) outputStates.add(LogicState.LOW);
-        else outputStates.add(LogicState.HIGH);
+
+        LogicState outputState;
+
+        LogicState inputState = states.get(0);
+        if(inputState == LogicState.HIGH) outputState = LogicState.LOW;
+        else outputState = LogicState.HIGH;
+
+        outputStates.add(outputState);
         return outputStates;
     }
 
     @Override
-    public ArrayList<Vector2D> getOutputPositions() {
+    public ArrayList<Vector2D> getLocalOutputPositions() {
         ArrayList<Vector2D> outputPositions = new ArrayList<>();
-        outputPositions.add(new Vector2D(this.position.getX()+1, this.position.getY()));
+        outputPositions.add(new Vector2D(1,0));
         return outputPositions;
     }
 }
