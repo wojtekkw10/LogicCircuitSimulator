@@ -42,7 +42,7 @@ public interface WireGrid {
 
     /**
      * Iterator for all non-empty wire grid nodes.
-     * @return wire iterator
+     * @return node iterator
      */
     Iterator2D<Node> getIterator();
 

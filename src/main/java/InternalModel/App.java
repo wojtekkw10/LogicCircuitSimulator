@@ -3,7 +3,7 @@
  */
 package InternalModel;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 public class App {
 
@@ -23,5 +23,12 @@ public class App {
         //TODO: Change upUnbound to Unbound
         //TODO: logic gates rotation
         //TODO: Logic gate return (LOGIC_VALUE, position).
+        // użycie Optional ph.parent().map(h -> String.valueOf(h.pid())).orElse("N/A"));
+
+
     }
 }
+
+
+//Iterator<T> for iterator
+//Iterable for collections

@@ -47,3 +47,9 @@ Position jest osobno bo
 implementacji tablicowej (a chcemy żeby programista miał jak najwięskzą swobodę)
 
 WireGrid ma getElement bo może się przydać. Jest to bardzo podstawowa funkcja.
+
+UnboundList zwraca empty gdy nie ma elementu
+Nie null bo Optional lepszy.
+Wiregrid getElement jest odpowiedzialny za zamiane tego elementu na element defualtowy.
+
+Vector2D musi mieć equals i hash bo hashmap
