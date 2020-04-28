@@ -19,11 +19,5 @@ public class App {
         System.out.println(s.arrayWireGrid);
         s.simulate(1);
         System.out.println(s.arrayWireGrid);
-
-        //TODO: dopisać w dokumentacji że indeks pozycji outputu koreluje z indeksem value outputu
-
-        //COORDINATE system is positive right and down
-
-
     }
 }

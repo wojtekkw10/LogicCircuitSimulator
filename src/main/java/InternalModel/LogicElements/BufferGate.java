@@ -6,9 +6,9 @@ import InternalModel.Vector2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotGate extends LogicElement{
-    public NotGate(int x, int y, Rotation rotation) {
-        super(x, y, rotation);
+public class BufferGate extends LogicElement{
+    public BufferGate(int x, int y, Rotation rot) {
+        super(x, y, rot);
     }
 
     @Override
@@ -20,16 +20,7 @@ public class NotGate extends LogicElement{
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
-        ArrayList<LogicState> outputStates = new ArrayList<>();
-
-        LogicState outputState;
-
-        LogicState inputState = states.get(0);
-        if(inputState == LogicState.HIGH) outputState = LogicState.LOW;
-        else outputState = LogicState.HIGH;
-
-        outputStates.add(outputState);
-        return outputStates;
+        return states;
     }
 
     @Override

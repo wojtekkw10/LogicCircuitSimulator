@@ -1,9 +1,6 @@
 package InternalModel;
 
-import InternalModel.LogicElements.ComputedValue;
-import InternalModel.LogicElements.LogicElement;
-import InternalModel.LogicElements.NotGate;
-import InternalModel.LogicElements.Rotation;
+import InternalModel.LogicElements.*;
 import InternalModel.WireGrid.ArrayWireGrid;
 import InternalModel.WireGrid.Generator;
 import InternalModel.WireGrid.Node;
@@ -18,6 +15,13 @@ public class Simulation {
 
     Simulation(){
         arrayWireGrid.setNode(new Vector2D(0, 0), new Node(Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
+
+        arrayWireGrid.setNode(new Vector2D(1, 1), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Vector2D(2, 1), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Vector2D(1, 2), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Vector2D(2, 2), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Vector2D(4, 1), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Vector2D(5, 1), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
         arrayWireGrid.setNode(new Vector2D(10, 3), new Node(Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setNode(new Vector2D(10, 4), new Node(Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
@@ -40,17 +44,13 @@ public class Simulation {
 
         logicElements.add(new NotGate(11,3, Rotation.LEFT));
         logicElements.add(new NotGate(11,5, Rotation.RIGHT));
+
+        logicElements.add(new LogicOne(1,1, Rotation.RIGHT));
+        logicElements.add(new LogicOne(1,2, Rotation.RIGHT));
+        logicElements.add(new XorGate(3,1, Rotation.RIGHT));
     }
 
     void simulate(int numberOfTicks){
-        //simulate gates and get generators of signal 1
-        //then propagate the 1s throughout thr wire
-
-        //Required input and output wires without crossings because then you dont know which wire should get the result
-        //These can't be changed in the program, they're set by the logic gate
-        //Visually they are at the edge of the logic gate - you can connect to it only from one side so crossing are nonexistent
-        //We can assume it's always TOUCHING
-
         List<Generator> generators = new ArrayList<>();
 
         for (int i = 0; i < logicElements.size(); i++) {

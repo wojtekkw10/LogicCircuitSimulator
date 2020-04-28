@@ -12,19 +12,19 @@ public class LogicZero extends LogicElement {
     }
 
     @Override
-    public ArrayList<Vector2D> getLocalInputPositions() {
+    public List<Vector2D> getLocalInputPositions() {
         return new ArrayList<>();
     }
 
     @Override
-    public ArrayList<LogicState> computeLocalValues(List<LogicState> states) {
+    public List<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
         outputStates.add(LogicState.LOW);
         return outputStates;
     }
 
     @Override
-    public ArrayList<Vector2D> getLocalOutputPositions() {
+    public List<Vector2D> getLocalOutputPositions() {
         ArrayList<Vector2D> outputs = new ArrayList<>();
         outputs.add(new Vector2D(0,0));
         return outputs;
