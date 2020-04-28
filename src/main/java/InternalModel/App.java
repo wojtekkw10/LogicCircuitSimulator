@@ -3,21 +3,20 @@
  */
 package InternalModel;
 
-import java.util.Optional;
-
 public class App {
 
     public static void main(String[] args) {
         Simulation s = new Simulation();
 
         System.out.println(s.arrayWireGrid);
-        s.simulate(1);
+        s.runOnce();
         System.out.println(s.arrayWireGrid);
-        s.simulate(1);
+        s.runOnce();
         System.out.println(s.arrayWireGrid);
-        s.simulate(1);
+        s.runOnce();
         System.out.println(s.arrayWireGrid);
-        s.simulate(1);
+        s.runOnce();
         System.out.println(s.arrayWireGrid);
+        //TODO: test Simulation
     }
 }

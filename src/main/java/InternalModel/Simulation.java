@@ -9,7 +9,7 @@ import InternalModel.WireGrid.WireGrid;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation{
     public WireGrid arrayWireGrid = new ArrayWireGrid();
     List<LogicElement> logicElements = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class Simulation {
         logicElements.add(new XorGate(3,1, Rotation.RIGHT));
     }
 
-    void simulate(int numberOfTicks){
+    public void runOnce(){
         List<Generator> generators = new ArrayList<>();
 
         for (int i = 0; i < logicElements.size(); i++) {
@@ -72,7 +72,5 @@ public class Simulation {
         //Propagate the high state throughout the wires
         arrayWireGrid.resetWiresToLow();
         arrayWireGrid.propagateGenerators(generators);
-
-
     }
 }
