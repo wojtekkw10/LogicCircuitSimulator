@@ -42,4 +42,11 @@ public class Vector2D {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Vector2D{" +
+                + x +
+                ", " + y +
+                '}';
+    }
 }

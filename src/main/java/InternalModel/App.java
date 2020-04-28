@@ -20,10 +20,9 @@ public class App {
         s.simulate(1);
         System.out.println(s.arrayWireGrid);
 
-        //TODO: unit tests with mockito for wireGrid
-        //TODO: logic gates rotation - unit testy
-        //TODO: Logic gate return (LOGIC_VALUE, position).
-        //TODO: umieść LogicLEemnt w interface
+        //TODO: dopisać w dokumentacji że indeks pozycji outputu koreluje z indeksem value outputu
+
+        //COORDINATE system is positive right and down
 
 
     }

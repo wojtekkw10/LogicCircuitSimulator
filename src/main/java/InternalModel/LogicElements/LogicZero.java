@@ -13,9 +13,7 @@ public class LogicZero extends LogicElement {
 
     @Override
     public ArrayList<Vector2D> getLocalInputPositions() {
-        ArrayList<Vector2D> positions = new ArrayList<>();
-        positions.add(new Vector2D(this.position.getX(),this.position.getY()));
-        return positions;
+        return new ArrayList<>();
     }
 
     @Override
@@ -28,7 +26,7 @@ public class LogicZero extends LogicElement {
     @Override
     public ArrayList<Vector2D> getLocalOutputPositions() {
         ArrayList<Vector2D> outputs = new ArrayList<>();
-        outputs.add(new Vector2D(this.position.getX(),this.position.getY()));
+        outputs.add(new Vector2D(0,0));
         return outputs;
     }
 }

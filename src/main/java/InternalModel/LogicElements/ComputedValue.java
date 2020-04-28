@@ -19,4 +19,12 @@ public class ComputedValue {
     public LogicState getState() {
         return state;
     }
+
+    @Override
+    public String toString() {
+        return "ComputedValue{" +
+                "" + pos +
+                ", " + state +
+                '}';
+    }
 }
