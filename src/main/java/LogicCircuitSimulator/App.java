@@ -41,7 +41,7 @@ public class App  extends Application {
         primaryStage.show();
     }
 
-    public static void setWindowTitleFPS(int FPS){
-        primaryStage.setTitle(stageTitle + " FPS: "+FPS);
+    public static void decorateWindowTitle(int FPS, int UPS){
+        primaryStage.setTitle(stageTitle + " FPS: "+FPS + ", UPS: "+ UPS);
     }
 }

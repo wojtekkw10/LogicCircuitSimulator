@@ -35,7 +35,7 @@ public class MatrixOperations {
     public static double getScaleFromMatrix(SimpleMatrix matrix){
         return matrix.get(0,0);
     }
-    public static SimpleMatrix getVectorMatrix(int x, int y){
+    public static SimpleMatrix getVectorMatrix(double x, double y){
         return new SimpleMatrix(
                 new double[][] {
                         new double[] {x},

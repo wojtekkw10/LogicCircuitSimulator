@@ -4,6 +4,9 @@ import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.FxGUI.MainCanvasBackground;
 import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Utils.MatrixOperations;
+import LogicCircuitSimulator.Vector2D;
+import LogicCircuitSimulator.WireGrid.Iterator2D;
+import LogicCircuitSimulator.WireGrid.Node;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -30,6 +33,8 @@ public class SimulationCanvas {
 
     private double pivotX = 0;
     private double pivotY = 0;
+
+    private long lastNow = 0;
 
     Simulation simulation = new Simulation();
 
@@ -67,11 +72,14 @@ public class SimulationCanvas {
 
         new AnimationTimer() {
             private short frames = 0;
+            private int ups = 0;
             long lastNow = 0;
             @Override
             public void handle(long now) {
+                graphics.setStroke(Color.GREY);
                 mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
                 mainSimulationCanvas.setWidth(mainSimulationAnchorPane.getWidth());
+
 
                 graphics.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
 
@@ -79,23 +87,55 @@ public class SimulationCanvas {
 
                 graphics.setFill(Color.BLACK);
                 if(now > lastNow + 1e9){
-                    App.setWindowTitleFPS(frames);
+                    App.decorateWindowTitle(frames, ups);
                     frames = 0;
+                    ups = 0;
                     lastNow = now;
                 }
 
                 for(int i = 0; i<5000; i++){
-                    graphics.strokeLine(100, 100, 120, 200);
+                    //graphics.strokeLine(100, 100, 120, 200);
                 }
                 for(int i = 0; i<3000; i++){
                     //graphics.strokeRect(100, 100, 100, 100);
                     //graphics.drawImage(AND_GATE, 100, 100, 40, 20);
                 }
 
+                Iterator2D<Node> nodes = simulation.iterator();
+                while(nodes.hasNext()){
+                    Node node = nodes.next();
+                    if(node.getRightWire() != Node.State.NONE){
+                        Vector2D pos = nodes.currentPosition();
+                        Vector2D projectedStart = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY())));
+                        Vector2D projectedEnd = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+1, pos.getY())));
+                        if(node.getRightWire() == Node.State.LOW) graphics.setStroke(Color.GREY);
+                        else graphics.setStroke(Color.AQUA);
+                        graphics.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
+                    }
+                    if(node.getDownWire() != Node.State.NONE){
+                        Vector2D pos = nodes.currentPosition();
+                        Vector2D projectedStart = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY())));
+                        Vector2D projectedEnd = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()+1)));
+                        if(node.getDownWire() == Node.State.LOW) graphics.setStroke(Color.GREY);
+                        else graphics.setStroke(Color.AQUA);
+                        graphics.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
+                    }
+                }
+
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
 
                 for(int i = 0; i<1; i++){
                     graphics.fillText("AND", 50, 100); //niepotrzebne bo mamy kształt bramek z png
+                }
+
+                while(System.nanoTime() < now+(1e9/60)){
+                    simulation.runOnce();
+                    ups++;
                 }
 
                 frames++;
@@ -154,4 +194,3 @@ public class SimulationCanvas {
     }
 
 }
-//TODO: create transformation matrix and update it (multiply by the next value ) here

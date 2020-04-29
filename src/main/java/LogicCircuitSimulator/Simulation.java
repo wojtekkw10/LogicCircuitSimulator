@@ -1,10 +1,7 @@
 package LogicCircuitSimulator;
 
 import LogicCircuitSimulator.LogicElements.*;
-import LogicCircuitSimulator.WireGrid.ArrayWireGrid;
-import LogicCircuitSimulator.WireGrid.Generator;
-import LogicCircuitSimulator.WireGrid.Node;
-import LogicCircuitSimulator.WireGrid.WireGrid;
+import LogicCircuitSimulator.WireGrid.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +45,12 @@ public class Simulation{
         logicElements.add(new LogicOne(1,1, Rotation.RIGHT));
         logicElements.add(new LogicOne(1,2, Rotation.RIGHT));
         logicElements.add(new XorGate(3,1, Rotation.RIGHT));
+
+        System.out.println(arrayWireGrid);
+        runOnce();
+        System.out.println(arrayWireGrid);
+        runOnce();
+        System.out.println(arrayWireGrid);
     }
 
     public void runOnce(){
@@ -72,5 +75,9 @@ public class Simulation{
         //Propagate the high state throughout the wires
         arrayWireGrid.resetWiresToLow();
         arrayWireGrid.propagateGenerators(generators);
+    }
+
+    public Iterator2D<Node> iterator(){
+        return arrayWireGrid.getIterator();
     }
 }
