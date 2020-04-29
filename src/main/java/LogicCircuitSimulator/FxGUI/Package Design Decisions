@@ -1,0 +1,4 @@
+Rysowanie jest przez visitor żeby oddzielić rysowanie od logiki (MVC)
+Gdyby LogicCircuitSimulator nie był mój to wtedy:
+https://stackoverflow.com/questions/38920520/visitor-pattern-implementation-in-case-of-source-code-un-availability
+Jako że LogicCircuitSimulator jest mój to robie zwykłego visitora.
