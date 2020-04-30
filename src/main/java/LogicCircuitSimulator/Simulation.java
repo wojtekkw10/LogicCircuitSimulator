@@ -45,12 +45,6 @@ public class Simulation{
         logicElements.add(new LogicOne(1,1, Rotation.RIGHT));
         logicElements.add(new LogicOne(1,2, Rotation.RIGHT));
         logicElements.add(new XorGate(3,1, Rotation.RIGHT));
-
-        System.out.println(arrayWireGrid);
-        runOnce();
-        System.out.println(arrayWireGrid);
-        runOnce();
-        System.out.println(arrayWireGrid);
     }
 
     public void runOnce(){

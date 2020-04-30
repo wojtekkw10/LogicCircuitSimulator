@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SimulationCanvas {
     private final double SCALING_FACTOR = 0.05;
-    private final double MAX_SCALE = 30;
+    private final double MAX_SCALE = 40;
     private final double MIN_SCALE = 5;
 
     private double lastMouseX = 0;
@@ -77,6 +77,7 @@ public class SimulationCanvas {
             @Override
             public void handle(long now) {
                 graphics.setStroke(Color.GREY);
+                graphics.setLineWidth(2);
                 mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
                 mainSimulationCanvas.setWidth(mainSimulationAnchorPane.getWidth());
 
@@ -123,7 +124,7 @@ public class SimulationCanvas {
                 }
 
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -153,7 +154,6 @@ public class SimulationCanvas {
         else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_SCALE) {
             projectionMatrix = MatrixOperations.getScalingAroundMatrix(1- SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
         }
-        System.out.println(currentScale);
     }
 
 
