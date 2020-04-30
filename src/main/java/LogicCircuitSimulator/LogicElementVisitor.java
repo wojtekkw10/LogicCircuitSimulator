@@ -4,7 +4,7 @@ import LogicCircuitSimulator.LogicElements.*;
 
 public interface LogicElementVisitor {
     void visit(AndGate andGate);
-    void visit(OrGate andGate);
+    void visit(OrGate orGate);
     void visit(BufferGate bufferGate);
     void visit(LogicOne logicOne);
     void visit(LogicZero logicZero);

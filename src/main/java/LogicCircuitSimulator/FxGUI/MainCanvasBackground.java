@@ -1,5 +1,7 @@
 package LogicCircuitSimulator.FxGUI;
 
+import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvas;
+import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,13 +11,15 @@ import org.ejml.simple.SimpleMatrix;
 public class MainCanvasBackground {
     private static final Color dotColor = Color.AQUA;
     private static final Color backgroundColor = Color.BLACK;
-    private static final int gapSize = 20;
 
     public void draw(GraphicsContext ctx, double canvasWidth, double canvasHeight, SimpleMatrix projection){
         ctx.setFill(backgroundColor);
-        ctx.setStroke(dotColor);
 
         double scale = MatrixOperations.getScaleFromMatrix(projection);
+        double MAX_SCALE = SimulationCanvas.MAX_SCALE;
+
+        Color relativeDotColor = Color.color(dotColor.getRed(), dotColor.getGreen(), dotColor.getBlue(), Math.min(1, 1*scale/MAX_SCALE));
+        ctx.setStroke(relativeDotColor);
 
         int amountHorizontally = (int)Math.ceil(canvasWidth / scale);
         int amountVertically = (int)Math.ceil(canvasHeight / scale);
@@ -24,6 +28,8 @@ public class MainCanvasBackground {
 
         int gridShiftX = (int)(gridShift.getX()/scale);
         int gridShiftY = (int)(gridShift.getY()/scale);
+
+        ctx.setLineWidth(2);
 
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {

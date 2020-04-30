@@ -53,3 +53,5 @@ Nie null bo Optional lepszy.
 Wiregrid getElement jest odpowiedzialny za zamiane tego elementu na element defualtowy.
 
 Vector2D musi mieć equals i hash bo hashmap
+
+WireNode zawiera position bo logic element zawiera position, to jest właściwość tego noda wiec powinno byc w nodzie

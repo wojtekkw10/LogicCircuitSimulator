@@ -63,7 +63,7 @@ public abstract class LogicElement {
         this.rotation = rotation;
     }
 
-    private int getElementWidth(){
+    public int getElementWidth(){
         int lowestX = Integer.MAX_VALUE;
         int greatestX = Integer.MIN_VALUE;
 
@@ -81,7 +81,7 @@ public abstract class LogicElement {
         return greatestX - lowestX;
     }
 
-    private int getElementHeight(){
+    public int getElementHeight(){
         double lowestY = Double.MAX_VALUE;
         double greatestY = Double.MIN_VALUE;
 

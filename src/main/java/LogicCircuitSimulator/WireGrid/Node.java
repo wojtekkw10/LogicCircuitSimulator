@@ -1,12 +1,12 @@
 package LogicCircuitSimulator.WireGrid;
 
+import LogicCircuitSimulator.NodeVisitor;
+import LogicCircuitSimulator.Vector2D;
+
 import javax.annotation.concurrent.Immutable;
 
-/**
- * Wire class. The most basic unit in logic circuit grid.
- */
 @Immutable
-final public class Node {
+public class Node {
     /**
      * State of the wire
      */
@@ -39,29 +39,29 @@ final public class Node {
         NOT_TOUCHING,
     }
 
+    public final Vector2D getPosition() {
+        return position;
+    }
+
+    /**
+     * Position of the node in the grid
+     */
+    private final Vector2D position;
+
     /**
      * State of the wire to right from this node
      */
-    private final State right;
+    private final Node.State right;
 
     /**
      * State of the wire downwards from this node
      */
-    private final State down;
+    private final Node.State down;
 
     /**
      * Whether or not the wires are touching at this node
      */
-    private final WireCrossing isTouching;
-
-    /**
-     * Creates a default node with no wires in it and NOT_TOUCHING crossing
-     */
-    public Node(){
-        right = State.NONE;
-        down = State.NONE;
-        isTouching = WireCrossing.NOT_TOUCHING;
-    }
+    private final Node.WireCrossing isTouching;
 
     /**
      * Creates a node
@@ -69,7 +69,8 @@ final public class Node {
      * @param down signal state of the wire down of the node
      * @param wireCrossing the way wires cross at this node
      */
-    public Node(State right, State down, WireCrossing wireCrossing){
+    public Node(Vector2D position, Node.State right, Node.State down, Node.WireCrossing wireCrossing){
+        this.position = position;
         this.right = right;
         this.down = down;
         this.isTouching = wireCrossing;
@@ -78,21 +79,30 @@ final public class Node {
     /**
      * @return signal state of the wire to the right
      */
-    public final State getRightWire() {
+    public final Node.State getRightWire() {
         return right;
     }
 
     /**
      * @return signal state of the wire down of the node
      */
-    public final State getDownWire() {
+    public final Node.State getDownWire() {
         return down;
     }
 
     /**
      * @return the way the wires are crossing
      */
-    public WireCrossing isTouching() {
+    public Node.WireCrossing isTouching() {
         return isTouching;
     }
+
+    /**
+     * Accepts node visitor
+     * @param visitor visiting visitor
+     */
+    public void accept(NodeVisitor visitor){
+        visitor.visit(this);
+    }
+
 }

@@ -4,6 +4,7 @@ import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,10 +14,9 @@ public interface WireGrid {
 
     /**
      * Sets a Wire element in the grid
-     * @param pos position of the element
      * @param node specified wire
      */
-    void setNode(Vector2D pos, Node node);
+    void setNode(Node node);
 
     /**
      * Returns a Node element at a specified position
@@ -44,7 +44,7 @@ public interface WireGrid {
      * Iterator for all non-empty wire grid nodes.
      * @return node iterator
      */
-    Iterator2D<Node> getIterator();
+    Iterator<Node> iterator();
 
     /**
      * Resets all wires in the grid to LOW. Should be executed before propagateGenerators()
