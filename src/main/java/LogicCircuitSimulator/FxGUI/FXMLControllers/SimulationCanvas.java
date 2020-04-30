@@ -34,36 +34,26 @@ public class SimulationCanvas {
     private double lastMouseX = 0;
     private double lastMouseY = 0;
 
-    private double mouseScalingCenterX = 0;
-    private double mouseScalingCenterY = 0;
+    private double pivotX = 0;
+    private double pivotY = 0;
 
-    private int TARGET_UPS = 50;
-    private int TARGET_FPS = 70;
-
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    AtomicInteger ups = new AtomicInteger();
-    Runnable periodicTask = new Runnable() {
-        public void run() {
-                simulation.runOnce();
-                ups.getAndIncrement();
-        }
-    };
-
-    private SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-
-
+    private final int TARGET_UPS = 50;
+    private final int TARGET_FPS = 70;
 
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
     }
-
-    private double pivotX = 0;
-    private double pivotY = 0;
-
-    private long lastNow = 0;
-
+    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     Simulation simulation = new Simulation();
+
+
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    AtomicInteger ups = new AtomicInteger();
+    Runnable periodicTask = () -> {
+            simulation.runOnce();
+            ups.getAndIncrement();
+    };
 
     SimpleMatrix projectionMatrix = new SimpleMatrix(
             new double[][] {
@@ -72,7 +62,6 @@ public class SimulationCanvas {
                     new double[] {0 ,0, 1}
             }
     );
-
 
     @FXML
     public Canvas mainSimulationCanvas;
@@ -178,15 +167,13 @@ public class SimulationCanvas {
         }
     }
 
-
     @FXML
     public void onMousePressed(MouseEvent mouseEvent) {
         lastMouseX = mouseEvent.getX();
         lastMouseY = mouseEvent.getY();
-
-
     }
 
+    @FXML
     public void onMouseDragged(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.MIDDLE){
 
@@ -196,7 +183,7 @@ public class SimulationCanvas {
             lastMouseX = mouseEvent.getX();
             lastMouseY = mouseEvent.getY();
 
-            projectionMatrix = translate(projectionMatrix, -deltaX, -deltaY);
+            projectionMatrix = MatrixOperations.getTranslationMatrix(-deltaX, -deltaY).mult(projectionMatrix);
         }
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
@@ -223,50 +210,13 @@ public class SimulationCanvas {
             if(xFraction < yFraction && xFraction < 1 - yFraction && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
                 simulation.updateWire(new Vector2D(x,y), Orientation.VERTICALLY, Node.State.HIGH);
             }
-
-
-/*            if(xFraction < 0.5 && yFraction < 0.5){
-                if(xFraction>yFraction){
-                    simulation.updateWire(new Vector2D(x,y), Orientation.HORIZONTALLY, Node.State.HIGH);
-                }
-                else {
-                    simulation.updateWire(new Vector2D(x,y), Orientation.VERTICALLY, Node.State.HIGH);
-                }
-            }
-            else{
-                if(xFraction > yFraction){
-                    simulation.updateWire(new Vector2D(x+1,y), Orientation.VERTICALLY, Node.State.HIGH);
-                }
-                else {
-                    simulation.updateWire(new Vector2D(x,y+1), Orientation.HORIZONTALLY, Node.State.HIGH);
-
-                }
-            }*/
-
-
         }
-
-
     }
 
+    @FXML
     public void onMouseMoved(MouseEvent mouseEvent) {
         pivotX = mouseEvent.getX();
         pivotY = mouseEvent.getY();
-
-
-
-
-    }
-
-    SimpleMatrix translate(SimpleMatrix matrix, double x, double y){
-        SimpleMatrix translationMatrix = new SimpleMatrix(
-                new double[][] {
-                        new double[] {1, 0, x},
-                        new double[] {0, 1, y},
-                        new double[] {0 ,0, 1}
-                }
-        );
-        return translationMatrix.mult(matrix);
     }
 
     public void shutdown(){
@@ -276,7 +226,6 @@ public class SimulationCanvas {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("CLEANUP");
     }
 
 }
