@@ -21,6 +21,12 @@ import javafx.scene.text.Font;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationCanvas {
     private final double SCALING_FACTOR = 0.05;
@@ -34,8 +40,23 @@ public class SimulationCanvas {
     private double mouseScalingCenterY = 0;
 
     private int TARGET_FPS = 60;
+    private int TARGET_UPS = 1;
 
-    private SyncMode syncMode = SyncMode.SYNCHRONIZED;
+    ScheduledExecutorService executor =
+            Executors.newSingleThreadScheduledExecutor();
+
+    AtomicInteger ups = new AtomicInteger();
+
+    Runnable periodicTask = new Runnable() {
+        public void run() {
+            // Invoke method(s) to do the work
+                simulation.runOnce();
+                ups.getAndIncrement();
+
+        }
+    };
+
+    private SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
 
     enum SyncMode{
         SYNCHRONIZED,
@@ -58,7 +79,6 @@ public class SimulationCanvas {
     );
 
 
-
     @FXML
     public Canvas mainSimulationCanvas;
 
@@ -75,9 +95,16 @@ public class SimulationCanvas {
 
         MainCanvasBackground background = new MainCanvasBackground();
 
+        if(syncMode == SyncMode.NOT_SYNCHRONIZED){
+            executor.scheduleAtFixedRate(periodicTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
+            executor.submit(periodicTask);
+        }
+
+
         new AnimationTimer() {
+
             private short frames = 0;
-            private int ups = 0;
+            //int ups = 0;
             long lastNow = 0;
 
             @Override
@@ -92,9 +119,9 @@ public class SimulationCanvas {
                 background.draw(graphics, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight(), projectionMatrix);
 
                 if(now > lastNow + 1e9){
-                    App.decorateWindowTitle(frames, ups);
+                    App.decorateWindowTitle(frames, ups.get());
                     frames = 0;
-                    ups = 0;
+                    ups.set(0);
                     lastNow = now;
                 }
 
@@ -122,35 +149,26 @@ public class SimulationCanvas {
                 }
 
                 if(syncMode == SyncMode.SYNCHRONIZED){
-                    simulation.runOnce();
-                    ups++;
                     try {
+                        ups.getAndIncrement();
+                        simulation.runOnce();
                         Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                else if(syncMode == SyncMode.NOT_SYNCHRONIZED){
-                    while(System.nanoTime() < now+(1e9/TARGET_FPS)){
-                        simulation.runOnce();
-                        ups++;
-                    }
-                }
-
                 frames++;
             }
         }.start();
     }
 
     public void OnScroll(ScrollEvent scrollEvent) {
-        pivotX = mouseScalingCenterX;
-        pivotY = mouseScalingCenterY;
         double currentScale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
         if(scrollEvent.getDeltaY()>0 && currentScale < MAX_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1+ SCALING_FACTOR, mouseScalingCenterX, mouseScalingCenterY).mult(projectionMatrix);
+            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1+ SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
         }
         else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1- SCALING_FACTOR, mouseScalingCenterX, mouseScalingCenterY).mult(projectionMatrix);
+            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1- SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
         }
     }
 
@@ -176,8 +194,8 @@ public class SimulationCanvas {
     }
 
     public void onMouseMoved(MouseEvent mouseEvent) {
-        mouseScalingCenterX = mouseEvent.getX();
-        mouseScalingCenterY = mouseEvent.getY();
+        pivotX = mouseEvent.getX();
+        pivotY = mouseEvent.getY();
     }
 
     SimpleMatrix translate(SimpleMatrix matrix, double x, double y){
@@ -189,6 +207,16 @@ public class SimulationCanvas {
                 }
         );
         return translationMatrix.mult(matrix);
+    }
+
+    public void shutdown(){
+        executor.shutdownNow();
+        try {
+            executor.awaitTermination(1, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("CLEANUP");
     }
 
 }

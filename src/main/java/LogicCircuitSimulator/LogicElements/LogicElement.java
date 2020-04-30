@@ -22,6 +22,12 @@ public abstract class LogicElement {
 
     abstract List<Vector2D> getLocalInputPositions();
     abstract List<Vector2D> getLocalOutputPositions();
+
+    /**
+     * Computes output values of the gate. If the gate has a state it should be computed here.
+     * @param states input states
+     * @return output states
+     */
     abstract List<LogicState> computeLocalValues(List<LogicState> states);
 
     public abstract void accept(LogicElementVisitor visitor);

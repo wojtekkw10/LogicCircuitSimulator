@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Simulation{
-    WireGrid arrayWireGrid = new ArrayWireGrid();
+    public WireGrid arrayWireGrid = new ArrayWireGrid();
     List<LogicElement> logicElements = new ArrayList<>();
 
     public Simulation(){
@@ -43,12 +43,12 @@ public class Simulation{
         logicElements.add(new NotGate(11,3, Rotation.LEFT));
         logicElements.add(new NotGate(11,5, Rotation.RIGHT));
 
-        logicElements.add(new LogicOne(1,1, Rotation.RIGHT));
+        logicElements.add(new LogicClock(1,1, Rotation.RIGHT));
         logicElements.add(new LogicOne(1,2, Rotation.RIGHT));
         logicElements.add(new XorGate(3,1, Rotation.RIGHT));
     }
 
-    public void runOnce(){
+    public synchronized void runOnce(){
         List<Generator> generators = new ArrayList<>();
 
         for (int i = 0; i < logicElements.size(); i++) {

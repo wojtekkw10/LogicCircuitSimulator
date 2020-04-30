@@ -55,8 +55,13 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         drawGate(xorGate, "XOR");
     }
 
+    @Override
+    public void visit(LogicClock clock) {
+        drawGate(clock, "CLK");
+    }
+
     void drawGate(LogicElement le, String text){
-        graphicsContext.setFill(Color.AQUA);
+        //graphicsContext.setFill(Color.AQUA);
         double height = le.getElementHeight();
         Vector2D pos = le.getPosition();
         Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()-0.5)));
@@ -68,8 +73,9 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
 
         graphicsContext.setFill(Color.BLACK);
         graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-        graphicsContext.setFill(Color.AQUA);
+        graphicsContext.setStroke(Color.GREY);
         graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
+        graphicsContext.setFill(Color.AQUA);
         graphicsContext.fillText(text, textPosition.getX(), textPosition.getY());
 
     }

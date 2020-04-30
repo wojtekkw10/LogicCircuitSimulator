@@ -10,4 +10,5 @@ public interface LogicElementVisitor {
     void visit(LogicZero logicZero);
     void visit(NotGate notGate);
     void visit(XorGate xorGate);
+    void visit(LogicClock clock);
 }
