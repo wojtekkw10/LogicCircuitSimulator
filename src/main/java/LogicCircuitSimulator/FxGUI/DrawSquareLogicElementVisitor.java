@@ -32,7 +32,7 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
 
     @Override
     public void visit(BufferGate bufferGate) {
-        drawGate(bufferGate, "BUFFER");
+        drawGate(bufferGate, "BFR");
     }
 
     @Override
@@ -77,6 +77,6 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
         graphicsContext.setFill(Color.AQUA);
         graphicsContext.fillText(text, textPosition.getX(), textPosition.getY());
-
+        //TODO: obracanie i rysowanie (zaznaczanie) wejścia wyjścia
     }
 }

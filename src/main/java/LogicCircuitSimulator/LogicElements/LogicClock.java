@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogicClock extends LogicElement{
+    private final int SIGNAL_LENGTH = 10;
+    int timer = 0;
     private LogicState state = LogicState.LOW;
 
     public LogicClock(int x, int y, Rotation rot) {
@@ -30,15 +32,24 @@ public class LogicClock extends LogicElement{
     @Override
     List<LogicState> computeLocalValues(List<LogicState> states) {
         List<LogicState> outputStates = new ArrayList<>();
-        if(state == LogicState.HIGH){
-            state = LogicState.LOW;
-            outputStates.add(LogicState.HIGH);
+        if(timer == SIGNAL_LENGTH){
+            if(state == LogicState.HIGH){
+                state = LogicState.LOW;
+                outputStates.add(state);
 
+            }
+            else if(state == LogicState.LOW){
+                state = LogicState.HIGH;
+                outputStates.add(state);
+            }
+            timer = 0;
         }
-        else if(state == LogicState.LOW){
-            state = LogicState.HIGH;
-            outputStates.add(LogicState.LOW);
+        else{
+            outputStates.add(state);
         }
+
+
+        timer++;
         return outputStates;
     }
 

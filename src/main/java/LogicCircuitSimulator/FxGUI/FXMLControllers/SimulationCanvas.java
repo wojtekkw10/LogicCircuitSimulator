@@ -1,16 +1,14 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
-import LogicCircuitSimulator.App;
+import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
-import LogicCircuitSimulator.LogicElementVisitor;
 import LogicCircuitSimulator.FxGUI.MainCanvasBackground;
 import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.WireGrid.Node;
-import LogicCircuitSimulator.NodeVisitor;
 import javafx.animation.AnimationTimer;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -39,24 +37,21 @@ public class SimulationCanvas {
     private double mouseScalingCenterX = 0;
     private double mouseScalingCenterY = 0;
 
-    private int TARGET_FPS = 60;
-    private int TARGET_UPS = 1;
+    private int TARGET_UPS = 50;
+    private int TARGET_FPS = 70;
 
-    ScheduledExecutorService executor =
-            Executors.newSingleThreadScheduledExecutor();
-
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     AtomicInteger ups = new AtomicInteger();
-
     Runnable periodicTask = new Runnable() {
         public void run() {
-            // Invoke method(s) to do the work
                 simulation.runOnce();
                 ups.getAndIncrement();
-
         }
     };
 
     private SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
+
+
 
     enum SyncMode{
         SYNCHRONIZED,
@@ -102,13 +97,19 @@ public class SimulationCanvas {
 
 
         new AnimationTimer() {
-
             private short frames = 0;
-            //int ups = 0;
             long lastNow = 0;
 
             @Override
             public void handle(long now) {
+                //WINDOW TiTLE UPDATE
+                if(now > lastNow + 1e9){
+                    App.decorateWindowTitle(frames, ups.get());
+                    frames = 0;
+                    ups.set(0);
+                    lastNow = now;
+                }
+
                 //SETUP
                 graphics.setStroke(Color.GREY);
                 mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
@@ -118,50 +119,37 @@ public class SimulationCanvas {
                 //BACKGROUND
                 background.draw(graphics, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight(), projectionMatrix);
 
-                if(now > lastNow + 1e9){
-                    App.decorateWindowTitle(frames, ups.get());
-                    frames = 0;
-                    ups.set(0);
-                    lastNow = now;
-                }
-
-                for(int i = 0; i<5000; i++){
-                    //graphics.strokeLine(100, 100, 120, 200);
-                }
-                for(int i = 0; i<3000; i++){
-                    //graphics.drawImage(AND_GATE, 100, 100, 40, 20);
-                }
-
                 //DRAWING NODES
                 Iterator<Node> nodes = simulation.nodeIterator();
                 NodeVisitor drawNode = new DrawNodeVisitor(graphics, projectionMatrix);
                 while(nodes.hasNext()){
-                    Node node = nodes.next();
-                    node.accept(drawNode);
+                    nodes.next().accept(drawNode);
                 }
 
                 //DRAWING LOGIC GATES
                 Iterator<LogicElement> logicElements = simulation.logicElementIterator();
                 LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
                 while(logicElements.hasNext()){
-                    LogicElement logicElement = logicElements.next();
-                    logicElement.accept(drawLogicElement);
+                    logicElements.next().accept(drawLogicElement);
                 }
 
+
                 if(syncMode == SyncMode.SYNCHRONIZED){
-                    try {
-                        ups.getAndIncrement();
-                        simulation.runOnce();
-                        Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    ups.getAndIncrement();
+                    simulation.runOnce();
                 }
                 frames++;
+
+                try {
+                    Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }.start();
     }
 
+    @FXML
     public void OnScroll(ScrollEvent scrollEvent) {
         double currentScale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
         if(scrollEvent.getDeltaY()>0 && currentScale < MAX_SCALE) {
@@ -172,11 +160,31 @@ public class SimulationCanvas {
         }
     }
 
+    @FXML
+    public void onMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            System.out.println(mouseEvent.getX() + ", " + mouseEvent.getY());
+            Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
+            System.out.println(pos);
+            int x = (int) pos.getX();
+            int y = (int) pos.getY();
+            Vector2D nodePos = new Vector2D(x, y);
+
+            Node node = simulation.getNode(nodePos);
+            if (node.isTouching() == Node.WireCrossing.TOUCHING) {
+                simulation.updateCrossing(nodePos, Node.WireCrossing.NOT_TOUCHING);
+            } else simulation.updateCrossing(nodePos, Node.WireCrossing.TOUCHING);
+
+        }
+    }
+
 
     @FXML
     public void onMousePressed(MouseEvent mouseEvent) {
         lastMouseX = mouseEvent.getX();
         lastMouseY = mouseEvent.getY();
+
+
     }
 
     public void onMouseDragged(MouseEvent mouseEvent) {
@@ -191,11 +199,63 @@ public class SimulationCanvas {
             projectionMatrix = translate(projectionMatrix, -deltaX, -deltaY);
         }
 
+        if(mouseEvent.getButton() == MouseButton.PRIMARY){
+            System.out.println(mouseEvent.getX() + ", " + mouseEvent.getY());
+            Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
+            System.out.println(pos);
+            int x = (int)pos.getX();
+            int y = (int)pos.getY();
+            double xFraction = pos.getX() - x;
+            double yFraction = pos.getY() - y;
+
+            double unresponsiveSpace = 0.2;
+
+            //TODO: tak żeby nie reagowało wewnątrz kwadratu
+            if(xFraction > yFraction && xFraction < 1 - yFraction && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+                simulation.updateWire(new Vector2D(x,y), Orientation.HORIZONTALLY, Node.State.HIGH);
+            }
+            if(xFraction > yFraction && xFraction > 1 - yFraction && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+                simulation.updateWire(new Vector2D(x+1,y), Orientation.VERTICALLY, Node.State.HIGH);
+            }
+            if(xFraction < yFraction && xFraction > 1 - yFraction && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+                simulation.updateWire(new Vector2D(x,y+1), Orientation.HORIZONTALLY, Node.State.HIGH);
+            }
+            if(xFraction < yFraction && xFraction < 1 - yFraction && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+                simulation.updateWire(new Vector2D(x,y), Orientation.VERTICALLY, Node.State.HIGH);
+            }
+
+
+/*            if(xFraction < 0.5 && yFraction < 0.5){
+                if(xFraction>yFraction){
+                    simulation.updateWire(new Vector2D(x,y), Orientation.HORIZONTALLY, Node.State.HIGH);
+                }
+                else {
+                    simulation.updateWire(new Vector2D(x,y), Orientation.VERTICALLY, Node.State.HIGH);
+                }
+            }
+            else{
+                if(xFraction > yFraction){
+                    simulation.updateWire(new Vector2D(x+1,y), Orientation.VERTICALLY, Node.State.HIGH);
+                }
+                else {
+                    simulation.updateWire(new Vector2D(x,y+1), Orientation.HORIZONTALLY, Node.State.HIGH);
+
+                }
+            }*/
+
+
+        }
+
+
     }
 
     public void onMouseMoved(MouseEvent mouseEvent) {
         pivotX = mouseEvent.getX();
         pivotY = mouseEvent.getY();
+
+
+
+
     }
 
     SimpleMatrix translate(SimpleMatrix matrix, double x, double y){

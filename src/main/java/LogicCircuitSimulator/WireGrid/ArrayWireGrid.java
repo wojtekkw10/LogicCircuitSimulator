@@ -140,8 +140,6 @@ public final class ArrayWireGrid implements WireGrid{
         double x = pos.getX();
         double y = pos.getY();
 
-        if(x < 0) throw new IllegalArgumentException("Illegal x: "+x+" for x >= 0");
-        if(y < 0) throw new IllegalArgumentException("Illegal y: "+x+" for y >= 0");
         if(orientation == null) throw new NullPointerException("Argument 'orientation' is null");
 
         ArrayNode arrayNode = getArrayNode(pos);
