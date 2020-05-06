@@ -1,16 +1,15 @@
-package LogicCircuitSimulator.FxGUI.WireMouseHandler;
+package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 
-import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 
 public abstract class WireMouseHandler {
     int x;
     int y;
 
-    abstract void upperTriangle();
-    abstract void lowerTriangle();
-    abstract void leftTriangle();
-    abstract void rightTriangle();
+    public abstract void upperTriangle();
+    public abstract void lowerTriangle();
+    public abstract void leftTriangle();
+    public abstract void rightTriangle();
 
     public void performFunction(Vector2D pos){
         x = (int)pos.getX();
@@ -57,5 +56,13 @@ public abstract class WireMouseHandler {
 
     boolean isInRightTriangle(double xFraction, double yFraction){
         return xFraction > yFraction && xFraction > 1 - yFraction;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
