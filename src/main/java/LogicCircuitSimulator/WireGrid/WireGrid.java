@@ -47,11 +47,6 @@ public interface WireGrid {
     Iterator<Node> iterator();
 
     /**
-     * Resets all wires in the grid to LOW. Should be executed before propagateGenerators()
-     */
-    void resetWiresToLow();
-
-    /**
      * Returns a LogicState at a given point in the grid.
      * Returns HIGH when a HIGH signal is going through the point in the specified direction.
      * Otherwise returns LOW.

@@ -81,19 +81,6 @@ class ArrayWireGridTest {
     }
 
     @Test
-    void getStateException(){
-        WireGrid wireGrid = new ArrayWireGrid();
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.getState(new Vector2D(-1, 0), Orientation.HORIZONTALLY);
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.getState(new Vector2D(0, -1), Orientation.HORIZONTALLY);
-        });
-    }
-
-    @Test
     void getStateWithinDimensionsHorizontallyNotTouchingTest(){
         WireGrid wireGrid = new ArrayWireGrid();
 
@@ -263,7 +250,8 @@ class ArrayWireGridTest {
 
         assertTrue(containsHigh);
 
-        wireGrid.resetWiresToLow();
+        List<Generator> generators = new ArrayList<>();
+        wireGrid.propagateGenerators(generators);
 
         containsHigh = false;
         while(it.hasNext()) {
@@ -305,10 +293,7 @@ class ArrayWireGridTest {
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.HORIZONTALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
@@ -326,10 +311,7 @@ class ArrayWireGridTest {
         //VERTICALLY
         generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.VERTICALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
@@ -368,10 +350,7 @@ class ArrayWireGridTest {
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.HORIZONTALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
@@ -391,18 +370,7 @@ class ArrayWireGridTest {
     void propagateExceptions(){
         WireGrid wireGrid = new ArrayWireGrid();
         List<Generator> generators = new ArrayList<>();
-        generators.add(new Generator(new Vector2D(-1,0), Orientation.HORIZONTALLY));
-        assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.propagateGenerators(generators);
-        });
 
-        generators.clear();
-        generators.add(new Generator(new Vector2D(0,-1), Orientation.HORIZONTALLY));
-        assertThrows(IllegalArgumentException.class, () -> {
-            wireGrid.propagateGenerators(generators);
-        });
-
-        generators.clear();
         generators.add(new Generator(new Vector2D(0,0), Orientation.HORIZONTALLY));
         assertDoesNotThrow( () -> {
             wireGrid.propagateGenerators(generators);
@@ -455,10 +423,7 @@ class ArrayWireGridTest {
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,10), Orientation.VERTICALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
@@ -496,10 +461,7 @@ class ArrayWireGridTest {
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
         assertEquals(LogicState.HIGH, wireGrid.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, wireGrid.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
@@ -537,10 +499,7 @@ class ArrayWireGridTest {
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.VERTICALLY));
-        wireGrid.resetWiresToLow();
-        //System.out.println(wireGrid);
         wireGrid.propagateGenerators(generators);
-        //System.out.println(wireGrid);
 
         String expected = "+ + + + + + + \n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +

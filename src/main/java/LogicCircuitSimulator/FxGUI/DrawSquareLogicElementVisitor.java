@@ -61,7 +61,6 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     void drawGate(LogicElement le, String text){
-        //graphicsContext.setFill(Color.AQUA);
         double height = le.getElementHeight();
         Vector2D pos = le.getPosition();
         Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()-0.5)));

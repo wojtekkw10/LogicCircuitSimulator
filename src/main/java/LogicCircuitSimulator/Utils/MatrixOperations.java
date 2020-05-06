@@ -24,7 +24,7 @@ public class MatrixOperations {
         );
     }
 
-    public static SimpleMatrix getScalingAroundMatrix(double scalingFactor, double x, double y){
+    public static SimpleMatrix getScalingMatrix(double scalingFactor, double x, double y){
         SimpleMatrix translationMatrix = MatrixOperations.getTranslationMatrix(-x, -y);
         SimpleMatrix translationMatrix1 = MatrixOperations.getTranslationMatrix(x, y);
         SimpleMatrix scalingMatrix = MatrixOperations.getScalingMatrix(scalingFactor);
@@ -55,5 +55,11 @@ public class MatrixOperations {
         double x = matrix.get(0,2);
         double y = matrix.get(1,2);
         return new Vector2D(x,y);
+    }
+
+    public static Vector2D projectPoint(SimpleMatrix projectionMatrix, Vector2D point){
+        SimpleMatrix pos = MatrixOperations.getVectorMatrix(point.getX(), point.getY());
+        SimpleMatrix projectedPos = projectionMatrix.mult(pos);
+        return MatrixOperations.getVectorFromVectorMatrix(projectedPos);
     }
 }

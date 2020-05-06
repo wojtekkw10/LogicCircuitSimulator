@@ -3,7 +3,7 @@
  */
 package LogicCircuitSimulator;
 
-import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvas;
+import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,11 +42,13 @@ public class App  extends Application {
         primaryStage.show();
 
         // cleanup controller resources when window closes:
-        SimulationCanvas controller = loader.getController();
+        SimulationCanvasController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
     }
 
     public static void decorateWindowTitle(int FPS, int UPS){
         primaryStage.setTitle(stageTitle + " FPS: "+FPS + ", UPS: "+ UPS);
     }
+
+    //TODO: rewrite tests
 }

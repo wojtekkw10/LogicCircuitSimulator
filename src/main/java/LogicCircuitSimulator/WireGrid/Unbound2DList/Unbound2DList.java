@@ -28,7 +28,7 @@ public interface Unbound2DList<T>{
     void remove(Vector2D pos);
 
     /**
-     * Iterator for all non-empty elements.
+     * Iterator for all non-empty elements
      * @return iterator
      */
     Iterator2D<T> iterator();

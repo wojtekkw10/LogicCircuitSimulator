@@ -40,4 +40,12 @@ public final class Generator {
     public Orientation getOrientation() {
         return orientation;
     }
+
+    @Override
+    public String toString() {
+        return "Generator{" +
+                pos +
+                ", " + orientation +
+                '}';
+    }
 }

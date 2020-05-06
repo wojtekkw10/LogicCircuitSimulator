@@ -2,13 +2,12 @@ package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
-import LogicCircuitSimulator.FxGUI.MainCanvasBackground;
+import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
 import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.WireGrid.Node;
 import javafx.animation.AnimationTimer;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,14 +18,13 @@ import javafx.scene.text.Font;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SimulationCanvas {
+
+public class SimulationCanvasController {
     private final double SCALING_FACTOR = 0.05;
     public static final double MAX_SCALE = 100;
     public static final double MIN_SCALE = 5;
@@ -37,13 +35,21 @@ public class SimulationCanvas {
     private double pivotX = 0;
     private double pivotY = 0;
 
-    private final int TARGET_UPS = 50;
+    private final int TARGET_UPS = 60;
     private final int TARGET_FPS = 70;
+
+
 
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
     }
+
+    enum WireMode{
+        ADDING,
+        REMOVING
+    }
+    private WireMode wireMode;
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     Simulation simulation = new Simulation();
 
@@ -51,8 +57,8 @@ public class SimulationCanvas {
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     AtomicInteger ups = new AtomicInteger();
     Runnable periodicTask = () -> {
-            simulation.runOnce();
-            ups.getAndIncrement();
+        simulation.runOnce();
+        ups.getAndIncrement();
     };
 
     SimpleMatrix projectionMatrix = new SimpleMatrix(
@@ -77,7 +83,7 @@ public class SimulationCanvas {
         graphics.setFont(new Font(Font.getFontNames().get(0), 15));
         //Image AND_GATE = new Image("/500px-AND_ANSI.png");
 
-        MainCanvasBackground background = new MainCanvasBackground();
+        SimulationCanvasBackground background = new SimulationCanvasBackground();
 
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
             executor.scheduleAtFixedRate(periodicTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
@@ -122,7 +128,6 @@ public class SimulationCanvas {
                     logicElements.next().accept(drawLogicElement);
                 }
 
-
                 if(syncMode == SyncMode.SYNCHRONIZED){
                     ups.getAndIncrement();
                     simulation.runOnce();
@@ -142,19 +147,17 @@ public class SimulationCanvas {
     public void OnScroll(ScrollEvent scrollEvent) {
         double currentScale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
         if(scrollEvent.getDeltaY()>0 && currentScale < MAX_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1+ SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
+            projectionMatrix = MatrixOperations.getScalingMatrix(1 + SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
         }
         else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingAroundMatrix(1- SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
+            projectionMatrix = MatrixOperations.getScalingMatrix(1 - SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
         }
     }
 
     @FXML
     public void onMouseClicked(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            System.out.println(mouseEvent.getX() + ", " + mouseEvent.getY());
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.isStillSincePress()) {
             Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-            System.out.println(pos);
             int x = (int) pos.getX();
             int y = (int) pos.getY();
             Vector2D nodePos = new Vector2D(x, y);
@@ -174,6 +177,12 @@ public class SimulationCanvas {
     }
 
     @FXML
+    public void onDragDetected(MouseEvent mouseEvent) {
+        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
+        //if(simulation.getNode())
+    }
+
+    @FXML
     public void onMouseDragged(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.MIDDLE){
 
@@ -187,30 +196,45 @@ public class SimulationCanvas {
         }
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
-            System.out.println(mouseEvent.getX() + ", " + mouseEvent.getY());
             Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-            System.out.println(pos);
             int x = (int)pos.getX();
             int y = (int)pos.getY();
             double xFraction = pos.getX() - x;
             double yFraction = pos.getY() - y;
 
+            if(xFraction < 0) {
+                xFraction = 1-(-xFraction);
+                x--;
+            }
+            if(yFraction < 0) {
+                yFraction = 1-(-yFraction);
+                y--;
+            }
+
             double unresponsiveSpace = 0.2;
 
-            //TODO: tak żeby nie reagowało wewnątrz kwadratu
-            if(xFraction > yFraction && xFraction < 1 - yFraction && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+            if(isInUpperTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+                //toggleWire(new Vector2D(x,y), Orientation.HORIZONTALLY);
                 simulation.updateWire(new Vector2D(x,y), Orientation.HORIZONTALLY, Node.State.HIGH);
             }
-            if(xFraction > yFraction && xFraction > 1 - yFraction && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+            if(isInRightTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+                //toggleWire(new Vector2D(x+1,y), Orientation.VERTICALLY);
                 simulation.updateWire(new Vector2D(x+1,y), Orientation.VERTICALLY, Node.State.HIGH);
             }
-            if(xFraction < yFraction && xFraction > 1 - yFraction && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+            if(isInLowerTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
+                //toggleWire(new Vector2D(x,y+1), Orientation.HORIZONTALLY);
                 simulation.updateWire(new Vector2D(x,y+1), Orientation.HORIZONTALLY, Node.State.HIGH);
             }
-            if(xFraction < yFraction && xFraction < 1 - yFraction && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+            if(isInLeftTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
+                //toggleWire(new Vector2D(x,y), Orientation.VERTICALLY);
                 simulation.updateWire(new Vector2D(x,y), Orientation.VERTICALLY, Node.State.HIGH);
             }
+
+            System.out.println(xFraction);
+            System.out.println(yFraction);
+            System.out.println("--");
         }
+
     }
 
     @FXML
@@ -227,5 +251,43 @@ public class SimulationCanvas {
             e.printStackTrace();
         }
     }
+
+    boolean isInUpperTriangle(double xFraction, double yFraction){
+        return xFraction > yFraction && xFraction < 1 - yFraction;
+    }
+
+    boolean isInLowerTriangle(double xFraction, double yFraction){
+        return xFraction < yFraction && xFraction > 1 - yFraction;
+    }
+
+    boolean isInLeftTriangle(double xFraction, double yFraction){
+        return xFraction < yFraction && xFraction < 1 - yFraction;
+    }
+
+    boolean isInRightTriangle(double xFraction, double yFraction){
+        return xFraction > yFraction && xFraction > 1 - yFraction;
+    }
+
+    void toggleWire(Vector2D pos, Orientation orientation){
+        if(orientation == Orientation.HORIZONTALLY){
+            if(wireMode == WireMode.ADDING){
+                simulation.updateWire(pos, Orientation.HORIZONTALLY, Node.State.HIGH);
+            }
+            else{
+                simulation.updateWire(pos, Orientation.HORIZONTALLY, Node.State.NONE);
+            }
+        }
+        else{
+            if(wireMode == WireMode.ADDING){
+                simulation.updateWire(pos, Orientation.VERTICALLY, Node.State.HIGH);
+            }
+            else{
+                simulation.updateWire(pos, Orientation.VERTICALLY, Node.State.NONE);
+            }
+        }
+
+    }
+
+
 
 }

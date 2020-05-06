@@ -6,7 +6,6 @@ import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Unbound2DList.Unbound2DList;
 import LogicCircuitSimulator.WireGrid.Unbound2DList.Unbound2DListHashMap;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -23,116 +22,126 @@ public final class ArrayWireGrid implements WireGrid{
         nodes.set(node.getPosition(), ArrayNode.fromNode(node));
     }
 
-    @Override
-    public void resetWiresToLow(){
+    private void resetWiresToLow(){
         Iterator2D<ArrayNode> iterator = nodes.iterator();
         while(iterator.hasNext()){
-            ArrayNode current = iterator.next();
-            if(current.getRightWire() == Node.State.HIGH){
-                updateWire(iterator.currentPosition(), Orientation.HORIZONTALLY, Node.State.LOW);
-            }
-            if(current.getDownWire() == Node.State.HIGH){
-                updateWire(iterator.currentPosition(), Orientation.VERTICALLY, Node.State.LOW);
-            }
+            iterator.next();
+            resetNodeWiresToLow(iterator.currentPosition());
+        }
+    }
+
+    private void resetNodeWiresToLow(Vector2D pos){
+        if(getArrayNode(pos).getRightWire() == Node.State.HIGH){
+            updateWire(pos, Orientation.HORIZONTALLY, Node.State.LOW);
+        }
+        if(getArrayNode(pos).getDownWire() == Node.State.HIGH){
+            updateWire(pos, Orientation.VERTICALLY, Node.State.LOW);
         }
     }
 
     @Override
     public void propagateGenerators(List<Generator> generators){
-        Deque<Vector2D> stack = new ArrayDeque<>();
+        resetWiresToLow();
+
+        Deque<Vector2D> candidatesForSearch = new ArrayDeque<>();
 
         //Add to stack positions at which are generators
-        for (int i = 0; i < generators.size(); i++) {
-            Generator generator = generators.get(i);
-            if(generator.getPos().getX() < 0) throw new IllegalArgumentException("Illegal argument 'generators'. Generator at index "+i+
-                    " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
-            if(generator.getPos().getY() < 0) throw new IllegalArgumentException("Illegal argument 'generators'. Generator at index "+i+
-                    " is at position: ("+generator.getPos().getX()+","+generator.getPos().getY()+")");
-
-            stack.add(generator.getPos());
+        for (Generator generator : generators) {
+            candidatesForSearch.add(generator.getPos());
         }
 
         //Add to stack positions next to generators depending on their orientation
-        for (int i = 0; i < generators.size(); i++) {
-            Generator generator = generators.get(i);
-            Vector2D pos = generator.getPos();
+        for (Generator generator : generators) {
+            Vector2D generatorPos = generator.getPos();
 
-
-            if(generator.getOrientation() == Orientation.HORIZONTALLY){
-                if(getNode(pos).getRightWire() == Node.State.LOW){
-                    ArrayNode arrayNode = getArrayNode(pos);
-                    ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire(), arrayNode.isTouching());
-                    nodes.set(pos, newArrayNode);
-
-                    stack.add(new Vector2D(pos.getX()+1, pos.getY()));
+            if (generator.getOrientation() == Orientation.HORIZONTALLY) {
+                if (rightWireExists(generatorPos)) {
+                    updateRightWireToHigh(generatorPos);
+                    candidatesForSearch.add(new Vector2D(generatorPos.getX() + 1, generatorPos.getY()));
                 }
-                if(pos.getX() - 1 >= 0
-                        && getNode(new Vector2D(pos.getX()-1, pos.getY())).getRightWire() == Node.State.LOW){
-                    ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX()-1, pos.getY()));
-                    ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire(), arrayNode.isTouching());
-                    nodes.set(new Vector2D(pos.getX()-1, pos.getY()), newArrayNode);
-
-                    stack.add(new Vector2D(pos.getX()-1, pos.getY()));
+                if (leftWireExists(generatorPos)) {
+                    updateLeftWireToHigh(generatorPos);
+                    candidatesForSearch.add(new Vector2D(generatorPos.getX() - 1, generatorPos.getY()));
                 }
-            }
-            else{
-                if(getNode(pos).getDownWire() == Node.State.LOW){
-                    ArrayNode arrayNode = getArrayNode(pos);
-                    ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
-                    nodes.set(pos, newArrayNode);
-
-                    stack.add(new Vector2D(pos.getX(), pos.getY()+1));
+            } else {
+                if (downWireExists(generatorPos)) {
+                    updateDownWireToHigh(generatorPos);
+                    candidatesForSearch.add(new Vector2D(generatorPos.getX(), generatorPos.getY() + 1));
                 }
-                if(pos.getY() - 1 >= 0 &&
-                        getNode(new Vector2D(pos.getX(), pos.getY()-1)).getDownWire() == Node.State.LOW){
-                    ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX(), pos.getY()-1));
-                    ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
-                    nodes.set(new Vector2D(pos.getX(), pos.getY()-1), newArrayNode);
-
-                    stack.add(new Vector2D(pos.getX(), pos.getY()-1));
+                if (upWireExists(generatorPos)) {
+                    updateUpWireToHigh(generatorPos);
+                    candidatesForSearch.add(new Vector2D(generatorPos.getX(), generatorPos.getY() - 1));
                 }
             }
         }
 
         //propagate signal from the positions on the stack
-        while(!stack.isEmpty()){
-            Vector2D pos = stack.pop();
+        while(!candidatesForSearch.isEmpty()){
+            Vector2D pos = candidatesForSearch.pop();
             double x = pos.getX();
             double y = pos.getY();
 
-            if(getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && getNode(new Vector2D(x, y)).getRightWire() == Node.State.LOW){
-                ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX(), pos.getY()));
-                ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire(), arrayNode.isTouching());
-                nodes.set(new Vector2D(pos.getX(), pos.getY()), newArrayNode);
-
-                stack.add(new Vector2D(x+1, y));
+            if(isStateHigh(pos, Orientation.HORIZONTALLY) && rightWireExists(pos)){
+                updateRightWireToHigh(pos);
+                candidatesForSearch.add(new Vector2D(x+1, y));
             }
-            if(getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && getNode(new Vector2D(x, y)).getDownWire() == Node.State.LOW){
-                ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX(), pos.getY()));
-                ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
-                nodes.set(new Vector2D(pos.getX(), pos.getY()), newArrayNode);
-
-                stack.add(new Vector2D(x, y+1));
+            if(isStateHigh(pos, Orientation.VERTICALLY) && downWireExists(pos)){
+                updateDownWireToHigh(pos);
+                candidatesForSearch.add(new Vector2D(x, y+1));
             }
-            if(getState(new Vector2D(x,y), Orientation.HORIZONTALLY) == LogicState.HIGH
-                    && getNode(new Vector2D(x-1, y)).getRightWire() == Node.State.LOW){
-                ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX()-1, pos.getY()));
-                ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire() , arrayNode.isTouching());
-                nodes.set(new Vector2D(pos.getX()-1, pos.getY()), newArrayNode);
-
-                stack.add(new Vector2D(x-1, y));
+            if(isStateHigh(pos, Orientation.HORIZONTALLY) && leftWireExists(pos)){
+                updateLeftWireToHigh(pos);
+                candidatesForSearch.add(new Vector2D(x-1, y));
             }
-            if(getState(new Vector2D(x,y), Orientation.VERTICALLY) == LogicState.HIGH
-                    && getNode(new Vector2D(x, y-1)).getDownWire() == Node.State.LOW){
-                ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX(), pos.getY()-1));
-                ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
-                nodes.set(new Vector2D(pos.getX(), pos.getY()-1), newArrayNode);
-
-                stack.add(new Vector2D(x, y-1));
+            if(isStateHigh(pos, Orientation.VERTICALLY) && upWireExists(pos)){
+                updateUpWireToHigh(pos);
+                candidatesForSearch.add(new Vector2D(x, y-1));
             }
         }
+    }
+
+    boolean rightWireExists(Vector2D pos){
+        return getNode(pos).getRightWire() == Node.State.LOW;
+    }
+
+    boolean downWireExists(Vector2D pos){
+        return getNode(pos).getDownWire() == Node.State.LOW;
+    }
+
+    boolean leftWireExists(Vector2D pos){
+        return getNode(new Vector2D(pos.getX()-1, pos.getY())).getRightWire() == Node.State.LOW;
+    }
+
+    boolean upWireExists(Vector2D pos){
+        return getNode(new Vector2D(pos.getX(), pos.getY()-1)).getDownWire() == Node.State.LOW;
+    }
+
+    boolean isStateHigh(Vector2D pos, Orientation orientation){
+        return getState(pos, orientation) == LogicState.HIGH;
+    }
+
+    private void updateRightWireToHigh(Vector2D pos){
+        ArrayNode arrayNode = getArrayNode(pos);
+        ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire(), arrayNode.isTouching());
+        nodes.set(pos, newArrayNode);
+    }
+
+    private void updateDownWireToHigh(Vector2D pos){
+        ArrayNode arrayNode = getArrayNode(pos);
+        ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
+        nodes.set(pos, newArrayNode);
+    }
+
+    private void updateUpWireToHigh(Vector2D pos){
+        ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX(), pos.getY()-1));
+        ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), Node.State.HIGH, arrayNode.isTouching());
+        nodes.set(new Vector2D(pos.getX(), pos.getY()-1), newArrayNode);
+    }
+
+    private void updateLeftWireToHigh(Vector2D pos){
+        ArrayNode arrayNode = getArrayNode(new Vector2D(pos.getX()-1, pos.getY()));
+        ArrayNode newArrayNode = new ArrayNode(Node.State.HIGH, arrayNode.getDownWire(), arrayNode.isTouching());
+        nodes.set(new Vector2D(pos.getX()-1, pos.getY()), newArrayNode);
     }
 
     @Override
@@ -147,29 +156,26 @@ public final class ArrayWireGrid implements WireGrid{
         if(arrayNode.isTouching() == Node.WireCrossing.TOUCHING){
             if(arrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
             if(arrayNode.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
-            if(y-1>=0){
-                ArrayNode upperArrayNode = getArrayNode(new Vector2D(x, y-1));
-                if(upperArrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
-            }
-            if(x-1>=0){
-                ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
-                if(arrayNodeToLeft.getRightWire() == Node.State.HIGH)
-                    return LogicState.HIGH; }
+
+            ArrayNode upperArrayNode = getArrayNode(new Vector2D(x, y-1));
+            if(upperArrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
+
+            ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
+            if(arrayNodeToLeft.getRightWire() == Node.State.HIGH)
+                    return LogicState.HIGH;
         }
         else{
             if(orientation == Orientation.VERTICALLY){
                 if(arrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
-                if(y-1>=0){
-                    ArrayNode upperArrayNode = getArrayNode(new Vector2D(x, y-1));
-                    if(upperArrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
-                }
+
+                ArrayNode upperArrayNode = getArrayNode(new Vector2D(x, y-1));
+                if(upperArrayNode.getDownWire() == Node.State.HIGH) return LogicState.HIGH;
             }
             else{
                 if(arrayNode.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
-                if(x-1>=0){
-                    ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
-                    if(arrayNodeToLeft.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
-                }
+
+                ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
+                if(arrayNodeToLeft.getRightWire() == Node.State.HIGH) return LogicState.HIGH;
             }
         }
         return LogicState.LOW;
@@ -189,14 +195,14 @@ public final class ArrayWireGrid implements WireGrid{
     @Override
     public void updateWire(Vector2D pos, Orientation orientation, Node.State state) {
         ArrayNode arrayNode = getArrayNode(pos);
+        ArrayNode newArrayNode;
         if(orientation == Orientation.HORIZONTALLY){
-            ArrayNode newArrayNode = new ArrayNode(state, arrayNode.getDownWire(), arrayNode.isTouching());
-            nodes.set(pos, newArrayNode);
+            newArrayNode = new ArrayNode(state, arrayNode.getDownWire(), arrayNode.isTouching());
         }
         else {
-            ArrayNode newArrayNode = new ArrayNode(arrayNode.getRightWire(), state, arrayNode.isTouching());
-            nodes.set(pos, newArrayNode);
+            newArrayNode = new ArrayNode(arrayNode.getRightWire(), state, arrayNode.isTouching());
         }
+        nodes.set(pos, newArrayNode);
     }
 
     @Override
