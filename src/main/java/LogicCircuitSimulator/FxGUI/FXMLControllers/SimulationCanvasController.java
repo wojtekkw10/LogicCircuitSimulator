@@ -88,7 +88,6 @@ public class SimulationCanvasController {
 
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
             executor.scheduleAtFixedRate(periodicTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
-            executor.submit(periodicTask);
         }
 
 
@@ -118,6 +117,7 @@ public class SimulationCanvasController {
                 //DRAWING NODES
                 Iterator<Node> nodes = simulation.nodeIterator();
                 NodeVisitor drawNode = new DrawNodeVisitor(graphics, projectionMatrix);
+
                 while(nodes.hasNext()){
                     nodes.next().accept(drawNode);
                 }
@@ -175,25 +175,12 @@ public class SimulationCanvasController {
     public void onMousePressed(MouseEvent mouseEvent) {
         lastMouseX = mouseEvent.getX();
         lastMouseY = mouseEvent.getY();
+
         Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-        new WireMouseHandler(){
-            public void upperTriangle(){
-                if(simulation.getNode(new Vector2D(getX(),getY())).getRightWire() != Node.State.NONE) wireMode = WireMode.REMOVING;
-                else wireMode = WireMode.ADDING;
-            }
+        new WireMouseHandler(simulation){
             @Override
-            public void lowerTriangle() {
-                if(simulation.getNode(new Vector2D(getX(),getY()+1)).getRightWire() != Node.State.NONE) wireMode = WireMode.REMOVING;
-                else wireMode = WireMode.ADDING;
-            }
-            @Override
-            public void leftTriangle() {
-                if(simulation.getNode(new Vector2D(getX(),getY())).getDownWire() != Node.State.NONE) wireMode = WireMode.REMOVING;
-                else wireMode = WireMode.ADDING;
-            }
-            @Override
-            public void rightTriangle() {
-                if(simulation.getNode(new Vector2D(getX()+1,getY())).getDownWire() != Node.State.NONE) wireMode = WireMode.REMOVING;
+            public void doAction() {
+                if(getWireState() != Node.State.NONE) wireMode = WireMode.REMOVING;
                 else wireMode = WireMode.ADDING;
             }
         }.performFunction(pos);
@@ -219,32 +206,16 @@ public class SimulationCanvasController {
         }
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
-            System.out.println(wireMode);
             Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
 
-            new WireMouseHandler(){
-                public void upperTriangle(){
-                    if(wireMode == WireMode.ADDING) simulation.updateWire(new Vector2D(getX(),getY()), Orientation.HORIZONTALLY, Node.State.HIGH);
-                    else simulation.updateWire(new Vector2D(getX(),getY()), Orientation.HORIZONTALLY, Node.State.NONE);
-                }
+            new WireMouseHandler(simulation){
                 @Override
-                public void lowerTriangle() {
-                    if(wireMode == WireMode.ADDING) simulation.updateWire(new Vector2D(getX(),getY()+1), Orientation.HORIZONTALLY, Node.State.HIGH);
-                    else simulation.updateWire(new Vector2D(getX(),getY()+1), Orientation.HORIZONTALLY, Node.State.NONE);
-                }
-                @Override
-                public void leftTriangle() {
-                    if(wireMode == WireMode.ADDING) simulation.updateWire(new Vector2D(getX(),getY()), Orientation.VERTICALLY, Node.State.HIGH);
-                    else simulation.updateWire(new Vector2D(getX(),getY()), Orientation.VERTICALLY, Node.State.NONE);
-                }
-                @Override
-                public void rightTriangle() {
-                    if(wireMode == WireMode.ADDING) simulation.updateWire(new Vector2D(getX()+1,getY()), Orientation.VERTICALLY, Node.State.HIGH);
-                    else simulation.updateWire(new Vector2D(getX()+1,getY()), Orientation.VERTICALLY, Node.State.NONE);
+                public void doAction() {
+                    if(wireMode == WireMode.ADDING) updateWireState(Node.State.HIGH);
+                    else updateWireState(Node.State.NONE);
                 }
             }.performFunction(pos);
         }
-
     }
 
     @FXML
@@ -261,43 +232,4 @@ public class SimulationCanvasController {
             e.printStackTrace();
         }
     }
-
-    boolean isInUpperTriangle(double xFraction, double yFraction){
-        return xFraction > yFraction && xFraction < 1 - yFraction;
-    }
-
-    boolean isInLowerTriangle(double xFraction, double yFraction){
-        return xFraction < yFraction && xFraction > 1 - yFraction;
-    }
-
-    boolean isInLeftTriangle(double xFraction, double yFraction){
-        return xFraction < yFraction && xFraction < 1 - yFraction;
-    }
-
-    boolean isInRightTriangle(double xFraction, double yFraction){
-        return xFraction > yFraction && xFraction > 1 - yFraction;
-    }
-
-    void toggleWire(Vector2D pos, Orientation orientation){
-        if(orientation == Orientation.HORIZONTALLY){
-            if(wireMode == WireMode.ADDING){
-                simulation.updateWire(pos, Orientation.HORIZONTALLY, Node.State.HIGH);
-            }
-            else{
-                simulation.updateWire(pos, Orientation.HORIZONTALLY, Node.State.NONE);
-            }
-        }
-        else{
-            if(wireMode == WireMode.ADDING){
-                simulation.updateWire(pos, Orientation.VERTICALLY, Node.State.HIGH);
-            }
-            else{
-                simulation.updateWire(pos, Orientation.VERTICALLY, Node.State.NONE);
-            }
-        }
-
-    }
-
-
-
 }
