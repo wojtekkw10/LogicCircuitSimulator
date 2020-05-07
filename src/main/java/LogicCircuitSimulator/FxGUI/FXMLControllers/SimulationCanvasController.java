@@ -2,6 +2,8 @@ package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
+import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
 import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
 import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
@@ -43,10 +45,11 @@ public class SimulationCanvasController {
     private boolean isLogicGateDragged = false;
     private LogicElement logicGateDragged;
 
-    GraphicsContext graphics;
+    private GraphicsContext graphics;
 
-
-
+    private WireMode wireMode = WireMode.ADDING;
+    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
+    Simulation simulation = new Simulation();
 
     enum SyncMode{
         SYNCHRONIZED,
@@ -57,30 +60,21 @@ public class SimulationCanvasController {
         ADDING,
         REMOVING
     }
-    private WireMode wireMode = WireMode.ADDING;
-    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-    Simulation simulation = new Simulation();
 
+    long lastNow;
+    int frames;
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     AtomicInteger ups = new AtomicInteger();
-    Runnable periodicTask = () -> {
+    Runnable simulationTask = () -> {
         simulation.runOnce();
         ups.getAndIncrement();
     };
 
-    SimpleMatrix projectionMatrix = new SimpleMatrix(
-            new double[][] {
-                    new double[] {20, 0, 0},
-                    new double[] {0, 20, 0},
-                    new double[] {0 ,0, 1}
-            }
-    );
+    SimpleMatrix projectionMatrix = MatrixOperations.getProjectionMatrix(0,0, 20);
 
     @FXML
     public Canvas mainSimulationCanvas;
-
-    @FXML
     public AnchorPane mainSimulationAnchorPane;
 
     @FXML
@@ -89,56 +83,35 @@ public class SimulationCanvasController {
         graphics.setLineWidth(1);
 
         graphics.setFont(new Font(Font.getFontNames().get(0), 15));
-        //Image AND_GATE = new Image("/500px-AND_ANSI.png");
 
-        SimulationCanvasBackground background = new SimulationCanvasBackground();
+        SimulationCanvasBackground background = new SimulationCanvasBackground(mainSimulationCanvas);
 
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
-            executor.scheduleAtFixedRate(periodicTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
+            executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
         }
 
-
         new AnimationTimer() {
-            private short frames = 0;
-            long lastNow = 0;
-
             @Override
             public void handle(long now) {
-                //WINDOW TiTLE UPDATE
-                if(now > lastNow + 1e9){
-                    App.decorateWindowTitle(frames, ups.get());
-                    frames = 0;
-                    ups.set(0);
-                    lastNow = now;
+                updateTitleBar(now);
+
+                resizeCanvasToAnchorPane();
+                clearCanvas(Color.BLACK);
+                background.draw(projectionMatrix);
+                drawLogicGates(simulation.logicElementIterator());
+                drawNodes(simulation.nodeIterator());
+
+                if(isLogicGateDragged) {
+                    new LogicElementHandler(simulation) {
+                        @Override
+                        public void transformLogicElement() {
+                            logicGateDragged.setPosition(getPosition());
+                        }
+                    }.performNoTransformation(new Vector2D(pivotX, pivotY), projectionMatrix);
+
+                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
+                    logicGateDragged.accept(drawLogicElement);
                 }
-
-                //SETUP
-                graphics.setStroke(Color.GREY);
-                mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
-                mainSimulationCanvas.setWidth(mainSimulationAnchorPane.getWidth());
-                graphics.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
-
-                //BACKGROUND
-                background.draw(graphics, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight(), projectionMatrix);
-
-                //DRAWING LOGIC GATES
-                Iterator<LogicElement> logicElements = simulation.logicElementIterator();
-                LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
-                while(logicElements.hasNext()){
-                    logicElements.next().accept(drawLogicElement);
-                }
-
-                //DRAWING NODES
-                Iterator<Node> nodes = simulation.nodeIterator();
-                NodeVisitor drawNode = new DrawNodeVisitor(graphics, projectionMatrix);
-
-                while(nodes.hasNext()){
-                    nodes.next().accept(drawNode);
-                }
-
-                if(isLogicGateDragged) graphics.strokeRect(pivotX, pivotY, 30, 30);
-
-
 
                 if(syncMode == SyncMode.SYNCHRONIZED){
                     ups.getAndIncrement();
@@ -146,11 +119,7 @@ public class SimulationCanvasController {
                 }
                 frames++;
 
-                try {
-                    Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                waitUntilNextFrame(now);
             }
         }.start();
     }
@@ -167,63 +136,23 @@ public class SimulationCanvasController {
     }
 
     @FXML
-    public void onMouseClicked(MouseEvent mouseEvent) {
-
-    }
-
     public void onKeyReleased(KeyEvent keyEvent) {
-        System.out.println("KEY EVENT");
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(pivotX, pivotY)));
-        int x = (int) pos.getX();
-        int y = (int) pos.getY();
-        if(x<0) x--;
-        if(y<0) y--;
-        pos = new Vector2D(x, y);
+        Vector2D nodePos = getNodePositionFromMousePosition(pivotX, pivotY, projectionMatrix);
 
-
-
-        System.out.println(pos);
+        System.out.println(nodePos);
         if(keyEvent.getCode() == KeyCode.R){
-            Iterator<LogicElement> logicElements = simulation.logicElementIterator();
-            while(logicElements.hasNext()){
-                LogicElement logicElement = logicElements.next();
-                if(logicElement.getPosition().equals(pos)){
-                    if(logicElement.getRotation() == Rotation.RIGHT) logicElement.setRotation(Rotation.DOWN);
-                    else if(logicElement.getRotation() == Rotation.DOWN) logicElement.setRotation(Rotation.LEFT);
-                    else if(logicElement.getRotation() == Rotation.LEFT) logicElement.setRotation(Rotation.UP);
-                    else if(logicElement.getRotation() == Rotation.UP) logicElement.setRotation(Rotation.RIGHT);
+            new LogicElementHandler(simulation){
+                @Override
+                public void transformLogicElement() {
+                    rotateLogicElementClockwise();
                 }
+            }.performTransformation(new Vector2D(pivotX,pivotY), projectionMatrix);
+        }
 
-            }
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT1){
-            isLogicGateDragged = true;
-            logicGateDragged = new AndGate(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT2){
-            isLogicGateDragged = true;
-            logicGateDragged = new BufferGate(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT3){
-            isLogicGateDragged = true;
-            logicGateDragged = new LogicClock(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT4){
-            isLogicGateDragged = true;
-            logicGateDragged = new LogicOne(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT5){
-            isLogicGateDragged = true;
-            logicGateDragged = new NotGate(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT6){
-            isLogicGateDragged = true;
-            logicGateDragged = new OrGate(x, y, Rotation.RIGHT);
-        }
-        else if(keyEvent.getCode() == KeyCode.DIGIT7){
-            isLogicGateDragged = true;
-            logicGateDragged = new XorGate(x, y, Rotation.RIGHT);
-        }
+        createLogicElementAtMouseOnKeyEvent(keyEvent.getCode());
+
+
+
     }
 
     @FXML
@@ -231,95 +160,61 @@ public class SimulationCanvasController {
         lastMouseX = mouseEvent.getX();
         lastMouseY = mouseEvent.getY();
 
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
+        if(mouseEvent.getButton() == MouseButton.PRIMARY){
+            new LogicElementHandler(simulation){
+                @Override
+                public void transformLogicElement() {
+                    logicGateDragged = getLogicElement();
+                    isLogicGateDragged = true;
+                    removeLogicElement();
+                }
+            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
+        }
+
         new WireMouseHandler(simulation){
             @Override
-            public void doAction() {
+            public void transformState() {
                 if(getWireState() != Node.State.NONE) wireMode = WireMode.REMOVING;
                 else wireMode = WireMode.ADDING;
             }
-        }.performFunction(pos);
+        }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
+
+        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(pivotX, pivotY)));
+        System.out.println(pos);
 
     }
 
     @FXML
-    public void onDragDetected(MouseEvent mouseEvent) {
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(pivotX, pivotY)));
-        int x = (int) pos.getX();
-        int y = (int) pos.getY();
-        //if(x<=0) x--;
-        //if(y<=0) y--;
-        pos = new Vector2D(x, y);
-
-        if(mouseEvent.getButton() == MouseButton.PRIMARY){
-            System.out.println(pos);
-            Iterator<LogicElement> logicElements = simulation.logicElementIterator();
-            while(logicElements.hasNext()){
-                LogicElement logicElement = logicElements.next();
-                if(logicElement.getPosition().equals(pos)){
-                    logicGateDragged = logicElement;
-                    isLogicGateDragged = true;
-                    logicElements.remove();
-                }
-
-            }
-        }
-    }
-
     public void onMouseReleased(MouseEvent mouseEvent) {
+        Vector2D mousePos = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
         if(isLogicGateDragged){
-            Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(pivotX, pivotY)));
-            int x = (int) pos.getX();
-            int y = (int) pos.getY();
-            System.out.println("RELEASED AT "+x+" "+y);
-            logicGateDragged.setPosition(new Vector2D(x,y));
-            simulation.addLogicGate(logicGateDragged);
-            isLogicGateDragged = false;
+            new LogicElementHandler(simulation){
+                @Override
+                public void transformLogicElement() {
+                    logicGateDragged.setPosition(getPosition());
+                    simulation.addLogicGate(logicGateDragged);
+                    isLogicGateDragged = false;
+                }
+            }.performNoTransformation(mousePos, projectionMatrix);
+
+
+
         }
         else{
             if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.isStillSincePress()) {
-                Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-                int x = (int) pos.getX();
-                int y = (int) pos.getY();
-                Vector2D nodePos = new Vector2D(x, y);
-
-                Node node = simulation.getNode(nodePos);
-                if (node.isTouching() == Node.WireCrossing.TOUCHING) {
-                    simulation.updateCrossing(nodePos, Node.WireCrossing.NOT_TOUCHING);
-                } else simulation.updateCrossing(nodePos, Node.WireCrossing.TOUCHING);
-
+                new CrossingMouseHandler(simulation){
+                    @Override
+                    public void transformCrossing() {
+                        if (getCrossing() == Node.WireCrossing.TOUCHING) updateCrossing(Node.WireCrossing.NOT_TOUCHING);
+                        else updateCrossing(Node.WireCrossing.TOUCHING);
+                    }
+                }.performTransformation(mousePos, projectionMatrix);
             }
             else if(mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.isStillSincePress()){
-                Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-                int x = (int) pos.getX();
-                int y = (int) pos.getY();
-                Vector2D nodePos = new Vector2D(x, y);
-
-                Iterator<LogicElement> logicElements = simulation.logicElementIterator();
-                while(logicElements.hasNext()){
-                    LogicElement logicElement = logicElements.next();
-                    if(logicElement.getPosition().equals(nodePos)){
-                        logicElements.remove();
-                    }
-
-                }
+                Vector2D nodePos = getNodePositionFromMousePosition(mouseEvent.getX(), mouseEvent.getY(), projectionMatrix);
+                removeLogicElement(nodePos, simulation.logicElementIterator());
             }
         }
-
-
-    }
-
-    public void onDragOver(DragEvent dragEvent) {
-
-    }
-
-    public void onDragDropped(DragEvent dragEvent) {
-
-    }
-
-    public void onMouseDragOver(MouseDragEvent mouseDragEvent) {
-        System.out.println("ON MOUSE DRAGGED");
-
     }
 
     @FXML
@@ -339,15 +234,13 @@ public class SimulationCanvasController {
         }
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY && !isLogicGateDragged){
-            Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mouseEvent.getX(), mouseEvent.getY())));
-
             new WireMouseHandler(simulation){
                 @Override
-                public void doAction() {
-                    if(wireMode == WireMode.ADDING) updateWireState(Node.State.HIGH);
+                public void transformState() {
+                    if(wireMode == WireMode.ADDING) this.updateWireState(Node.State.HIGH);
                     else updateWireState(Node.State.NONE);
                 }
-            }.performFunction(pos);
+            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
         }
     }
 
@@ -359,12 +252,128 @@ public class SimulationCanvasController {
 
     public void shutdown(){
         executor.shutdownNow();
+    }
+
+    //Private functions
+    private void clearCanvas(Color color){
+        graphics.setFill(color);
+        graphics.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
+        graphics.fillRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
+    }
+    private void resizeCanvasToAnchorPane(){
+        mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
+        mainSimulationCanvas.setWidth(mainSimulationAnchorPane.getWidth());
+    }
+
+    private void drawLogicGates(Iterator<LogicElement>  logicElements){
+        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
+        while(logicElements.hasNext()){
+            logicElements.next().accept(drawLogicElement);
+        }
+    }
+
+    private void drawNodes(Iterator<Node> nodes){
+        NodeVisitor drawNode = new DrawNodeVisitor(graphics, projectionMatrix);
+        while(nodes.hasNext()){
+            nodes.next().accept(drawNode);
+        }
+    }
+
+    private void updateTitleBar(long now){
+        if(now > lastNow + 1e9){
+            App.decorateWindowTitle(frames, ups.get());
+            frames = 0;
+            ups.set(0);
+            lastNow = now;
+        }
+    }
+
+    private void waitUntilNextFrame(long now){
         try {
-            executor.awaitTermination(1, TimeUnit.HOURS);
+            Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
+    private void removeLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
+        while(logicElements.hasNext()){
+            LogicElement logicElement = logicElements.next();
+            if(logicElement.getPosition().equals(pos)){
+                logicElements.remove();
+            }
+        }
+    }
+
+    private LogicElement getLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
+        while(logicElements.hasNext()){
+            LogicElement logicElement = logicElements.next();
+            if(logicElement.getPosition().equals(pos)){
+                return logicElement;
+            }
+        }
+        return null;
+    }
+
+    private Vector2D getNodePositionFromMousePosition(double x, double y, SimpleMatrix projectionMatrix){
+        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(x, y)));
+        int nodeX = (int) pos.getX();
+        int nodeY = (int) pos.getY();
+        return new Vector2D(nodeX, nodeY);
+    }
+
+    private void toggleNodeCrossing(Vector2D nodePos){
+        Node node = simulation.getNode(nodePos);
+        if (node.isTouching() == Node.WireCrossing.TOUCHING) {
+            simulation.updateCrossing(nodePos, Node.WireCrossing.NOT_TOUCHING);
+        } else simulation.updateCrossing(nodePos, Node.WireCrossing.TOUCHING);
+    }
+
+    private void rotateLogicElementClockwise(Vector2D nodePos, Iterator<LogicElement> logicElements){
+        while(logicElements.hasNext()){
+            LogicElement logicElement = logicElements.next();
+            if(logicElement.getPosition().equals(nodePos)){
+                if(logicElement.getRotation() == Rotation.RIGHT) logicElement.setRotation(Rotation.DOWN);
+                else if(logicElement.getRotation() == Rotation.DOWN) logicElement.setRotation(Rotation.LEFT);
+                else if(logicElement.getRotation() == Rotation.LEFT) logicElement.setRotation(Rotation.UP);
+                else if(logicElement.getRotation() == Rotation.UP) logicElement.setRotation(Rotation.RIGHT);
+            }
+        }
+    }
+
+    private void createLogicElementAtMouseOnKeyEvent(KeyCode keycode){
+        int x = 0;
+        int y = 0;
+        if(keycode == KeyCode.DIGIT1){
+            isLogicGateDragged = true;
+            logicGateDragged = new AndGate(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT2){
+            isLogicGateDragged = true;
+            logicGateDragged = new BufferGate(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT3){
+            isLogicGateDragged = true;
+            logicGateDragged = new LogicClock(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT4){
+            isLogicGateDragged = true;
+            logicGateDragged = new LogicOne(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT5){
+            isLogicGateDragged = true;
+            logicGateDragged = new NotGate(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT6){
+            isLogicGateDragged = true;
+            logicGateDragged = new OrGate(x, y, Rotation.RIGHT);
+        }
+        else if(keycode == KeyCode.DIGIT7){
+            isLogicGateDragged = true;
+            logicGateDragged = new XorGate(x, y, Rotation.RIGHT);
+        }
+    }
+
 }
 
 

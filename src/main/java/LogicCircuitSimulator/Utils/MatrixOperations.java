@@ -1,5 +1,6 @@
 package LogicCircuitSimulator.Utils;
 
+import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import org.ejml.simple.SimpleMatrix;
 
@@ -61,5 +62,15 @@ public class MatrixOperations {
         SimpleMatrix pos = MatrixOperations.getVectorMatrix(point.getX(), point.getY());
         SimpleMatrix projectedPos = projectionMatrix.mult(pos);
         return MatrixOperations.getVectorFromVectorMatrix(projectedPos);
+    }
+
+    public static SimpleMatrix getProjectionMatrix(double x, double y, double scale){
+        return new SimpleMatrix(
+                new double[][] {
+                        new double[] {scale, 0, x},
+                        new double[] {0, scale, y},
+                        new double[] {0 ,0, 1}
+                }
+        );
     }
 }

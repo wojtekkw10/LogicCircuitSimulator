@@ -12,10 +12,6 @@ public class Simulation {
     List<LogicElement> logicElements = new ArrayList<>();
 
     public Simulation() {
-        arrayWireGrid.setNode(new Node(new Vector2D(0, 0), Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
-
-
-
         arrayWireGrid.setNode(new Node(new Vector2D(10, 3), Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setNode(new Node(new Vector2D(10, 4), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setNode(new Node(new Vector2D(11, 4), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
@@ -48,12 +44,10 @@ public class Simulation {
         logicElements.add(new XorGate(3+leftShift, 1, Rotation.RIGHT));
         //logicElements.add(new NotGate(-10, -10, Rotation.RIGHT));
 
-        arrayWireGrid.setNode(new Node(new Vector2D(1+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(1+leftShift, 2), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 2), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(4+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(5+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 2), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setNode(new Node(new Vector2D(4+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayWireGrid.setNode(new Node(new Vector2D(5+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         int pos = 4;
         for (int i = 0; i < 100; i++) {

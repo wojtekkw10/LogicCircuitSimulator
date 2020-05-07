@@ -3,6 +3,7 @@ package LogicCircuitSimulator.FxGUI;
 import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
 import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.ejml.simple.SimpleMatrix;
@@ -12,13 +13,24 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 public class SimulationCanvasBackground {
     private static final Color dotColor = Color.AQUA;
     private static final Color backgroundColor = Color.BLACK;
+    private final GraphicsContext graphicsContext;
+    private final Canvas simulationCanvas;
 
-    public void draw(GraphicsContext ctx, double canvasWidth, double canvasHeight, SimpleMatrix projection){
-        ctx.setFill(backgroundColor);
+    public SimulationCanvasBackground(Canvas simulationCanvas) {
+        this.simulationCanvas = simulationCanvas;
+        this.graphicsContext = simulationCanvas.getGraphicsContext2D();
+    }
+
+
+    public void draw(SimpleMatrix projection){
+        graphicsContext.setFill(backgroundColor);
+
+        double canvasWidth = simulationCanvas.getWidth();
+        double canvasHeight = simulationCanvas.getHeight();
 
         double scale = MatrixOperations.getScaleFromMatrix(projection);
 
-        setStroke(ctx, scale);
+        setStroke(graphicsContext, scale);
 
         int amountHorizontally = (int)Math.ceil(canvasWidth / scale);
         int amountVertically = (int)Math.ceil(canvasHeight / scale);
@@ -30,7 +42,6 @@ public class SimulationCanvasBackground {
 
         double backgroundDisappearingFactor = 1.5;
 
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         if(scale > SimulationCanvasController.MIN_SCALE*backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
                 for (int j = -gridShiftY; j < amountVertically - gridShiftY; j++) {
@@ -38,7 +49,7 @@ public class SimulationCanvasBackground {
                     int x = (int)pointPos.getX();
                     int y = (int)pointPos.getY();
 
-                    ctx.strokeLine(x,y,x,y);
+                    graphicsContext.strokeLine(x,y,x,y);
                 }
             }
         }

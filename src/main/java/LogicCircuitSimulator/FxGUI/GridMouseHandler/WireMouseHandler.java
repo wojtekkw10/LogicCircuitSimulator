@@ -2,8 +2,10 @@ package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Simulation;
+import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Node;
+import org.ejml.simple.SimpleMatrix;
 
 public abstract class WireMouseHandler {
     int x;
@@ -17,13 +19,13 @@ public abstract class WireMouseHandler {
 
     public WireMouseHandler(Simulation simulation){
         this.simulation = simulation;
+
     }
 
-    public abstract void doAction();
+    abstract public void transformState();
 
-    //public abstract void doAction(Node.State wire);
-
-    public void performFunction(Vector2D pos){
+    public void performTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
+        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mousePos.getX(), mousePos.getY())));
         x = (int)pos.getX();
         y = (int)pos.getY();
         double xFraction = pos.getX() - x;
@@ -44,25 +46,25 @@ public abstract class WireMouseHandler {
             currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getRightWire();
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.HORIZONTALLY;
-            doAction();
+            transformState();
         }
         if(isInRightTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX()+1,getY())).getDownWire();
             currentNodePos = new Vector2D(getX()+1,getY());
             currentOrientation = Orientation.VERTICALLY;
-            doAction();
+            transformState();
         }
         if(isInLowerTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX(),getY()+1)).getRightWire();
             currentNodePos = new Vector2D(getX(),getY()+1);
             currentOrientation = Orientation.HORIZONTALLY;
-            doAction();
+            transformState();
         }
         if(isInLeftTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getDownWire();
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.VERTICALLY;
-            doAction();
+            transformState();
         }
 
     }
@@ -94,7 +96,6 @@ public abstract class WireMouseHandler {
     public Node.State getWireState(){
         return currentWireState;
     }
-
     public void updateWireState(Node.State state){
         simulation.updateWire(currentNodePos, currentOrientation, state);
     }
