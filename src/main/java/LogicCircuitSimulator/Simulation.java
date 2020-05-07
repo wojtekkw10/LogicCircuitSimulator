@@ -35,8 +35,11 @@ public class Simulation {
         arrayWireGrid.setNode(new Node(new Vector2D(13, 5), Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
         arrayWireGrid.setNode(new Node(new Vector2D(13, 6), Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
 
-        logicElements.add(new NotGate(11, 3, Rotation.LEFT));
+        logicElements.add(new NotGate(11, 3, Rotation.DOWN));
         logicElements.add(new NotGate(11, 5, Rotation.RIGHT));
+
+        logicElements.add(new XorGate(-5, -5, Rotation.RIGHT));
+        logicElements.add(new XorGate(-5, 10, Rotation.DOWN));
 
         int leftShift = -2;
 
@@ -104,5 +107,9 @@ public class Simulation {
 
     public Node getNode(Vector2D pos){
         return arrayWireGrid.getNode(pos);
+    }
+
+    public void addLogicGate(LogicElement logicElement){
+        logicElements.add(logicElement);
     }
 }

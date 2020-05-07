@@ -28,7 +28,7 @@ public class LogicOne extends LogicElement {
     @Override
     public List<Vector2D> getLocalOutputPositions() {
         ArrayList<Vector2D> outputs = new ArrayList<>();
-        outputs.add(new Vector2D(0,0));
+        outputs.add(new Vector2D(1,0));
         return outputs;
     }
 

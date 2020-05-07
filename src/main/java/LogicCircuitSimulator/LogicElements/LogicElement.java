@@ -56,6 +56,9 @@ public abstract class LogicElement {
         return outputStates;
     }
 
+    public void setPosition(Vector2D position) {
+        this.position = position;
+    }
 
     public LogicElement(int x, int y, Rotation rot){
         position = new Vector2D(x,y);

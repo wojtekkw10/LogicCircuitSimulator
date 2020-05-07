@@ -51,4 +51,5 @@ public class App  extends Application {
     }
 
     //TODO: rewrite tests
+    //TODO: rewrite projectionmatrix na gc.translate i gc.rotate
 }
