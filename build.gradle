@@ -43,11 +43,11 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator.App'
+    mainClassName = 'LogicCircuitSimulator.Launcher'
 }
 
 javafx{
-    sdk = 'javafx-sdk-11.0.2/'
+    version = "11.0.2"
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
