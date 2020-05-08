@@ -73,7 +73,7 @@ public abstract class LogicElement {
     }
 
     public int getElementWidth(){
-        int lowestX = Integer.MAX_VALUE;
+        int lowestX = 0;
         int greatestX = Integer.MIN_VALUE;
 
         List<Vector2D> localOutputPositions = getLocalOutputPositions();
@@ -91,7 +91,7 @@ public abstract class LogicElement {
     }
 
     public int getElementHeight(){
-        double lowestY = Double.MAX_VALUE;
+        double lowestY = 0;
         double greatestY = Double.MIN_VALUE;
 
         List<Vector2D> localOutputPositions = getLocalOutputPositions();

@@ -1,8 +1,10 @@
 DONE:
 - refactor names in SimulationCanvasController to be more descriptive
+- extract responsibility to ProjectionMatrix class (Projection2D)
+- refactor DrawSquareLogicElementVisitor to avoid repetition
 
 DOING:
-- extract responsibility to ProjectionMatrix class
+
 
 TODO:
 

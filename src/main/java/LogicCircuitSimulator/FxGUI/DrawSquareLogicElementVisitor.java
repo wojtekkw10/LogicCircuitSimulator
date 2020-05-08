@@ -71,120 +71,57 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
             Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()+0.5 + height));
             Vector2D textPosition = projection2D.project(new Vector2D(pos.getX()+0.1, pos.getY()));
 
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setStroke(Color.GREY);
-            graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setFill(Color.AQUA);
+            drawGateInside(topLeft, bottomRight);
             drawGateLabel(textPosition.getX(), textPosition.getY(), text, 0, graphicsContext);
-
-            //rysowanie odnog
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> inputPositions = le.getInputPositions();
-            for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = projection2D.project(inputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX()-0.2, inputPos.getY()));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
-
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> outputPositions = le.getOutputPositions();
-            for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = projection2D.project(outputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX()+0.2, outputPos.getY()));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
+            drawGateLegs(le, new Vector2D(-0.2, 0), new Vector2D(0.2, 0));
         }
         else if(le.getRotation() == Rotation.LEFT){
             Vector2D topLeft = projection2D.project(new Vector2D(pos.getX(), pos.getY()-0.5));
             Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()+0.5+height));
             Vector2D textPosition = projection2D.project(new Vector2D(pos.getX()+0.9, pos.getY()+height));
 
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setStroke(Color.GREY);
-            graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setFill(Color.AQUA);
+            drawGateInside(topLeft, bottomRight);
             drawGateLabel(textPosition.getX(), textPosition.getY(), text, 180, graphicsContext);
+            drawGateLegs(le, new Vector2D(0.2, 0), new Vector2D(-0.2, 0));
 
-            //rysowanie odnog
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> inputPositions = le.getInputPositions();
-            for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = projection2D.project(inputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX()+0.2, inputPos.getY()));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
-
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> outputPositions = le.getOutputPositions();
-            for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = projection2D.project(outputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX()-0.2, outputPos.getY()));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
         }
         else if(le.getRotation() == Rotation.UP){
             Vector2D topLeft = projection2D.project(new Vector2D(pos.getX()-0.5, pos.getY()));
             Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+0.5+height, pos.getY()+1));
             Vector2D textPosition = projection2D.project(new Vector2D(pos.getX(), pos.getY()+0.9));
 
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setStroke(Color.GREY);
-            graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setFill(Color.AQUA);
+            drawGateInside(topLeft, bottomRight);
             drawGateLabel(textPosition.getX(), textPosition.getY(), text, -90, graphicsContext);
-
-            //rysowanie odnog
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> inputPositions = le.getInputPositions();
-            for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = projection2D.project(inputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX(), inputPos.getY()+0.2));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
-
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> outputPositions = le.getOutputPositions();
-            for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = projection2D.project(outputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX(), outputPos.getY()-0.2));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
+            drawGateLegs(le,  new Vector2D(0, 0.2), new Vector2D(0, -0.2));
         }
         else if(le.getRotation() == Rotation.DOWN){
             Vector2D topLeft = projection2D.project(new Vector2D(pos.getX()-0.5, pos.getY()));
             Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+0.5 + height, pos.getY()+1));
             Vector2D textPosition = projection2D.project(new Vector2D(pos.getX() + height, pos.getY()+0.1));
 
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setStroke(Color.GREY);
-            graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-            graphicsContext.setFill(Color.AQUA);
+            drawGateInside(topLeft, bottomRight);
             drawGateLabel(textPosition.getX(), textPosition.getY(), text, 90, graphicsContext);
-
-            //rysowanie odnog
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> inputPositions = le.getInputPositions();
-            for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = projection2D.project(inputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX(), inputPos.getY()-0.2));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
-
-            graphicsContext.setStroke(Color.GREY);
-            List<Vector2D> outputPositions = le.getOutputPositions();
-            for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = projection2D.project(outputPos);
-                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX(), outputPos.getY()+0.2));
-                graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
-            }
+            drawGateLegs(le,  new Vector2D(0, -0.2), new Vector2D(0, 0.2));
         }
     }
 
-    public static void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
+    private void drawGateLegs(LogicElement le, Vector2D inputLegDirection, Vector2D outputLegDirection) {
+        List<Vector2D> inputPositions = le.getInputPositions();
+        drawLinesFrom(inputPositions, inputLegDirection);
+
+        List<Vector2D> outputPositions = le.getOutputPositions();
+        drawLinesFrom(outputPositions, outputLegDirection);
+    }
+
+    private void drawGateInside(Vector2D topLeft, Vector2D bottomRight) {
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
+        graphicsContext.setStroke(Color.GREY);
+        graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
+        graphicsContext.setFill(Color.AQUA);
+    }
+
+    private void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
         gc.save();
         gc.translate(x, y);
         gc.rotate(degrees);
@@ -194,7 +131,12 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawLinesFrom(List<Vector2D> points, Vector2D direction){
-
+        graphicsContext.setStroke(Color.GREY);
+        for (Vector2D point : points) {
+            Vector2D projectedStart = projection2D.project(point);
+            Vector2D projectedEnd = projection2D.project(new Vector2D(point.getX()+direction.getX(), point.getY()+direction.getY()));
+            graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
+        }
     }
 }
 
