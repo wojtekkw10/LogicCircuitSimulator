@@ -1,27 +1,19 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
-import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
-import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
 import LogicCircuitSimulator.FxGUI.DrawingManager;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
-import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
 import LogicCircuitSimulator.LogicElements.*;
 import LogicCircuitSimulator.WireGrid.Node;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-
-import java.util.Iterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -74,8 +66,17 @@ public class SimulationCanvasController {
         }
 
         DrawingManager drawingManager = new DrawingManager(mainSimulationCanvas, mainSimulationAnchorPane);
-        drawingManager.update(lastMousePosition, isLogicGateDragged, logicGateDragged, projection2D, simulation, updatesSinceLastFrame);
-        drawingManager.startDrawing();
+
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if(syncMode == SyncMode.SYNCHRONIZED){
+                    simulationTask.run();
+                }
+                drawingManager.update(lastMousePosition, isLogicGateDragged, logicGateDragged, projection2D, simulation, updatesSinceLastFrame);
+                drawingManager.draw(now);
+            }
+        }.start();
     }
 
     @FXML
@@ -126,7 +127,6 @@ public class SimulationCanvasController {
                 else wireMode = WireMode.ADDING;
             }
         }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
-
     }
 
     @FXML
@@ -141,9 +141,6 @@ public class SimulationCanvasController {
                     isLogicGateDragged.set(false);
                 }
             }.performNoTransformation(mousePos, projection2D);
-
-
-
         }
         else{
             if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.isStillSincePress()) {
@@ -157,7 +154,7 @@ public class SimulationCanvasController {
             }
             else if(mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.isStillSincePress()){
                 Vector2D nodePos = getNodePositionFromMousePosition(mouseEvent.getX(), mouseEvent.getY());
-                removeLogicElement(nodePos, simulation.logicElementIterator());
+                simulation.removeLogicElement(nodePos);
             }
         }
     }
@@ -167,7 +164,6 @@ public class SimulationCanvasController {
         lastMousePosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
         if(mouseEvent.getButton() == MouseButton.MIDDLE){
-
             double deltaX = lastMousePressPosition.getX() - mouseEvent.getX();
             double deltaY = lastMousePressPosition.getY() - mouseEvent.getY();
 
@@ -193,19 +189,10 @@ public class SimulationCanvasController {
     }
 
     public void shutdown(){
-        executor.shutdown();
+        executor.shutdownNow();
     }
 
     //Private functions
-    private void removeLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
-        while(logicElements.hasNext()){
-            LogicElement logicElement = logicElements.next();
-            if(logicElement.getPosition().equals(pos)){
-                logicElements.remove();
-            }
-        }
-    }
-
     private Vector2D getNodePositionFromMousePosition(double x, double y){
         Vector2D pos = projection2D.projectBack(new Vector2D(x,y));
         int nodeX = (int) pos.getX();

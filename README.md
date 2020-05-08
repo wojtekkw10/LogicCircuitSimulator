@@ -12,3 +12,8 @@ Add this line to VM Options:
 --module-path /path/to/JavaFX/lib --add-modules=javafx.controls
 ```
 ok. This is unnecessary.
+
+# To run it
+```bash
+gradle run
+```

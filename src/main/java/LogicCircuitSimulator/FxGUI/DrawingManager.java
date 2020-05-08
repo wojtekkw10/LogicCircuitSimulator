@@ -7,7 +7,6 @@ import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.WireGrid.Node;
-import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
@@ -15,9 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.Iterator;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,7 +47,7 @@ public class DrawingManager {
         this.anchorPane = anchorPane;
     }
 
-    public void startDrawing(){
+    public void draw(long now){
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setLineWidth(1);
 
@@ -59,38 +55,32 @@ public class DrawingManager {
 
         SimulationCanvasBackground background = new SimulationCanvasBackground(canvas);
 
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                updateTitleBar(now);
+        updateTitleBar(now);
+        resizeCanvasToAnchorPane();
+        clearCanvas(Color.BLACK);
+        background.draw(projection2D);
+        drawLogicGates(simulation.logicElementIterator());
+        drawNodes(simulation.nodeIterator());
 
-                resizeCanvasToAnchorPane();
-                clearCanvas(Color.BLACK);
-                background.draw(projection2D);
-                drawLogicGates(simulation.logicElementIterator());
-                drawNodes(simulation.nodeIterator());
-
-                if(isLogicGateDragged.get()) {
-                    new LogicElementHandler(simulation) {
-                        @Override
-                        public void transformLogicElement() {
-                            SimulationCanvasController.logicGateDragged.setPosition(getPosition());
-                        }
-                    }.performNoTransformation(SimulationCanvasController.lastMousePosition, projection2D);
-
-                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
-                    SimulationCanvasController.logicGateDragged.accept(drawLogicElement);
+        if(isLogicGateDragged.get()) {
+            new LogicElementHandler(simulation) {
+                @Override
+                public void transformLogicElement() {
+                    logicGateDragged.setPosition(getPosition());
                 }
+            }.performNoTransformation(SimulationCanvasController.lastMousePosition, projection2D);
 
-                if(syncMode == SyncMode.SYNCHRONIZED){
-                    updatesSinceLastFrame.getAndIncrement();
-                    simulation.runOnce();
-                }
-                framesSinceLastFrame++;
+            LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
+            logicGateDragged.accept(drawLogicElement);
+        }
 
-                waitUntilNextFrame(now);
-            }
-        }.start();
+        if(syncMode == SyncMode.SYNCHRONIZED){
+            updatesSinceLastFrame.getAndIncrement();
+            simulation.runOnce();
+        }
+        framesSinceLastFrame++;
+
+        waitUntilNextFrame(now);
     }
 
     public void update(Vector2D lastMousePosition, AtomicBoolean isLogicGateDragged,
