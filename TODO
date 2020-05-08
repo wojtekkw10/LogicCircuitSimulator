@@ -2,16 +2,15 @@ DONE:
 - refactor names in SimulationCanvasController to be more descriptive
 - extract responsibility to ProjectionMatrix class (Projection2D)
 - refactor DrawSquareLogicElementVisitor to avoid repetition
-
+- extract drawing class from SimulationCanvasController - this class is too big and has too many responsibilities
+-  remove unused function
 DOING:
-
+- fix DrawingManager to depend less on the CanvasController (not using CanvasController.logicElementDragged)
 
 TODO:
 
 TODO: remove the iterator2D because it's unnecessary - the Node contains position information
     so it's unnecessary to output position separately
-
-TODO: extract drawing class from SimulationCanvasController - this class is too big and has too many responsibilities
 
 TODO: create an array of references to logicGates on the board to facilitate moving the logic gates, without it it's hard to find
     which gate is clicked

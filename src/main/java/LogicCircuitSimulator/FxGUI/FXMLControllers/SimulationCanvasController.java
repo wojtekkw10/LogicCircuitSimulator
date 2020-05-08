@@ -3,6 +3,7 @@ package LogicCircuitSimulator.FxGUI.FXMLControllers;
 import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.DrawingManager;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationCanvasController {
@@ -31,22 +33,15 @@ public class SimulationCanvasController {
     public static final double MAX_ZOOM = 50;
     public static final double MIN_ZOOM = 5;
 
-    private Vector2D lastMousePressPosition = new Vector2D(0,0);
-    private Vector2D lastMousePosition = new Vector2D(0,0);
+    public static Vector2D lastMousePressPosition = new Vector2D(0,0);
+    public static Vector2D lastMousePosition = new Vector2D(0,0);
 
     private final int TARGET_UPS = 1_000_000;
-    private final int TARGET_FPS = 10000;
 
-    private boolean isLogicGateDragged = false;
-    private LogicElement logicGateDragged;
+    private final AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
+    public static LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
-    private GraphicsContext graphicsContext;
-    //SimpleMatrix projectionMatrix = MatrixOperations.getProjectionMatrix(0,0, 20);
     Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
-
-    private long lastNow;
-
-    private int framesSinceLastFrame;
     AtomicInteger updatesSinceLastFrame = new AtomicInteger();
 
     private WireMode wireMode = WireMode.ADDING;
@@ -57,21 +52,16 @@ public class SimulationCanvasController {
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
     }
-
     enum WireMode{
         ADDING,
         REMOVING
     }
 
-
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
     Runnable simulationTask = () -> {
         simulation.runOnce();
         updatesSinceLastFrame.getAndIncrement();
     };
-
-
 
     @FXML
     public Canvas mainSimulationCanvas;
@@ -79,49 +69,13 @@ public class SimulationCanvasController {
 
     @FXML
     void initialize(){
-        graphicsContext = mainSimulationCanvas.getGraphicsContext2D();
-        graphicsContext.setLineWidth(1);
-
-        graphicsContext.setFont(new Font(Font.getFontNames().get(0), 15));
-
-        SimulationCanvasBackground background = new SimulationCanvasBackground(mainSimulationCanvas);
-
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
             executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
         }
 
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                updateTitleBar(now);
-
-                resizeCanvasToAnchorPane();
-                clearCanvas(Color.BLACK);
-                background.draw(projection2D);
-                drawLogicGates(simulation.logicElementIterator());
-                drawNodes(simulation.nodeIterator());
-
-                if(isLogicGateDragged) {
-                    new LogicElementHandler(simulation) {
-                        @Override
-                        public void transformLogicElement() {
-                            logicGateDragged.setPosition(getPosition());
-                        }
-                    }.performNoTransformation(lastMousePosition, projection2D);
-
-                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
-                    logicGateDragged.accept(drawLogicElement);
-                }
-
-                if(syncMode == SyncMode.SYNCHRONIZED){
-                    updatesSinceLastFrame.getAndIncrement();
-                    simulation.runOnce();
-                }
-                framesSinceLastFrame++;
-
-                waitUntilNextFrame(now);
-            }
-        }.start();
+        DrawingManager drawingManager = new DrawingManager(mainSimulationCanvas, mainSimulationAnchorPane);
+        drawingManager.update(lastMousePosition, isLogicGateDragged, logicGateDragged, projection2D, simulation, updatesSinceLastFrame);
+        drawingManager.startDrawing();
     }
 
     @FXML
@@ -159,7 +113,7 @@ public class SimulationCanvasController {
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged = getLogicElement();
-                    isLogicGateDragged = true;
+                    isLogicGateDragged.set(true);
                     removeLogicElement();
                 }
             }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
@@ -178,13 +132,13 @@ public class SimulationCanvasController {
     @FXML
     public void onMouseReleased(MouseEvent mouseEvent) {
         Vector2D mousePos = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
-        if(isLogicGateDragged){
+        if(isLogicGateDragged.get()){
             new LogicElementHandler(simulation){
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());
                     simulation.addLogicGate(logicGateDragged);
-                    isLogicGateDragged = false;
+                    isLogicGateDragged.set(false);
                 }
             }.performNoTransformation(mousePos, projection2D);
 
@@ -222,7 +176,7 @@ public class SimulationCanvasController {
             projection2D.translate(new Vector2D(-deltaX, -deltaY));
         }
 
-        if(mouseEvent.getButton() == MouseButton.PRIMARY && !isLogicGateDragged){
+        if(mouseEvent.getButton() == MouseButton.PRIMARY && !isLogicGateDragged.get()){
             new WireMouseHandler(simulation){
                 @Override
                 public void transformState() {
@@ -239,51 +193,10 @@ public class SimulationCanvasController {
     }
 
     public void shutdown(){
-        executor.shutdownNow();
+        executor.shutdown();
     }
 
     //Private functions
-    private void clearCanvas(Color color){
-        graphicsContext.setFill(color);
-        graphicsContext.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
-        graphicsContext.fillRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
-    }
-    private void resizeCanvasToAnchorPane(){
-        mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
-        mainSimulationCanvas.setWidth(mainSimulationAnchorPane.getWidth());
-    }
-
-    private void drawLogicGates(Iterator<LogicElement>  logicElements){
-        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
-        while(logicElements.hasNext()){
-            logicElements.next().accept(drawLogicElement);
-        }
-    }
-
-    private void drawNodes(Iterator<Node> nodes){
-        NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
-        while(nodes.hasNext()){
-            nodes.next().accept(drawNode);
-        }
-    }
-
-    private void updateTitleBar(long now){
-        if(now > lastNow + 1e9){
-            App.decorateWindowTitle(framesSinceLastFrame, updatesSinceLastFrame.get());
-            framesSinceLastFrame = 0;
-            updatesSinceLastFrame.set(0);
-            lastNow = now;
-        }
-    }
-
-    private void waitUntilNextFrame(long now){
-        try {
-            Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void removeLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
         while(logicElements.hasNext()){
             LogicElement logicElement = logicElements.next();
@@ -293,16 +206,6 @@ public class SimulationCanvasController {
         }
     }
 
-    private LogicElement getLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
-        while(logicElements.hasNext()){
-            LogicElement logicElement = logicElements.next();
-            if(logicElement.getPosition().equals(pos)){
-                return logicElement;
-            }
-        }
-        return null;
-    }
-
     private Vector2D getNodePositionFromMousePosition(double x, double y){
         Vector2D pos = projection2D.projectBack(new Vector2D(x,y));
         int nodeX = (int) pos.getX();
@@ -310,54 +213,35 @@ public class SimulationCanvasController {
         return new Vector2D(nodeX, nodeY);
     }
 
-    private void toggleNodeCrossing(Vector2D nodePos){
-        Node node = simulation.getNode(nodePos);
-        if (node.isTouching() == Node.WireCrossing.TOUCHING) {
-            simulation.updateCrossing(nodePos, Node.WireCrossing.NOT_TOUCHING);
-        } else simulation.updateCrossing(nodePos, Node.WireCrossing.TOUCHING);
-    }
-
-    private void rotateLogicElementClockwise(Vector2D nodePos, Iterator<LogicElement> logicElements){
-        while(logicElements.hasNext()){
-            LogicElement logicElement = logicElements.next();
-            if(logicElement.getPosition().equals(nodePos)){
-                if(logicElement.getRotation() == Rotation.RIGHT) logicElement.setRotation(Rotation.DOWN);
-                else if(logicElement.getRotation() == Rotation.DOWN) logicElement.setRotation(Rotation.LEFT);
-                else if(logicElement.getRotation() == Rotation.LEFT) logicElement.setRotation(Rotation.UP);
-                else if(logicElement.getRotation() == Rotation.UP) logicElement.setRotation(Rotation.RIGHT);
-            }
-        }
-    }
-
     private void createLogicElementAtMouseOnKeyEvent(KeyCode keycode){
         int x = 0;
         int y = 0;
         if(keycode == KeyCode.DIGIT1){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new AndGate(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT2){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new BufferGate(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT3){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new LogicClock(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT4){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new LogicOne(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT5){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new NotGate(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT6){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new OrGate(x, y, Rotation.RIGHT);
         }
         else if(keycode == KeyCode.DIGIT7){
-            isLogicGateDragged = true;
+            isLogicGateDragged.set(true);
             logicGateDragged = new XorGate(x, y, Rotation.RIGHT);
         }
     }
