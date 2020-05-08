@@ -1,10 +1,9 @@
 package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation;
-import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Node;
-import org.ejml.simple.SimpleMatrix;
 
 public abstract class CrossingMouseHandler {
 
@@ -18,12 +17,11 @@ public abstract class CrossingMouseHandler {
 
     abstract public void transformCrossing();
 
-    public void performTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mousePos.getX(), mousePos.getY())));
+    public void performTransformation(Vector2D mousePos, Projection2D projection){
+        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
         int x = (int)pos.getX();
         int y = (int)pos.getY();
         Vector2D nodePos = new Vector2D(x,y);
-
 
         double xFraction = pos.getX() - x;
         double yFraction = pos.getY() - y;

@@ -1,12 +1,11 @@
 package LogicCircuitSimulator.FxGUI;
 
 import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
-import LogicCircuitSimulator.Utils.MatrixOperations;
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import org.ejml.simple.SimpleMatrix;
 
 public class SimulationCanvasBackground {
     private static final Color dotColor = Color.AQUA;
@@ -19,21 +18,20 @@ public class SimulationCanvasBackground {
         this.graphicsContext = simulationCanvas.getGraphicsContext2D();
     }
 
-
-    public void draw(SimpleMatrix projection){
+    public void draw(Projection2D projection){
         graphicsContext.setFill(backgroundColor);
 
         double canvasWidth = simulationCanvas.getWidth();
         double canvasHeight = simulationCanvas.getHeight();
 
-        double scale = MatrixOperations.getScaleFromMatrix(projection);
+        double scale = projection.getScale();
 
         setStroke(graphicsContext, scale);
 
         int amountHorizontally = (int)Math.ceil(canvasWidth / scale);
         int amountVertically = (int)Math.ceil(canvasHeight / scale);
 
-        Vector2D gridShift = MatrixOperations.getVectorFromFullMatrix(projection);
+        Vector2D gridShift = projection.getTranslation();
 
         int gridShiftX = (int)(gridShift.getX()/scale);
         int gridShiftY = (int)(gridShift.getY()/scale);
@@ -43,7 +41,7 @@ public class SimulationCanvasBackground {
         if(scale > SimulationCanvasController.MIN_ZOOM *backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
                 for (int j = -gridShiftY; j < amountVertically - gridShiftY; j++) {
-                    Vector2D pointPos = MatrixOperations.projectPoint(projection, new Vector2D(i, j));
+                    Vector2D pointPos = projection.project(new Vector2D(i,j));
                     int x = (int)pointPos.getX();
                     int y = (int)pointPos.getY();
 
@@ -51,9 +49,6 @@ public class SimulationCanvasBackground {
                 }
             }
         }
-
-
-
     }
 
     private void setStroke(GraphicsContext ctx, double scale){

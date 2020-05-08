@@ -1,11 +1,10 @@
 package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Simulation;
-import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Node;
-import org.ejml.simple.SimpleMatrix;
 
 public abstract class WireMouseHandler {
     int x;
@@ -24,8 +23,8 @@ public abstract class WireMouseHandler {
 
     abstract public void transformState();
 
-    public void performTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mousePos.getX(), mousePos.getY())));
+    public void performTransformation(Vector2D mousePos, Projection2D projection){
+        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
         x = (int)pos.getX();
         y = (int)pos.getY();
         double xFraction = pos.getX() - x;

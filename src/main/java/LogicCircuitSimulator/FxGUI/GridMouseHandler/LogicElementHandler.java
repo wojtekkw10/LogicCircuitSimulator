@@ -1,12 +1,10 @@
 package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.LogicElements.Rotation;
 import LogicCircuitSimulator.Simulation;
-import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Node;
-import org.ejml.simple.SimpleMatrix;
 
 import java.util.Iterator;
 
@@ -22,8 +20,8 @@ public abstract class LogicElementHandler {
 
     abstract public void transformLogicElement();
 
-    public void performTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        Vector2D nodePos = getNodePosition(mousePos, projectionMatrix);
+    public void performTransformation(Vector2D mousePos, Projection2D projection){
+        Vector2D nodePos = getNodePosition(mousePos, projection);
         LogicElement logicElement = getLogicElement(nodePos, simulation.logicElementIterator());
         if (logicElement != null) {
             int width = logicElement.getElementWidth();
@@ -37,14 +35,14 @@ public abstract class LogicElementHandler {
 
     }
 
-    public void performNoTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        currentLogicElementPos = getNodePosition(mousePos, projectionMatrix);
+    public void performNoTransformation(Vector2D mousePos, Projection2D projection){
+        currentLogicElementPos = getNodePosition(mousePos, projection);
 
         transformLogicElement();
     }
 
-    private Vector2D getNodePosition(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(mousePos.getX(), mousePos.getY())));
+    private Vector2D getNodePosition(Vector2D mousePos, Projection2D projection){
+        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
         int x = (int)pos.getX();
         int y = (int)pos.getY();
         Vector2D nodePos = new Vector2D(x,y);

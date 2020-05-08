@@ -1,23 +1,22 @@
 package LogicCircuitSimulator.FxGUI;
 
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.LogicElementVisitor;
 import LogicCircuitSimulator.LogicElements.*;
-import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import org.ejml.simple.SimpleMatrix;
 
 import java.util.List;
 
 public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
-    private final SimpleMatrix projectionMatrix;
+    private final Projection2D projection2D;
     private final GraphicsContext graphicsContext;
 
-    public DrawSquareLogicElementVisitor(GraphicsContext graphicsContext, SimpleMatrix projectionMatrix){
+    public DrawSquareLogicElementVisitor(GraphicsContext graphicsContext, Projection2D projection2D){
         this.graphicsContext = graphicsContext;
-        this.projectionMatrix = projectionMatrix;
+        this.projection2D = projection2D;
     }
 
     @Override
@@ -61,16 +60,16 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     void drawGate(LogicElement le, String text){
-        if(le.getRotation() == Rotation.RIGHT){
-            graphicsContext.setLineWidth(1);
-            double height = le.getElementHeight();
-            Vector2D pos = le.getPosition();
-            Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()-0.5)));
-            Vector2D bottomRight = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+1, pos.getY()+0.5 + height)));
-            Vector2D textPosition = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+0.1, pos.getY())));
+        graphicsContext.setLineWidth(1);
+        double scale = projection2D.getScale();
+        Vector2D pos = le.getPosition();
+        double height = le.getElementHeight();
+        graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
 
-            double scale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
-            graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
+        if(le.getRotation() == Rotation.RIGHT){
+            Vector2D topLeft = projection2D.project(new Vector2D(pos.getX(), pos.getY()-0.5));
+            Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()+0.5 + height));
+            Vector2D textPosition = projection2D.project(new Vector2D(pos.getX()+0.1, pos.getY()));
 
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
@@ -83,29 +82,23 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> inputPositions = le.getInputPositions();
             for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, inputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(inputPos.getX()-0.2, inputPos.getY()));
+                Vector2D projectedStart = projection2D.project(inputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX()-0.2, inputPos.getY()));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
 
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> outputPositions = le.getOutputPositions();
             for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, outputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(outputPos.getX()+0.2, outputPos.getY()));
+                Vector2D projectedStart = projection2D.project(outputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX()+0.2, outputPos.getY()));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
         }
         else if(le.getRotation() == Rotation.LEFT){
-            graphicsContext.setLineWidth(1);
-            double height = le.getElementHeight();
-            Vector2D pos = le.getPosition();
-            Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()-0.5)));
-            Vector2D bottomRight = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+1, pos.getY()+0.5 + height)));
-            Vector2D textPosition = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+0.9, pos.getY()+height)));
-
-            double scale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
-            graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
+            Vector2D topLeft = projection2D.project(new Vector2D(pos.getX(), pos.getY()-0.5));
+            Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()+0.5+height));
+            Vector2D textPosition = projection2D.project(new Vector2D(pos.getX()+0.9, pos.getY()+height));
 
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
@@ -118,29 +111,23 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> inputPositions = le.getInputPositions();
             for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, inputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(inputPos.getX()+0.2, inputPos.getY()));
+                Vector2D projectedStart = projection2D.project(inputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX()+0.2, inputPos.getY()));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
 
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> outputPositions = le.getOutputPositions();
             for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, outputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(outputPos.getX()-0.2, outputPos.getY()));
+                Vector2D projectedStart = projection2D.project(outputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX()-0.2, outputPos.getY()));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
         }
         else if(le.getRotation() == Rotation.UP){
-            graphicsContext.setLineWidth(1);
-            double height = le.getElementHeight();
-            Vector2D pos = le.getPosition();
-            Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()-0.5, pos.getY())));
-            Vector2D bottomRight = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+0.5+height, pos.getY()+1)));
-            Vector2D textPosition = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX(), pos.getY()+0.9)));
-
-            double scale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
-            graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
+            Vector2D topLeft = projection2D.project(new Vector2D(pos.getX()-0.5, pos.getY()));
+            Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+0.5+height, pos.getY()+1));
+            Vector2D textPosition = projection2D.project(new Vector2D(pos.getX(), pos.getY()+0.9));
 
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
@@ -153,29 +140,23 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> inputPositions = le.getInputPositions();
             for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, inputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(inputPos.getX(), inputPos.getY()+0.2));
+                Vector2D projectedStart = projection2D.project(inputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX(), inputPos.getY()+0.2));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
 
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> outputPositions = le.getOutputPositions();
             for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, outputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(outputPos.getX(), outputPos.getY()-0.2));
+                Vector2D projectedStart = projection2D.project(outputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX(), outputPos.getY()-0.2));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
         }
         else if(le.getRotation() == Rotation.DOWN){
-            graphicsContext.setLineWidth(1);
-            double height = le.getElementHeight();
-            Vector2D pos = le.getPosition();
-            Vector2D topLeft = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()-0.5, pos.getY())));
-            Vector2D bottomRight = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+0.5 + height, pos.getY()+1)));
-            Vector2D textPosition = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.mult(MatrixOperations.getVectorMatrix(pos.getX()+height, pos.getY()+0.1)));
-
-            double scale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
-            graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
+            Vector2D topLeft = projection2D.project(new Vector2D(pos.getX()-0.5, pos.getY()));
+            Vector2D bottomRight = projection2D.project(new Vector2D(pos.getX()+0.5 + height, pos.getY()+1));
+            Vector2D textPosition = projection2D.project(new Vector2D(pos.getX() + height, pos.getY()+0.1));
 
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
@@ -188,21 +169,20 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> inputPositions = le.getInputPositions();
             for (Vector2D inputPos : inputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, inputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(inputPos.getX(), inputPos.getY()-0.2));
+                Vector2D projectedStart = projection2D.project(inputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(inputPos.getX(), inputPos.getY()-0.2));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
 
             graphicsContext.setStroke(Color.GREY);
             List<Vector2D> outputPositions = le.getOutputPositions();
             for (Vector2D outputPos : outputPositions) {
-                Vector2D projectedStart = MatrixOperations.projectPoint(projectionMatrix, outputPos);
-                Vector2D projectedEnd = MatrixOperations.projectPoint(projectionMatrix, new Vector2D(outputPos.getX(), outputPos.getY()+0.2));
+                Vector2D projectedStart = projection2D.project(outputPos);
+                Vector2D projectedEnd = projection2D.project(new Vector2D(outputPos.getX(), outputPos.getY()+0.2));
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
         }
     }
-
 
     public static void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
         gc.save();
@@ -211,6 +191,10 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         gc.translate(-x, -y);
         gc.fillText(text, x, y);
         gc.restore();
+    }
+
+    private void drawLinesFrom(List<Vector2D> points, Vector2D direction){
+
     }
 }
 

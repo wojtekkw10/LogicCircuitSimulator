@@ -1,14 +1,15 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
+import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
-import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
-import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
+import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
 import LogicCircuitSimulator.LogicElements.*;
-import LogicCircuitSimulator.Utils.MatrixOperations;
 import LogicCircuitSimulator.WireGrid.Node;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -18,7 +19,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import org.ejml.simple.SimpleMatrix;
 
 import java.util.Iterator;
 import java.util.concurrent.Executors;
@@ -41,6 +41,8 @@ public class SimulationCanvasController {
     private LogicElement logicGateDragged;
 
     private GraphicsContext graphicsContext;
+    //SimpleMatrix projectionMatrix = MatrixOperations.getProjectionMatrix(0,0, 20);
+    Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
 
     private long lastNow;
 
@@ -69,7 +71,7 @@ public class SimulationCanvasController {
         updatesSinceLastFrame.getAndIncrement();
     };
 
-    SimpleMatrix projectionMatrix = MatrixOperations.getProjectionMatrix(0,0, 20);
+
 
     @FXML
     public Canvas mainSimulationCanvas;
@@ -95,7 +97,7 @@ public class SimulationCanvasController {
 
                 resizeCanvasToAnchorPane();
                 clearCanvas(Color.BLACK);
-                background.draw(projectionMatrix);
+                background.draw(projection2D);
                 drawLogicGates(simulation.logicElementIterator());
                 drawNodes(simulation.nodeIterator());
 
@@ -105,9 +107,9 @@ public class SimulationCanvasController {
                         public void transformLogicElement() {
                             logicGateDragged.setPosition(getPosition());
                         }
-                    }.performNoTransformation(lastMousePosition, projectionMatrix);
+                    }.performNoTransformation(lastMousePosition, projection2D);
 
-                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projectionMatrix);
+                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
                     logicGateDragged.accept(drawLogicElement);
                 }
 
@@ -124,12 +126,12 @@ public class SimulationCanvasController {
 
     @FXML
     public void OnScroll(ScrollEvent scrollEvent) {
-        double currentScale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
+        double currentScale = projection2D.getScale();
         if(scrollEvent.getDeltaY()>0 && currentScale < MAX_ZOOM) {
-            projectionMatrix = MatrixOperations.getScalingMatrix(1 + SCALING_FACTOR, lastMousePosition.getX(), lastMousePosition.getY()).mult(projectionMatrix);
+            projection2D.scale(1+SCALING_FACTOR, lastMousePosition);
         }
         else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_ZOOM) {
-            projectionMatrix = MatrixOperations.getScalingMatrix(1 - SCALING_FACTOR, lastMousePosition.getX(), lastMousePosition.getY()).mult(projectionMatrix);
+            projection2D.scale(1-SCALING_FACTOR, lastMousePosition);
         }
     }
 
@@ -142,7 +144,7 @@ public class SimulationCanvasController {
                 public void transformLogicElement() {
                     rotateLogicElementClockwise();
                 }
-            }.performTransformation(lastMousePosition, projectionMatrix);
+            }.performTransformation(lastMousePosition, projection2D);
         }
 
         createLogicElementAtMouseOnKeyEvent(keyEvent.getCode());
@@ -160,7 +162,7 @@ public class SimulationCanvasController {
                     isLogicGateDragged = true;
                     removeLogicElement();
                 }
-            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
+            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
         }
 
         new WireMouseHandler(simulation){
@@ -169,7 +171,7 @@ public class SimulationCanvasController {
                 if(getWireState() != Node.State.NONE) wireMode = WireMode.REMOVING;
                 else wireMode = WireMode.ADDING;
             }
-        }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
+        }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
 
     }
 
@@ -184,7 +186,7 @@ public class SimulationCanvasController {
                     simulation.addLogicGate(logicGateDragged);
                     isLogicGateDragged = false;
                 }
-            }.performNoTransformation(mousePos, projectionMatrix);
+            }.performNoTransformation(mousePos, projection2D);
 
 
 
@@ -197,10 +199,10 @@ public class SimulationCanvasController {
                         if (getCrossing() == Node.WireCrossing.TOUCHING) updateCrossing(Node.WireCrossing.NOT_TOUCHING);
                         else updateCrossing(Node.WireCrossing.TOUCHING);
                     }
-                }.performTransformation(mousePos, projectionMatrix);
+                }.performTransformation(mousePos, projection2D);
             }
             else if(mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.isStillSincePress()){
-                Vector2D nodePos = getNodePositionFromMousePosition(mouseEvent.getX(), mouseEvent.getY(), projectionMatrix);
+                Vector2D nodePos = getNodePositionFromMousePosition(mouseEvent.getX(), mouseEvent.getY());
                 removeLogicElement(nodePos, simulation.logicElementIterator());
             }
         }
@@ -217,7 +219,7 @@ public class SimulationCanvasController {
 
             lastMousePressPosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
-            projectionMatrix = MatrixOperations.getTranslationMatrix(-deltaX, -deltaY).mult(projectionMatrix);
+            projection2D.translate(new Vector2D(-deltaX, -deltaY));
         }
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY && !isLogicGateDragged){
@@ -227,7 +229,7 @@ public class SimulationCanvasController {
                     if(wireMode == WireMode.ADDING) this.updateWireState(Node.State.HIGH);
                     else updateWireState(Node.State.NONE);
                 }
-            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
+            }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
         }
     }
 
@@ -252,14 +254,14 @@ public class SimulationCanvasController {
     }
 
     private void drawLogicGates(Iterator<LogicElement>  logicElements){
-        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projectionMatrix);
+        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
         while(logicElements.hasNext()){
             logicElements.next().accept(drawLogicElement);
         }
     }
 
     private void drawNodes(Iterator<Node> nodes){
-        NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projectionMatrix);
+        NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
         while(nodes.hasNext()){
             nodes.next().accept(drawNode);
         }
@@ -301,8 +303,8 @@ public class SimulationCanvasController {
         return null;
     }
 
-    private Vector2D getNodePositionFromMousePosition(double x, double y, SimpleMatrix projectionMatrix){
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(x, y)));
+    private Vector2D getNodePositionFromMousePosition(double x, double y){
+        Vector2D pos = projection2D.projectBack(new Vector2D(x,y));
         int nodeX = (int) pos.getX();
         int nodeY = (int) pos.getY();
         return new Vector2D(nodeX, nodeY);
