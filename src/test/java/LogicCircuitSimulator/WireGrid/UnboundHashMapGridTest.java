@@ -1,15 +1,15 @@
 package LogicCircuitSimulator.WireGrid;
 
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Unbound2DList.Unbound2DList;
-import LogicCircuitSimulator.WireGrid.Unbound2DList.Unbound2DListHashMap;
+import LogicCircuitSimulator.WireGrid.Unbound2DList.UnboundGrid;
+import LogicCircuitSimulator.WireGrid.Unbound2DList.UnboundHashMapGrid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Unbound2DListHashMapTest {
-    Unbound2DList<Integer> array = new Unbound2DListHashMap<>();
+class UnboundHashMapGridTest {
+    UnboundGrid<Integer> array = new UnboundHashMapGrid<>();
 
     @BeforeEach
     void init(){

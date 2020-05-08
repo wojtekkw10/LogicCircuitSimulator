@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Stores and processes wire data in a logic circuit. The coordinates are unbounded.
  */
-public interface WireGrid {
+public interface NodeHandler {
 
     /**
      * Sets a Wire element in the grid
@@ -31,7 +31,7 @@ public interface WireGrid {
      * @param orientation orientation of the wire. Either Horizontally or Vertically
      * @param state new state applied to the specified wire
      */
-    void updateWire(Vector2D pos, Orientation orientation, Node.State state);
+    void updateWire(Vector2D pos, Orientation orientation, WireState state);
 
     /**
      * Updates type of the crossing at a specified position in the grid

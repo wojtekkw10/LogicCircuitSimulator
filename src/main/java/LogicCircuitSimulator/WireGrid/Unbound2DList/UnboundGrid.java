@@ -5,7 +5,7 @@ import LogicCircuitSimulator.WireGrid.Iterator2D;
 
 import java.util.Optional;
 
-public interface Unbound2DList<T>{
+public interface UnboundGrid<T>{
 
     /**
      * Returns element from array

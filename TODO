@@ -7,8 +7,7 @@ DONE:
 - fix DrawingManager to depend less on the CanvasController (not using CanvasController.logicElementDragged)
 
 DOING:
-- remove the iterator2D because it's unnecessary - the Node contains position information
-    so it's unnecessary to output position separately
+
 
 TODO:
 
@@ -17,4 +16,13 @@ TODO: create an array of references to logicGates on the board to facilitate mov
 
 TODO: create new faster Unbound2DList
 
-TODO: Create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it
+TODO: divide ArrayWireGrid into two classes: 1. wire management (set Wire, getWire etc) 2. propagation
+
+TODO: rename 2DList to Grid
+
+
+NOT DONE:
+- create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it ||| Should just make ArrayWireGrid smaller
+- remove the iterator2D because it's unnecessary - the Node contains position information
+    so it's unnecessary to output position separately ||| Not done because we have this unbounded array of elements. We set and get them with vector2D
+    but when we want to use iterator we lose that information.

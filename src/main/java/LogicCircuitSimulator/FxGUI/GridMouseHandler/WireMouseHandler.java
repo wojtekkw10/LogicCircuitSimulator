@@ -5,6 +5,7 @@ import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.WireGrid.WireState;
 
 public abstract class WireMouseHandler {
     int x;
@@ -12,7 +13,7 @@ public abstract class WireMouseHandler {
 
     Simulation simulation;
 
-    Node.State currentWireState;
+    WireState currentWireState;
     Vector2D currentNodePos;
     Orientation currentOrientation;
 
@@ -92,10 +93,10 @@ public abstract class WireMouseHandler {
         return y;
     }
 
-    public Node.State getWireState(){
+    public WireState getWireState(){
         return currentWireState;
     }
-    public void updateWireState(Node.State state){
+    public void updateWireState(WireState state){
         simulation.updateWire(currentNodePos, currentOrientation, state);
     }
 }

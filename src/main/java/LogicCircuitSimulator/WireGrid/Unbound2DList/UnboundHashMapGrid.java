@@ -6,7 +6,7 @@ import LogicCircuitSimulator.WireGrid.Iterator2D;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Unbound2DListHashMap<T> implements Unbound2DList<T> {
+public class UnboundHashMapGrid<T> implements UnboundGrid<T> {
     Map<Vector2D, T> hashMap = new ConcurrentHashMap<>();
 
     @Override

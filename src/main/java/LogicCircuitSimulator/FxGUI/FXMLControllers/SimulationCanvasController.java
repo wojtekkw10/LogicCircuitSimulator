@@ -9,6 +9,7 @@ import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
 import LogicCircuitSimulator.LogicElements.*;
 import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.WireGrid.WireState;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -123,7 +124,7 @@ public class SimulationCanvasController {
         new WireMouseHandler(simulation){
             @Override
             public void transformState() {
-                if(getWireState() != Node.State.NONE) wireMode = WireMode.REMOVING;
+                if(getWireState() != WireState.NONE) wireMode = WireMode.REMOVING;
                 else wireMode = WireMode.ADDING;
             }
         }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
@@ -176,8 +177,8 @@ public class SimulationCanvasController {
             new WireMouseHandler(simulation){
                 @Override
                 public void transformState() {
-                    if(wireMode == WireMode.ADDING) this.updateWireState(Node.State.HIGH);
-                    else updateWireState(Node.State.NONE);
+                    if(wireMode == WireMode.ADDING) this.updateWireState(WireState.HIGH);
+                    else updateWireState(WireState.NONE);
                 }
             }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projection2D);
         }

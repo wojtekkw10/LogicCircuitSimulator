@@ -4,6 +4,7 @@ import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.WireGrid.WireState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -19,19 +20,19 @@ public class DrawNodeVisitor implements NodeVisitor {
     @Override
     public void visit(Node node) {
         graphicsContext.setLineWidth(1);
-        if(node.getRightWire() != Node.State.NONE){
+        if(node.getRightWire() != WireState.NONE){
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(pos);
             Vector2D projectedEnd = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()));
-            if(node.getRightWire() == Node.State.LOW) graphicsContext.setStroke(Color.GREY);
+            if(node.getRightWire() == WireState.LOW) graphicsContext.setStroke(Color.GREY);
             else graphicsContext.setStroke(Color.AQUA);
             graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
         }
-        if(node.getDownWire() != Node.State.NONE){
+        if(node.getDownWire() != WireState.NONE){
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(pos);
             Vector2D projectedEnd = projection2D.project(new Vector2D(pos.getX(), pos.getY()+1));
-            if(node.getDownWire() == Node.State.LOW) graphicsContext.setStroke(Color.GREY);
+            if(node.getDownWire() == WireState.LOW) graphicsContext.setStroke(Color.GREY);
             else graphicsContext.setStroke(Color.AQUA);
             graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
         }

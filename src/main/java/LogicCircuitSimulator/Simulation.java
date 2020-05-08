@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Simulation {
-    public WireGrid arrayWireGrid = new ArrayWireGrid();
+    public NodeHandler arrayNodeHandler = new ArrayNodeHandler();
     List<LogicElement> logicElements = new ArrayList<>();
 
     public Simulation() {
@@ -27,16 +27,16 @@ public class Simulation {
         logicElements.add(new XorGate(3+leftShift, 1, Rotation.RIGHT));
         //logicElements.add(new NotGate(-10, -10, Rotation.RIGHT));
 
-        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(2+leftShift, 2), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(4+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(5+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(2+leftShift, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(2+leftShift, 2), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(4+leftShift, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(5+leftShift, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         int pos = 4;
         for (int i = 0; i < 10; i++) {
             logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
-            arrayWireGrid.setNode(new Node(new Vector2D(pos, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
+            arrayNodeHandler.setNode(new Node(new Vector2D(pos, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
             pos++;
         }
     }
@@ -51,7 +51,7 @@ public class Simulation {
 
             for (int j = 0; j < inputPositions.size(); j++) {
                 Vector2D position = inputPositions.get(j);
-                LogicState inputState = arrayWireGrid.getState(position, Orientation.HORIZONTALLY);
+                LogicState inputState = arrayNodeHandler.getState(position, Orientation.HORIZONTALLY);
                 inputStates.add(inputState);
             }
 
@@ -63,27 +63,27 @@ public class Simulation {
 
         }
         //Propagate the high state throughout the wires
-        arrayWireGrid.propagateGenerators(generators);
+        arrayNodeHandler.propagateGenerators(generators);
     }
 
     public Iterator<Node> nodeIterator() {
-        return arrayWireGrid.iterator();
+        return arrayNodeHandler.iterator();
     }
 
     public Iterator<LogicElement> logicElementIterator() {
         return logicElements.iterator();
     }
 
-    public void updateWire(Vector2D pos, Orientation orientation, Node.State state) {
-        arrayWireGrid.updateWire(pos, orientation, state);
+    public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
+        arrayNodeHandler.updateWire(pos, orientation, state);
     }
 
     public void updateCrossing(Vector2D pos, Node.WireCrossing crossing) {
-        arrayWireGrid.updateCrossing(pos, crossing);
+        arrayNodeHandler.updateCrossing(pos, crossing);
     }
 
     public Node getNode(Vector2D pos){
-        return arrayWireGrid.getNode(pos);
+        return arrayNodeHandler.getNode(pos);
     }
 
     public void addLogicGate(LogicElement logicElement){
@@ -93,14 +93,14 @@ public class Simulation {
     private void addNotLoop(Vector2D pos){
         int x = (int)pos.getX();
         int y = (int)pos.getY();
-        arrayWireGrid.setNode(new Node(new Vector2D(x, y), Node.State.LOW, Node.State.LOW, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x, y+1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+1, y+1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+2, y+1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+1, y), Node.State.NONE, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+2, y), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+3, y), Node.State.NONE, Node.State.LOW, Node.WireCrossing.TOUCHING));
-        arrayWireGrid.setNode(new Node(new Vector2D(x+3, y+1), Node.State.NONE, Node.State.NONE, Node.WireCrossing.TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x, y), WireState.LOW, WireState.LOW, Node.WireCrossing.TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x, y+1), WireState.LOW, WireState.NONE, Node.WireCrossing.TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+1, y+1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+2, y+1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+1, y), WireState.NONE, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+2, y), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+3, y), WireState.NONE, WireState.LOW, Node.WireCrossing.TOUCHING));
+        arrayNodeHandler.setNode(new Node(new Vector2D(x+3, y+1), WireState.NONE, WireState.NONE, Node.WireCrossing.TOUCHING));
     }
 
     public void removeLogicElement(Vector2D pos){

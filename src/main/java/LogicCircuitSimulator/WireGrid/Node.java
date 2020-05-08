@@ -7,23 +7,6 @@ import javax.annotation.concurrent.Immutable;
 
 @Immutable
 public class Node {
-    /**
-     * State of the wire
-     */
-    public enum State{
-        /**
-         * Signal is in the HIGH state, represents logical 1
-         */
-        HIGH,
-        /**
-         * Signal is in the LOW state, represents logical 0
-         */
-        LOW,
-        /**
-         * There is no wire in this place
-         */
-        NONE
-    }
 
     /**
      * The way two wires cross
@@ -51,12 +34,12 @@ public class Node {
     /**
      * State of the wire to right from this node
      */
-    private final Node.State right;
+    private final WireState right;
 
     /**
      * State of the wire downwards from this node
      */
-    private final Node.State down;
+    private final WireState down;
 
     /**
      * Whether or not the wires are touching at this node
@@ -69,7 +52,7 @@ public class Node {
      * @param down signal state of the wire down of the node
      * @param wireCrossing the way wires cross at this node
      */
-    public Node(Vector2D position, Node.State right, Node.State down, Node.WireCrossing wireCrossing){
+    public Node(Vector2D position, WireState right, WireState down, Node.WireCrossing wireCrossing){
         this.position = position;
         this.right = right;
         this.down = down;
@@ -79,14 +62,14 @@ public class Node {
     /**
      * @return signal state of the wire to the right
      */
-    public final Node.State getRightWire() {
+    public final WireState getRightWire() {
         return right;
     }
 
     /**
      * @return signal state of the wire down of the node
      */
-    public final Node.State getDownWire() {
+    public final WireState getDownWire() {
         return down;
     }
 

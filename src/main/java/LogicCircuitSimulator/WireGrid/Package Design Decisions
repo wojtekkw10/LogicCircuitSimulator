@@ -3,7 +3,7 @@ Mamy interface WireGrid, który udostępnia następujące metody:
 W przeciwnym razie nasz WireGrid byłby immutable i konieczne byłoby każdorazowe kopiowanie całej tablicy przy każdej zmianie elementu,
 co wpływa niekorzystnie na ilość zurzytej pamięci, a także na ilość operacji kopiowania.
 - resetWiresToLow() - powinno być zawsze wykonane przed propagategenerators(), ale nie jest w samej funkcji propagategenerators(), ponieważ
-propagategenerators() może być wykonywana przez developera wielowątkowo. Taka struktura pozwala developerowi na większą kontrolę nad wireGrid.
+propagategenerators() może być wykonywana przez developera wielowątkowo. Taka struktura pozwala developerowi na większą kontrolę nad nodeHandler.
 Inną zaleta jest fakt, że developer nie musi też mieć gotowych wszystkich generatorów w trakcie wywoływania propagateGenerators().
 Ta funkcja może być wywoływana stopniowo.
 - propagateGenerators() - konieczna, jest to jedno z głównych zadań tego interfejsu.

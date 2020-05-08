@@ -23,7 +23,7 @@ class LogicOneTest {
     void outputPositionsTest(){
         List<Vector2D> positions = gate.getLocalOutputPositions();
 
-        assertEquals(new Vector2D(0,0), positions.get(0));
+        assertEquals(new Vector2D(1,0), positions.get(0));
         assertEquals(1, positions.size());
     }
 
