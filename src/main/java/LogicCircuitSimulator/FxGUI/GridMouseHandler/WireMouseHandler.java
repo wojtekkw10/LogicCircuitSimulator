@@ -4,8 +4,7 @@ import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Node;
-import LogicCircuitSimulator.WireGrid.WireState;
+import LogicCircuitSimulator.NodeHandler.WireState;
 
 public abstract class WireMouseHandler {
     int x;
@@ -19,7 +18,6 @@ public abstract class WireMouseHandler {
 
     public WireMouseHandler(Simulation simulation){
         this.simulation = simulation;
-
     }
 
     abstract public void transformState();

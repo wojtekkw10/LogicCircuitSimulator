@@ -6,7 +6,7 @@ import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
 import LogicCircuitSimulator.LogicElements.LogicElement;
-import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.NodeHandler.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;

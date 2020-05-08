@@ -1,7 +1,6 @@
-package LogicCircuitSimulator.WireGrid.Unbound2DList;
+package LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList;
 
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Iterator2D;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

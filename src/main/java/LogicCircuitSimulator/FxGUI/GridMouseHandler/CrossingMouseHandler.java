@@ -3,7 +3,7 @@ package LogicCircuitSimulator.FxGUI.GridMouseHandler;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.NodeHandler.Node;
 
 public abstract class CrossingMouseHandler {
 

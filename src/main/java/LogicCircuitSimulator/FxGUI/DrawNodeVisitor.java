@@ -3,8 +3,8 @@ package LogicCircuitSimulator.FxGUI;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Node;
-import LogicCircuitSimulator.WireGrid.WireState;
+import LogicCircuitSimulator.NodeHandler.Node;
+import LogicCircuitSimulator.NodeHandler.WireState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

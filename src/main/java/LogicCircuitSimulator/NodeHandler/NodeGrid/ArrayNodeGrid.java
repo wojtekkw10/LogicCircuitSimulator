@@ -1,15 +1,19 @@
-package LogicCircuitSimulator.WireGrid;
+package LogicCircuitSimulator.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.WireGrid.Unbound2DList.UnboundGrid;
+import LogicCircuitSimulator.NodeHandler.Node;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.Iterator2D;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.UnboundGrid;
+import LogicCircuitSimulator.NodeHandler.WireState;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayNodeGrid implements NodeGrid{
-    UnboundGrid<ArrayNode> nodes;
+public class ArrayNodeGrid implements NodeGrid {
+    private final UnboundGrid<ArrayNode> nodes;
 
     public ArrayNodeGrid(UnboundGrid<ArrayNode> unboundGrid){
         this.nodes = unboundGrid;
@@ -22,8 +26,8 @@ public class ArrayNodeGrid implements NodeGrid{
     }
 
     @Override
-    public void setNode(Vector2D pos, Node node) {
-        nodes.set(pos, ArrayNode.fromNode(node));
+    public void setNode(Node node) {
+        nodes.set(node.getPosition(), ArrayNode.fromNode(node));
     }
 
     @Override
@@ -150,5 +154,66 @@ public class ArrayNodeGrid implements NodeGrid{
             Vector2D currentPosition = iterator2D.currentPosition();
             return new Node(currentPosition, arrayNode.getRightWire(), arrayNode.getDownWire(), arrayNode.isTouching());
         }
+    }
+
+    @Override
+    public String toString() {
+        //once 'added' element can't be removed so it's possible to calculate it when adding elements
+        Iterator<Node> it = this.iterator();
+        int lowestX = Integer.MAX_VALUE;
+        int highestX = Integer.MIN_VALUE;
+        int lowestY = Integer.MAX_VALUE;
+        int highestY = Integer.MIN_VALUE;
+
+        while(it.hasNext()){
+            Node node = it.next();
+            Vector2D pos = node.getPosition();
+            if(pos.getX() < lowestX) lowestX = (int)pos.getX();
+            if(pos.getY() < lowestY) lowestY = (int)pos.getY();
+            if(pos.getX() > highestX) highestX = (int)pos.getX();
+            if(pos.getY() > highestY) highestY = (int)pos.getY();
+        }
+        int width = highestX - lowestX + 1;
+        int height = highestY - lowestY + 1;
+
+        ArrayList<ArrayList<ArrayNode>> grid = new ArrayList<>();
+        for (int i = 0; i < width; i++) {
+            ArrayList<ArrayNode> column = new ArrayList<>();
+            for (int j = 0; j < height; j++) {
+                column.add(new ArrayNode());
+            }
+            grid.add(column);
+        }
+
+        it = this.iterator();
+        while(it.hasNext()){
+            Node curr = it.next();
+            Vector2D pos = curr.getPosition();
+            grid.get((int)pos.getX()-lowestX).set((int)pos.getY()-lowestY, ArrayNode.fromNode(curr));
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String lowStateColor = "\u001b[38;5;245m";
+        String highStateColor = "\u001b[33;1m";
+        String reset = "\u001b[0m";
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if(grid.get(j).get(i).isTouching() == Node.WireCrossing.TOUCHING) stringBuilder.append("*");
+                else stringBuilder.append("+");
+
+                if(grid.get(j).get(i).getRightWire() == WireState.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);
+                else if(grid.get(j).get(i).getRightWire() == WireState.LOW) stringBuilder.append(lowStateColor).append("-").append(reset);
+                else stringBuilder.append(" ");
+            }
+            stringBuilder.append("\n");
+            for (int j = 0; j < width; j++) {
+                if(grid.get(j).get(i).getDownWire() == WireState.HIGH) stringBuilder.append(highStateColor).append("| ").append(reset);
+                else if(grid.get(j).get(i).getDownWire() == WireState.LOW) stringBuilder.append(lowStateColor).append("| ").append(reset);
+                else stringBuilder.append("  ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 }

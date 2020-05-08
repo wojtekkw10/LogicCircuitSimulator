@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.WireGrid;
+package LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList;
 
 import LogicCircuitSimulator.Vector2D;
 

@@ -1,14 +1,16 @@
-package LogicCircuitSimulator.WireGrid;
+package LogicCircuitSimulator.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
+import LogicCircuitSimulator.NodeHandler.Node;
+import LogicCircuitSimulator.NodeHandler.WireState;
 
 import java.util.Iterator;
 
 public interface NodeGrid {
     Node getNode(Vector2D pos);
-    void setNode(Vector2D pos, Node node);
+    void setNode(Node node);
 
     WireState getLeftWire(Vector2D pos);
     WireState getUpWire(Vector2D pos);

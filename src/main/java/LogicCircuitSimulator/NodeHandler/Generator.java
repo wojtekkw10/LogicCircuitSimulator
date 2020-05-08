@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.WireGrid;
+package LogicCircuitSimulator.NodeHandler;
 
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;

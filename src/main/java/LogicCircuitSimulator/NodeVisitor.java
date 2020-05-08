@@ -1,6 +1,6 @@
 package LogicCircuitSimulator;
 
-import LogicCircuitSimulator.WireGrid.Node;
+import LogicCircuitSimulator.NodeHandler.Node;
 
 public interface NodeVisitor {
     void visit(Node node);

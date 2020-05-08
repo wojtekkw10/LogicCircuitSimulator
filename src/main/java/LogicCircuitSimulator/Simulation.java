@@ -1,7 +1,7 @@
 package LogicCircuitSimulator;
 
 import LogicCircuitSimulator.LogicElements.*;
-import LogicCircuitSimulator.WireGrid.*;
+import LogicCircuitSimulator.NodeHandler.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
