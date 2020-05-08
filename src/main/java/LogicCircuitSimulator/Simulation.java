@@ -50,7 +50,7 @@ public class Simulation {
         arrayWireGrid.setNode(new Node(new Vector2D(5+leftShift, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         int pos = 4;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 0; i++) {
             logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
             arrayWireGrid.setNode(new Node(new Vector2D(pos, 1), Node.State.LOW, Node.State.NONE, Node.WireCrossing.NOT_TOUCHING));
@@ -58,7 +58,7 @@ public class Simulation {
         }
     }
 
-    public synchronized void runOnce() {
+    public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
         for (int i = 0; i < logicElements.size(); i++) {
@@ -91,7 +91,7 @@ public class Simulation {
         return logicElements.iterator();
     }
 
-    public synchronized void updateWire(Vector2D pos, Orientation orientation, Node.State state) {
+    public void updateWire(Vector2D pos, Orientation orientation, Node.State state) {
         arrayWireGrid.updateWire(pos, orientation, state);
     }
 

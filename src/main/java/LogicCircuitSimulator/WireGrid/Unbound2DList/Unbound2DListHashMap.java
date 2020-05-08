@@ -4,9 +4,10 @@ import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.WireGrid.Iterator2D;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Unbound2DListHashMap<T> implements Unbound2DList<T> {
-    Map<Vector2D, T> hashMap = new HashMap<>();
+    Map<Vector2D, T> hashMap = new ConcurrentHashMap<>();
 
     @Override
     public Optional<T> get(Vector2D pos) {

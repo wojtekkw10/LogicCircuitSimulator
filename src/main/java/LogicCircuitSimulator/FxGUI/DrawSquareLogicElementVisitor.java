@@ -201,9 +201,6 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
                 graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
             }
         }
-
-
-        //TODO: obracanie
     }
 
 

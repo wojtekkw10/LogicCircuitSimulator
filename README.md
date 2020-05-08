@@ -11,3 +11,4 @@ Add this line to VM Options:
 ```bash
 --module-path /path/to/JavaFX/lib --add-modules=javafx.controls
 ```
+ok. This is unnecessary.

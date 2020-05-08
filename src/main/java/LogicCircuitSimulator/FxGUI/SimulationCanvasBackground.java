@@ -8,8 +8,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.ejml.simple.SimpleMatrix;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-
 public class SimulationCanvasBackground {
     private static final Color dotColor = Color.AQUA;
     private static final Color backgroundColor = Color.BLACK;
@@ -42,7 +40,7 @@ public class SimulationCanvasBackground {
 
         double backgroundDisappearingFactor = 1.5;
 
-        if(scale > SimulationCanvasController.MIN_SCALE*backgroundDisappearingFactor){
+        if(scale > SimulationCanvasController.MIN_ZOOM *backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
                 for (int j = -gridShiftY; j < amountVertically - gridShiftY; j++) {
                     Vector2D pointPos = MatrixOperations.projectPoint(projection, new Vector2D(i, j));
@@ -59,7 +57,7 @@ public class SimulationCanvasBackground {
     }
 
     private void setStroke(GraphicsContext ctx, double scale){
-        double MAX_SCALE = SimulationCanvasController.MAX_SCALE;
+        double MAX_SCALE = SimulationCanvasController.MAX_ZOOM;
         Color relativeDotColor = Color.color(dotColor.getRed(), dotColor.getGreen(), dotColor.getBlue(), Math.min(1, 1*scale/MAX_SCALE));
         ctx.setStroke(relativeDotColor);
         ctx.setLineWidth(2);

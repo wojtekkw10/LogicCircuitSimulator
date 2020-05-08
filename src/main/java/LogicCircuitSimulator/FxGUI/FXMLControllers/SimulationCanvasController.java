@@ -26,26 +26,26 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
-
 public class SimulationCanvasController {
     private final double SCALING_FACTOR = 0.05;
-    public static final double MAX_SCALE = 100;
-    public static final double MIN_SCALE = 5;
+    public static final double MAX_ZOOM = 50;
+    public static final double MIN_ZOOM = 5;
 
-    private double lastMouseX = 0;
-    private double lastMouseY = 0;
+    private Vector2D lastMousePressPosition = new Vector2D(0,0);
+    private Vector2D lastMousePosition = new Vector2D(0,0);
 
-    private double pivotX = 0;
-    private double pivotY = 0;
-
-    private final int TARGET_UPS = 60;
-    private final int TARGET_FPS = 70;
+    private final int TARGET_UPS = 1_000_000;
+    private final int TARGET_FPS = 10000;
 
     private boolean isLogicGateDragged = false;
     private LogicElement logicGateDragged;
 
-    private GraphicsContext graphics;
+    private GraphicsContext graphicsContext;
+
+    private long lastNow;
+
+    private int framesSinceLastFrame;
+    AtomicInteger updatesSinceLastFrame = new AtomicInteger();
 
     private WireMode wireMode = WireMode.ADDING;
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
@@ -61,14 +61,12 @@ public class SimulationCanvasController {
         REMOVING
     }
 
-    long lastNow;
-    int frames;
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    AtomicInteger ups = new AtomicInteger();
+
     Runnable simulationTask = () -> {
         simulation.runOnce();
-        ups.getAndIncrement();
+        updatesSinceLastFrame.getAndIncrement();
     };
 
     SimpleMatrix projectionMatrix = MatrixOperations.getProjectionMatrix(0,0, 20);
@@ -79,10 +77,10 @@ public class SimulationCanvasController {
 
     @FXML
     void initialize(){
-        graphics = mainSimulationCanvas.getGraphicsContext2D();
-        graphics.setLineWidth(1);
+        graphicsContext = mainSimulationCanvas.getGraphicsContext2D();
+        graphicsContext.setLineWidth(1);
 
-        graphics.setFont(new Font(Font.getFontNames().get(0), 15));
+        graphicsContext.setFont(new Font(Font.getFontNames().get(0), 15));
 
         SimulationCanvasBackground background = new SimulationCanvasBackground(mainSimulationCanvas);
 
@@ -107,17 +105,17 @@ public class SimulationCanvasController {
                         public void transformLogicElement() {
                             logicGateDragged.setPosition(getPosition());
                         }
-                    }.performNoTransformation(new Vector2D(pivotX, pivotY), projectionMatrix);
+                    }.performNoTransformation(lastMousePosition, projectionMatrix);
 
-                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
+                    LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projectionMatrix);
                     logicGateDragged.accept(drawLogicElement);
                 }
 
                 if(syncMode == SyncMode.SYNCHRONIZED){
-                    ups.getAndIncrement();
+                    updatesSinceLastFrame.getAndIncrement();
                     simulation.runOnce();
                 }
-                frames++;
+                framesSinceLastFrame++;
 
                 waitUntilNextFrame(now);
             }
@@ -127,38 +125,32 @@ public class SimulationCanvasController {
     @FXML
     public void OnScroll(ScrollEvent scrollEvent) {
         double currentScale = MatrixOperations.getScaleFromMatrix(projectionMatrix);
-        if(scrollEvent.getDeltaY()>0 && currentScale < MAX_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingMatrix(1 + SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
+        if(scrollEvent.getDeltaY()>0 && currentScale < MAX_ZOOM) {
+            projectionMatrix = MatrixOperations.getScalingMatrix(1 + SCALING_FACTOR, lastMousePosition.getX(), lastMousePosition.getY()).mult(projectionMatrix);
         }
-        else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_SCALE) {
-            projectionMatrix = MatrixOperations.getScalingMatrix(1 - SCALING_FACTOR, pivotX, pivotY).mult(projectionMatrix);
+        else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_ZOOM) {
+            projectionMatrix = MatrixOperations.getScalingMatrix(1 - SCALING_FACTOR, lastMousePosition.getX(), lastMousePosition.getY()).mult(projectionMatrix);
         }
     }
 
     @FXML
     public void onKeyReleased(KeyEvent keyEvent) {
-        Vector2D nodePos = getNodePositionFromMousePosition(pivotX, pivotY, projectionMatrix);
 
-        System.out.println(nodePos);
         if(keyEvent.getCode() == KeyCode.R){
             new LogicElementHandler(simulation){
                 @Override
                 public void transformLogicElement() {
                     rotateLogicElementClockwise();
                 }
-            }.performTransformation(new Vector2D(pivotX,pivotY), projectionMatrix);
+            }.performTransformation(lastMousePosition, projectionMatrix);
         }
 
         createLogicElementAtMouseOnKeyEvent(keyEvent.getCode());
-
-
-
     }
 
     @FXML
     public void onMousePressed(MouseEvent mouseEvent) {
-        lastMouseX = mouseEvent.getX();
-        lastMouseY = mouseEvent.getY();
+        lastMousePressPosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
             new LogicElementHandler(simulation){
@@ -178,9 +170,6 @@ public class SimulationCanvasController {
                 else wireMode = WireMode.ADDING;
             }
         }.performTransformation(new Vector2D(mouseEvent.getX(), mouseEvent.getY()), projectionMatrix);
-
-        Vector2D pos = MatrixOperations.getVectorFromVectorMatrix(projectionMatrix.invert().mult(MatrixOperations.getVectorMatrix(pivotX, pivotY)));
-        System.out.println(pos);
 
     }
 
@@ -219,16 +208,14 @@ public class SimulationCanvasController {
 
     @FXML
     public void onMouseDragged(MouseEvent mouseEvent) {
-        pivotX = mouseEvent.getX();
-        pivotY = mouseEvent.getY();
+        lastMousePosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
         if(mouseEvent.getButton() == MouseButton.MIDDLE){
 
-            double deltaX = lastMouseX - mouseEvent.getX();
-            double deltaY = lastMouseY - mouseEvent.getY();
+            double deltaX = lastMousePressPosition.getX() - mouseEvent.getX();
+            double deltaY = lastMousePressPosition.getY() - mouseEvent.getY();
 
-            lastMouseX = mouseEvent.getX();
-            lastMouseY = mouseEvent.getY();
+            lastMousePressPosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
             projectionMatrix = MatrixOperations.getTranslationMatrix(-deltaX, -deltaY).mult(projectionMatrix);
         }
@@ -246,8 +233,7 @@ public class SimulationCanvasController {
 
     @FXML
     public void onMouseMoved(MouseEvent mouseEvent) {
-        pivotX = mouseEvent.getX();
-        pivotY = mouseEvent.getY();
+        lastMousePosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
     }
 
     public void shutdown(){
@@ -256,9 +242,9 @@ public class SimulationCanvasController {
 
     //Private functions
     private void clearCanvas(Color color){
-        graphics.setFill(color);
-        graphics.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
-        graphics.fillRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
+        graphicsContext.setFill(color);
+        graphicsContext.clearRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
+        graphicsContext.fillRect(0,0, mainSimulationCanvas.getWidth(), mainSimulationCanvas.getHeight());
     }
     private void resizeCanvasToAnchorPane(){
         mainSimulationCanvas.setHeight(mainSimulationAnchorPane.getHeight());
@@ -266,14 +252,14 @@ public class SimulationCanvasController {
     }
 
     private void drawLogicGates(Iterator<LogicElement>  logicElements){
-        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphics, projectionMatrix);
+        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projectionMatrix);
         while(logicElements.hasNext()){
             logicElements.next().accept(drawLogicElement);
         }
     }
 
     private void drawNodes(Iterator<Node> nodes){
-        NodeVisitor drawNode = new DrawNodeVisitor(graphics, projectionMatrix);
+        NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projectionMatrix);
         while(nodes.hasNext()){
             nodes.next().accept(drawNode);
         }
@@ -281,9 +267,9 @@ public class SimulationCanvasController {
 
     private void updateTitleBar(long now){
         if(now > lastNow + 1e9){
-            App.decorateWindowTitle(frames, ups.get());
-            frames = 0;
-            ups.set(0);
+            App.decorateWindowTitle(framesSinceLastFrame, updatesSinceLastFrame.get());
+            framesSinceLastFrame = 0;
+            updatesSinceLastFrame.set(0);
             lastNow = now;
         }
     }

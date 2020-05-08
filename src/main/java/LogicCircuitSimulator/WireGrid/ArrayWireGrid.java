@@ -280,12 +280,12 @@ public final class ArrayWireGrid implements WireGrid{
         Iterator2D<ArrayNode> iterator2D = nodes.iterator();
 
         @Override
-        public synchronized boolean hasNext() {
+        public boolean hasNext() {
             return iterator2D.hasNext();
         }
 
         @Override
-        public synchronized Node next() {
+        public Node next() {
             if(!hasNext()) throw new NoSuchElementException("Unbound list has no more elements");
 
             ArrayNode arrayNode = iterator2D.next();

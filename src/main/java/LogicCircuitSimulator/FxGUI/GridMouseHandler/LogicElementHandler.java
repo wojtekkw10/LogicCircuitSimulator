@@ -24,7 +24,6 @@ public abstract class LogicElementHandler {
 
     public void performTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
         Vector2D nodePos = getNodePosition(mousePos, projectionMatrix);
-        System.out.println("NODE POS: "+nodePos);
         LogicElement logicElement = getLogicElement(nodePos, simulation.logicElementIterator());
         if (logicElement != null) {
             int width = logicElement.getElementWidth();
@@ -39,10 +38,7 @@ public abstract class LogicElementHandler {
     }
 
     public void performNoTransformation(Vector2D mousePos, SimpleMatrix projectionMatrix){
-        Vector2D nodePos = getNodePosition(mousePos, projectionMatrix);
-
-        System.out.println("NODE POS: "+nodePos);
-        currentLogicElementPos = nodePos;
+        currentLogicElementPos = getNodePosition(mousePos, projectionMatrix);
 
         transformLogicElement();
     }
@@ -65,11 +61,8 @@ public abstract class LogicElementHandler {
             yFraction = 1-(-yFraction);
             y--;
         }
-        //if(y<0) y++;
-        System.out.println(x);
 
         if(yFraction>0.50){
-            System.out.println("HAH"+yFraction);
             nodePos = new Vector2D(x, y+1);
         }
         else{

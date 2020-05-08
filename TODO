@@ -1,0 +1,19 @@
+DONE:
+- refactor names in SimulationCanvasController to be more descriptive
+
+DOING:
+- extract responsibility to ProjectionMatrix class
+
+TODO:
+
+TODO: remove the iterator2D because it's unnecessary - the Node contains position information
+    so it's unnecessary to output position separately
+
+TODO: extract drawing class from SimulationCanvasController - this class is too big and has too many responsibilities
+
+TODO: create an array of references to logicGates on the board to facilitate moving the logic gates, without it it's hard to find
+    which gate is clicked
+
+TODO: create new faster Unbound2DList
+
+TODO: Create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it
