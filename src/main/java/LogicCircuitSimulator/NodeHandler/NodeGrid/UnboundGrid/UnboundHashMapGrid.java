@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList;
+package LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid;
 
 import LogicCircuitSimulator.Vector2D;
 
@@ -24,11 +24,11 @@ public class UnboundHashMapGrid<T> implements UnboundGrid<T> {
     }
 
     @Override
-    public Iterator2D<T> iterator() {
-        return new MainIterator();
+    public GridIterator<T> iterator() {
+        return new MainGridIterator();
     }
 
-    private class MainIterator implements Iterator2D<T>{
+    private class MainGridIterator implements GridIterator<T> {
         Vector2D currentPosition;
         Iterator<Map.Entry<Vector2D, T>> entryIterator = hashMap.entrySet().iterator();
 

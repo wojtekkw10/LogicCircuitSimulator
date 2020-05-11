@@ -3,23 +3,28 @@ DONE:
 - extract responsibility to ProjectionMatrix class (Projection2D)
 - refactor DrawSquareLogicElementVisitor to avoid repetition
 - extract drawing class from SimulationCanvasController - this class is too big and has too many responsibilities
--  remove unused function
+- remove unused function
 - fix DrawingManager to depend less on the CanvasController (not using CanvasController.logicElementDragged)
+- rename 2DList to Grid - better describes the intent
+- divide ArrayWireGrid into two classes: 1. wire management (set Wire, getWire etc) 2. propagation
+- unboundGrid should throw an exception when pos is null
 
 DOING:
 
+TO BE DONE:
+TODO: drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 
-TODO:
+TODO: refactor tests
+
+TODO: refactor defining events in fxml to defining them in code - it should be cleaner
 
 TODO: create an array of references to logicGates on the board to facilitate moving the logic gates, without it it's hard to find
     which gate is clicked
+TODO: create new faster UnboundGrid
 
-TODO: create new faster Unbound2DList
 
-TODO: divide ArrayWireGrid into two classes: 1. wire management (set Wire, getWire etc) 2. propagation
-
-TODO: rename 2DList to Grid
-
+MAYBE:
+TODO: allow for removing elements from NodeGrid and UnboundList (if the app takes too much memory)
 
 NOT DONE:
 - create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it ||| Should just make ArrayWireGrid smaller

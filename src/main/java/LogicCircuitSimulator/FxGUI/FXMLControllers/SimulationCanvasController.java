@@ -1,25 +1,19 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
-import LogicCircuitSimulator.*;
-import LogicCircuitSimulator.FxGUI.DrawingManager;
-import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
+import LogicCircuitSimulator.FxGUI.*;
+import LogicCircuitSimulator.FxGUI.GraphicalProjection.*;
+import LogicCircuitSimulator.FxGUI.GridMouseHandler.*;
 import LogicCircuitSimulator.LogicElements.*;
-import LogicCircuitSimulator.NodeHandler.Node;
-import LogicCircuitSimulator.NodeHandler.WireState;
+import LogicCircuitSimulator.NodeHandler.*;
+import LogicCircuitSimulator.*;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 
 public class SimulationCanvasController {
     private final double SCALING_FACTOR = 0.05;
@@ -60,13 +54,13 @@ public class SimulationCanvasController {
     public Canvas mainSimulationCanvas;
     public AnchorPane mainSimulationAnchorPane;
 
+    BoardDrawer boardDrawer = new BoardDrawer(mainSimulationCanvas, mainSimulationAnchorPane);
+
     @FXML
     void initialize(){
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
             executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
         }
-
-        DrawingManager drawingManager = new DrawingManager(mainSimulationCanvas, mainSimulationAnchorPane);
 
         new AnimationTimer() {
             @Override
@@ -74,8 +68,8 @@ public class SimulationCanvasController {
                 if(syncMode == SyncMode.SYNCHRONIZED){
                     simulationTask.run();
                 }
-                drawingManager.update(lastMousePosition, isLogicGateDragged, logicGateDragged, projection2D, simulation, updatesSinceLastFrame);
-                drawingManager.draw(now);
+                boardDrawer.update(lastMousePosition, isLogicGateDragged, logicGateDragged, projection2D, simulation, updatesSinceLastFrame);
+                boardDrawer.draw(now);
             }
         }.start();
     }
@@ -89,13 +83,14 @@ public class SimulationCanvasController {
         else if(scrollEvent.getDeltaY()<0 && currentScale > MIN_ZOOM) {
             projection2D.scale(1-SCALING_FACTOR, lastMousePosition);
         }
+
     }
 
     @FXML
     public void onKeyReleased(KeyEvent keyEvent) {
 
         if(keyEvent.getCode() == KeyCode.R){
-            new LogicElementHandler(simulation){
+            new LogicElementMouseHandler(simulation){
                 @Override
                 public void transformLogicElement() {
                     rotateLogicElementClockwise();
@@ -111,7 +106,7 @@ public class SimulationCanvasController {
         lastMousePressPosition = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
-            new LogicElementHandler(simulation){
+            new LogicElementMouseHandler(simulation){
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged = getLogicElement();
@@ -134,7 +129,7 @@ public class SimulationCanvasController {
     public void onMouseReleased(MouseEvent mouseEvent) {
         Vector2D mousePos = new Vector2D(mouseEvent.getX(), mouseEvent.getY());
         if(isLogicGateDragged.get()){
-            new LogicElementHandler(simulation){
+            new LogicElementMouseHandler(simulation){
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());

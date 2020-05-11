@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList;
+package LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid;
 
 import LogicCircuitSimulator.Vector2D;
 
@@ -30,6 +30,6 @@ public interface UnboundGrid<T>{
      * Iterator for all non-empty elements
      * @return iterator
      */
-    Iterator2D<T> iterator();
+    GridIterator<T> iterator();
 
 }

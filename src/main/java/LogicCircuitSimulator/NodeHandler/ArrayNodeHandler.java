@@ -6,7 +6,7 @@ import LogicCircuitSimulator.NodeHandler.NodeGrid.ArrayNodeGrid;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.NodeGrid;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.UnboundHashMapGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 
 import java.util.*;
 
@@ -63,7 +63,7 @@ public final class ArrayNodeHandler implements NodeHandler {
         for(Generator generator : generators){
             candidatesForSearch.add(generator.getPos());
             candidatesForSearch.addAll(getSurroundingCandidates(generator.getPos(), generator.getOrientation()));
-            setSurroundingWiresToHigh(generator.getPos(), generator.getOrientation());
+            setSurroundingWiresIfExistToHigh(generator.getPos(), generator.getOrientation());
         }
 
         //propagate signal from the positions on the stack
@@ -122,7 +122,7 @@ public final class ArrayNodeHandler implements NodeHandler {
         return candidates;
     }
 
-    void setSurroundingWiresToHigh(Vector2D pos, Orientation orientation){
+    void setSurroundingWiresIfExistToHigh(Vector2D pos, Orientation orientation){
         if (orientation == Orientation.HORIZONTALLY) {
             if (rightWireExists(pos)) nodeGrid.setRightWire(pos, WireState.HIGH);
             if (leftWireExists(pos)) nodeGrid.setLeftWire(pos, WireState.HIGH);

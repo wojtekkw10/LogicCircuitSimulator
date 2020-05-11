@@ -4,8 +4,8 @@ import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.NodeHandler.Node;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.Iterator2D;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.UnboundGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
 import LogicCircuitSimulator.NodeHandler.WireState;
 
 import java.util.ArrayList;
@@ -139,19 +139,19 @@ public class ArrayNodeGrid implements NodeGrid {
     }
 
     private class MainIterator implements Iterator<Node>{
-        Iterator2D<ArrayNode> iterator2D = nodes.iterator();
+        GridIterator<ArrayNode> gridIterator = nodes.iterator();
 
         @Override
         public boolean hasNext() {
-            return iterator2D.hasNext();
+            return gridIterator.hasNext();
         }
 
         @Override
         public Node next() {
             if(!hasNext()) throw new NoSuchElementException("ArrayNodeGrid has no more elements");
 
-            ArrayNode arrayNode = iterator2D.next();
-            Vector2D currentPosition = iterator2D.currentPosition();
+            ArrayNode arrayNode = gridIterator.next();
+            Vector2D currentPosition = gridIterator.currentPosition();
             return new Node(currentPosition, arrayNode.getRightWire(), arrayNode.getDownWire(), arrayNode.isTouching());
         }
     }

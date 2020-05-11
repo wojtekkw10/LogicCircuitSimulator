@@ -4,7 +4,7 @@ import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementHandler;
+import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementMouseHandler;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.NodeHandler.Node;
 import javafx.scene.canvas.Canvas;
@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DrawingManager {
+public class BoardDrawer {
     private final int TARGET_FPS = 10000;
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
 
@@ -42,7 +42,7 @@ public class DrawingManager {
     private int framesSinceLastFrame;
     AtomicInteger updatesSinceLastFrame = new AtomicInteger();
 
-    public DrawingManager(Canvas canvas, AnchorPane anchorPane) {
+    public BoardDrawer(Canvas canvas, AnchorPane anchorPane) {
         this.canvas = canvas;
         this.anchorPane = anchorPane;
     }
@@ -63,7 +63,7 @@ public class DrawingManager {
         drawNodes(simulation.nodeIterator());
 
         if(isLogicGateDragged.get()) {
-            new LogicElementHandler(simulation) {
+            new LogicElementMouseHandler(simulation) {
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());

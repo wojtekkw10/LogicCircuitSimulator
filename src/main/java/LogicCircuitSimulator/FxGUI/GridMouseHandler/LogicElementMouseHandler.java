@@ -8,13 +8,13 @@ import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;
 
-public abstract class LogicElementHandler {
+public abstract class LogicElementMouseHandler {
 
     private final Simulation simulation;
     private Vector2D currentLogicElementPos;
     private LogicElement currentLogicElement;
 
-    public LogicElementHandler(Simulation simulation){
+    public LogicElementMouseHandler(Simulation simulation){
         this.simulation = simulation;
     }
 

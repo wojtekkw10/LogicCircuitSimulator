@@ -1,11 +1,15 @@
 package LogicCircuitSimulator.WireGrid;
 
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.Iterator2D;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.UnboundGrid;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList.UnboundHashMapGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +48,7 @@ class UnboundHashMapGridTest {
 
     @Test
     void iteratorTest(){
-        Iterator2D<Integer> it = array.iterator();
+        GridIterator<Integer> it = array.iterator();
 
         assertThrows(IllegalStateException.class, it::currentPosition);
 
@@ -63,5 +67,12 @@ class UnboundHashMapGridTest {
         assertEquals(10, valueSum);
         assertEquals(0, positionSum);
         assertEquals(4, numberOfElements);
+    }
+
+    @Test
+    void throwsExceptionWhenPosIsNull(){
+        assertThrows(NullPointerException.class, ()-> {
+            array.set(null, 5);
+        });
     }
 }

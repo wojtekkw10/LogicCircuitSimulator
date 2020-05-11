@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.NodeHandler.NodeGrid.Unbound2DList;
+package LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid;
 
 import LogicCircuitSimulator.Vector2D;
 
@@ -6,7 +6,7 @@ import LogicCircuitSimulator.Vector2D;
  * Interface for iterator that gives 2D position of the element
  * @param <T> type of the element
  */
-public interface Iterator2D<T> {
+public interface GridIterator<T> {
     /**
      * Checks for the next element
      * @return true if there is a next element in the array
