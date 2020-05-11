@@ -3,6 +3,7 @@ package LogicCircuitSimulator.NodeHandler;
 import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.ArrayNode;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.ArrayNodeGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundArrayListGrid;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.NodeGrid;
@@ -17,7 +18,7 @@ public final class ArrayNodeHandler implements NodeHandler {
     /**
      * Stores node data
      */
-    NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundHashMapGrid<>());
+    NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundArrayListGrid<>());
 
     @Override
     public void setNode(Node node){

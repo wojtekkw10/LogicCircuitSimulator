@@ -15,6 +15,7 @@ DONE:
 - drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 - limiting UPS from keyboard during run
 
+
 DOING:
 
 TO BE DONE:
@@ -23,13 +24,15 @@ TODO: refactor tests
 
 TODO: create an array of references to logicGates on the board to facilitate moving the logic gates, without it it's hard to find
     which gate is clicked
-TODO: create new faster UnboundGrid
+
 
 
 MAYBE:
+TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid and UnboundList (if the app takes too much memory)
 
 NOT DONE:
+- create new faster UnboundGrid (it was supposed to be an arraylist, but going through all the nulls took a while so it was slower than hashmap)
 - create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it ||| Should just make ArrayWireGrid smaller
 - remove the iterator2D because it's unnecessary - the Node contains position information
     so it's unnecessary to output position separately ||| Not done because we have this unbounded array of elements. We set and get them with vector2D
