@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
+import java.security.Key;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoardEventHandler {
@@ -62,6 +63,23 @@ public class BoardEventHandler {
                         rotateLogicElementClockwise();
                     }
                 }.performTransformation(boardDTO.getLastMousePosition(), projection2D);
+            }
+            else if(event.getCode() == KeyCode.P){
+                if(boardDTO.shouldDrawSpeedStats()) boardDTO.setShouldDrawSpeedStats(false);
+                else boardDTO.setShouldDrawSpeedStats(true);
+            }
+            else if(event.getCode() == KeyCode.L) {
+                if (boardDTO.isUpsLimited()) {
+                    boardDTO.setTARGET_UPS(1_000_000);
+                    boardDTO.setUpsLimited(false);
+                    boardDTO.setUpsChanged(true);
+                }
+                else {
+                    boardDTO.setTARGET_UPS(100);
+                    boardDTO.setUpsLimited(true);
+                    boardDTO.setUpsChanged(true);
+                }
+
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
         };

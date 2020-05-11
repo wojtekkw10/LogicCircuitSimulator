@@ -45,10 +45,4 @@ public class App  extends Application {
         SimulationCanvasController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
     }
-
-    public static void decorateWindowTitle(int FPS, int UPS){
-        primaryStage.setTitle(stageTitle + " FPS: "+FPS + ", UPS: "+ UPS);
-    }
-
-    //TODO: rewrite tests
 }

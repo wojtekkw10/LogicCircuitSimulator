@@ -20,7 +20,7 @@ public class BoardDTO {
     private final double MIN_ZOOM = 5;
 
     private final int TARGET_FPS = 100;
-    private final int TARGET_UPS = 100;
+    private int TARGET_UPS = 100;
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
     private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
@@ -33,6 +33,12 @@ public class BoardDTO {
 
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     private final Simulation simulation = new Simulation();
+
+    private boolean shouldDrawSpeedStats = true;
+    private boolean isUpsLimited = true;
+    private boolean upsChanged = false;
+
+
 
     enum SyncMode{
         SYNCHRONIZED,
@@ -65,6 +71,10 @@ public class BoardDTO {
 
     public int getTARGET_FPS() {
         return TARGET_FPS;
+    }
+
+    public void setTARGET_UPS(int TARGET_UPS) {
+        this.TARGET_UPS = TARGET_UPS;
     }
 
     public int getTARGET_UPS() {
@@ -101,5 +111,29 @@ public class BoardDTO {
 
     public Simulation getSimulation() {
         return simulation;
+    }
+
+    public boolean shouldDrawSpeedStats() {
+        return shouldDrawSpeedStats;
+    }
+
+    public void setShouldDrawSpeedStats(boolean shouldDrawSpeedStats) {
+        this.shouldDrawSpeedStats = shouldDrawSpeedStats;
+    }
+
+    public boolean isUpsLimited() {
+        return isUpsLimited;
+    }
+
+    public void setUpsLimited(boolean upsLimited) {
+        isUpsLimited = upsLimited;
+    }
+
+    public boolean isUpsChanged() {
+        return upsChanged;
+    }
+
+    public void setUpsChanged(boolean upsChanged) {
+        this.upsChanged = upsChanged;
     }
 }

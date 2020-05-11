@@ -15,9 +15,9 @@ public class SimulationCanvasController {
     private BoardDTO boardDTO;
     private BoardDrawer boardDrawer;
 
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final Runnable simulationTask = () -> {
-        boardDTO.getSimulation().runOnce();;
+        boardDTO.getSimulation().runOnce();
         boardDTO.getUpdatesSinceLastFrame().getAndIncrement();
     };
 
@@ -36,6 +36,12 @@ public class SimulationCanvasController {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if(boardDTO.isUpsChanged() && syncMode == BoardDTO.SyncMode.NOT_SYNCHRONIZED){
+                    executor.shutdownNow();
+                    executor = Executors.newSingleThreadScheduledExecutor();
+                    executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/boardDTO.getTARGET_UPS()*1e6), TimeUnit.MICROSECONDS);
+                    boardDTO.setUpsChanged(false);
+                }
                 if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
                     simulationTask.run();
                 }

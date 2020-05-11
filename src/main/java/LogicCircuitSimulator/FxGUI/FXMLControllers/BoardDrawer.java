@@ -25,6 +25,9 @@ public class BoardDrawer {
     private final GraphicsContext graphicsContext;
     private final AtomicLong lastNow = new AtomicLong(0);
 
+    private int currentFPS = 0;
+    private int currentUPS = 0;
+
 
     public BoardDrawer(BoardDTO boardDTO, AnchorPane anchorPane) {
         this.boardDTO = boardDTO;
@@ -46,14 +49,12 @@ public class BoardDrawer {
 
         graphicsContext.setFont(new Font(Font.getFontNames().get(0), 15));
 
-        SimulationCanvasBackground background = new SimulationCanvasBackground(canvas, boardDTO);
-
-        updateTitleBar(now);
         resizeCanvasToAnchorPane();
         clearCanvas(Color.BLACK);
-        background.draw(projection2D);
+        new SimulationCanvasBackground(canvas, boardDTO).draw(projection2D);
         drawLogicGates(simulation.logicElementIterator());
         drawNodes(simulation.nodeIterator());
+        drawSpeedStats(now);
 
         if(isLogicGateDragged.get()) {
             new LogicElementMouseHandler(simulation) {
@@ -67,10 +68,6 @@ public class BoardDrawer {
             logicGateDragged.accept(drawLogicElement);
         }
 
-        if(boardDTO.getSyncMode() == BoardDTO.SyncMode.SYNCHRONIZED){
-            updatesSinceLastFrame.getAndIncrement();
-            simulation.runOnce();
-        }
         framesSinceLastFrame.getAndIncrement();
 
         waitUntilNextFrame(now);
@@ -109,16 +106,30 @@ public class BoardDrawer {
         }
     }
 
-    private void updateTitleBar(long now){
+    private void drawSpeedStats(long now){
         AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
         AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
 
         if(now > lastNow.get() + 1e9){
-            App.decorateWindowTitle(framesSinceLastFrame.get(), updatesSinceLastFrame.get());
+            currentUPS = updatesSinceLastFrame.get();
+            currentFPS = framesSinceLastFrame.get();
             framesSinceLastFrame.set(0);
             updatesSinceLastFrame.set(0);
             lastNow.set(now);
         }
+
+        if(boardDTO.shouldDrawSpeedStats()){
+            double PIXELS_PER_CHAR = 6.5;
+
+            graphicsContext.setFont(new Font(Font.getFontNames().get(0), 14));
+            graphicsContext.setFill(Color.gray(0.05, 0.5));
+            String stats = "FPS: "+currentFPS + ", UPS: "+currentUPS;
+            int statsWidth = stats.length();
+            graphicsContext.fillRect(anchorPane.getWidth() - 20 - statsWidth * PIXELS_PER_CHAR, 0, 20 + statsWidth * PIXELS_PER_CHAR, 30);
+            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.fillText(stats, anchorPane.getWidth() - 20 - statsWidth * PIXELS_PER_CHAR,  20);
+        }
+
     }
 
     private void waitUntilNextFrame(long now){

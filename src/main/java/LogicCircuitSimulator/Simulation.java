@@ -33,7 +33,7 @@ public class Simulation {
         arrayNodeHandler.setNode(new Node(new Vector2D(5+leftShift, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
 
         int pos = 4;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
             arrayNodeHandler.setNode(new Node(new Vector2D(pos, 1), WireState.LOW, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));

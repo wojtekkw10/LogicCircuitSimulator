@@ -64,7 +64,7 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         double scale = projection2D.getScale();
         Vector2D pos = le.getPosition();
         double height = le.getElementHeight();
-        graphicsContext.setFont(new javafx.scene.text.Font(Font.getFontNames().get(0), scale * 0.4));
+        graphicsContext.setFont(new Font(Font.getFontNames().get(0), scale * 0.4));
 
         if(le.getRotation() == Rotation.RIGHT){
             Vector2D topLeft = projection2D.project(new Vector2D(pos.getX(), pos.getY()-0.5));
