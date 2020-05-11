@@ -54,10 +54,12 @@ public class SimulationCanvasController {
     public Canvas mainSimulationCanvas;
     public AnchorPane mainSimulationAnchorPane;
 
-    BoardDrawer boardDrawer = new BoardDrawer(mainSimulationCanvas, mainSimulationAnchorPane);
+    BoardDrawer boardDrawer;
 
     @FXML
     void initialize(){
+        boardDrawer = new BoardDrawer(mainSimulationCanvas, mainSimulationAnchorPane);
+
         if(syncMode == SyncMode.NOT_SYNCHRONIZED){
             executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/TARGET_UPS*1e6), TimeUnit.MICROSECONDS);
         }
