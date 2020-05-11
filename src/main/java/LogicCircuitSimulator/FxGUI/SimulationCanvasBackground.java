@@ -1,6 +1,6 @@
 package LogicCircuitSimulator.FxGUI;
 
-import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
+import LogicCircuitSimulator.FxGUI.FXMLControllers.BoardDTO;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
@@ -12,10 +12,12 @@ public class SimulationCanvasBackground {
     private static final Color backgroundColor = Color.BLACK;
     private final GraphicsContext graphicsContext;
     private final Canvas simulationCanvas;
+    private final BoardDTO boardDTO;
 
-    public SimulationCanvasBackground(Canvas simulationCanvas) {
+    public SimulationCanvasBackground(Canvas simulationCanvas, BoardDTO boardDTO) {
         this.simulationCanvas = simulationCanvas;
         this.graphicsContext = simulationCanvas.getGraphicsContext2D();
+        this.boardDTO = boardDTO;
     }
 
     public void draw(Projection2D projection){
@@ -38,7 +40,7 @@ public class SimulationCanvasBackground {
 
         double backgroundDisappearingFactor = 1.5;
 
-        if(scale > SimulationCanvasController.MIN_ZOOM *backgroundDisappearingFactor){
+        if(scale > boardDTO.getMIN_ZOOM() *backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
                 for (int j = -gridShiftY; j < amountVertically - gridShiftY; j++) {
                     Vector2D pointPos = projection.project(new Vector2D(i,j));
@@ -52,7 +54,7 @@ public class SimulationCanvasBackground {
     }
 
     private void setStroke(GraphicsContext ctx, double scale){
-        double MAX_SCALE = SimulationCanvasController.MAX_ZOOM;
+        double MAX_SCALE = boardDTO.getMAX_ZOOM();
         Color relativeDotColor = Color.color(dotColor.getRed(), dotColor.getGreen(), dotColor.getBlue(), Math.min(1, 1*scale/MAX_SCALE));
         ctx.setStroke(relativeDotColor);
         ctx.setLineWidth(2);

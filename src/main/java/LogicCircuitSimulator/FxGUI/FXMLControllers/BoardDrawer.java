@@ -1,10 +1,11 @@
-package LogicCircuitSimulator.FxGUI;
+package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
-import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
+import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
+import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementMouseHandler;
+import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.NodeHandler.Node;
 import javafx.scene.canvas.Canvas;
@@ -16,44 +17,32 @@ import javafx.scene.text.Font;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BoardDrawer {
-    private final int TARGET_FPS = 10000;
-    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
+    BoardDTO boardDTO;
 
-    Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
-    Simulation simulation = new Simulation();
-    Canvas canvas;
-    AnchorPane anchorPane;
-    GraphicsContext graphicsContext;
-
-    private AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
-    LogicElement logicGateDragged;
-
-    Vector2D lastMousePosition;
-
-    private long lastNow;
-
-    enum SyncMode{
-        SYNCHRONIZED,
-        NOT_SYNCHRONIZED
-    }
-
-    private int framesSinceLastFrame;
-    AtomicInteger updatesSinceLastFrame = new AtomicInteger();
-
-    public BoardDrawer(Canvas canvas, AnchorPane anchorPane) {
-        this.canvas = canvas;
-        this.anchorPane = anchorPane;
+    public BoardDrawer(BoardDTO boardDTO) {
+        this.boardDTO = boardDTO;
     }
 
     public void draw(long now){
-        graphicsContext = canvas.getGraphicsContext2D();
+        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
+        Canvas canvas = boardDTO.getCanvas();
+        Projection2D projection2D = boardDTO.getProjection2D();
+        Simulation simulation = boardDTO.getSimulation();
+        AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
+        LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
+        Vector2D lastMousePosition = boardDTO.getLastMousePosition();
+        BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
+        AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
+        AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
+
         graphicsContext.setLineWidth(1);
 
         graphicsContext.setFont(new Font(Font.getFontNames().get(0), 15));
 
-        SimulationCanvasBackground background = new SimulationCanvasBackground(canvas);
+        SimulationCanvasBackground background = new SimulationCanvasBackground(canvas, boardDTO);
 
         updateTitleBar(now);
         resizeCanvasToAnchorPane();
@@ -68,45 +57,42 @@ public class BoardDrawer {
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());
                 }
-            }.performNoTransformation(SimulationCanvasController.lastMousePosition, projection2D);
+            }.performNoTransformation(lastMousePosition, projection2D);
 
             LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
             logicGateDragged.accept(drawLogicElement);
         }
 
-        if(syncMode == SyncMode.SYNCHRONIZED){
+        if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
             updatesSinceLastFrame.getAndIncrement();
             simulation.runOnce();
         }
-        framesSinceLastFrame++;
+        framesSinceLastFrame.getAndIncrement();
 
         waitUntilNextFrame(now);
     }
 
-    public void update(Vector2D lastMousePosition, AtomicBoolean isLogicGateDragged,
-                       LogicElement logicGateDragged, Projection2D projection2D,
-                       Simulation simulation, AtomicInteger updatesSinceLastFrame){
-        this.lastMousePosition = lastMousePosition;
-        this.isLogicGateDragged = isLogicGateDragged;
-        this.logicGateDragged = logicGateDragged;
-        this.projection2D = projection2D;
-        this.simulation = simulation;
-        this.updatesSinceLastFrame = updatesSinceLastFrame;
-
-    }
-
     //Private functions
     private void clearCanvas(Color color){
+        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
+        Canvas canvas = boardDTO.getCanvas();
+
         graphicsContext.setFill(color);
         graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
         graphicsContext.fillRect(0,0, canvas.getWidth(), canvas.getHeight());
     }
     private void resizeCanvasToAnchorPane(){
+        Canvas canvas = boardDTO.getCanvas();
+        AnchorPane anchorPane = boardDTO.getAnchorPane();
+
         canvas.setHeight(anchorPane.getHeight());
         canvas.setWidth(anchorPane.getWidth());
     }
 
     private void drawLogicGates(Iterator<LogicElement> logicElements){
+        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
+        Projection2D projection2D = boardDTO.getProjection2D();
+
         LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
         while(logicElements.hasNext()){
             logicElements.next().accept(drawLogicElement);
@@ -114,6 +100,9 @@ public class BoardDrawer {
     }
 
     private void drawNodes(Iterator<Node> nodes){
+        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
+        Projection2D projection2D = boardDTO.getProjection2D();
+
         NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
         while(nodes.hasNext()){
             nodes.next().accept(drawNode);
@@ -121,15 +110,20 @@ public class BoardDrawer {
     }
 
     private void updateTitleBar(long now){
-        if(now > lastNow + 1e9){
-            App.decorateWindowTitle(framesSinceLastFrame, updatesSinceLastFrame.get());
-            framesSinceLastFrame = 0;
+        AtomicLong lastNow = boardDTO.getLastNow();
+        AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
+        AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
+
+        if(now > lastNow.get() + 1e9){
+            App.decorateWindowTitle(framesSinceLastFrame.get(), updatesSinceLastFrame.get());
+            framesSinceLastFrame.set(0);
             updatesSinceLastFrame.set(0);
-            lastNow = now;
+            lastNow.set(now);
         }
     }
 
     private void waitUntilNextFrame(long now){
+        int TARGET_FPS = boardDTO.getTARGET_FPS();
         try {
             Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
         } catch (InterruptedException e) {

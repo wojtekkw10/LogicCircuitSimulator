@@ -8,15 +8,18 @@ DONE:
 - rename 2DList to Grid - better describes the intent
 - divide ArrayWireGrid into two classes: 1. wire management (set Wire, getWire etc) 2. propagation
 - unboundGrid should throw an exception when pos is null
+- refactor defining events in fxml to defining them in code - it should be cleaner
+- divide SimulationCanvasController into Controller and a separate Event Handler class
+- refactor BoardDrawer, BoardEventHandler na CanvasController to use one object with necessary variables
 
 DOING:
+
+- extract what possible from BoardDTO to particular classes (if only one class uses it, it should be in that class)
 
 TO BE DONE:
 TODO: drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 
 TODO: refactor tests
-
-TODO: refactor defining events in fxml to defining them in code - it should be cleaner
 
 TODO: create an array of references to logicGates on the board to facilitate moving the logic gates, without it it's hard to find
     which gate is clicked
