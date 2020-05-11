@@ -20,21 +20,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BoardDrawer {
-    BoardDTO boardDTO;
+    private final BoardDTO boardDTO;
+    private final AnchorPane anchorPane;
+    private final GraphicsContext graphicsContext;
+    private final AtomicLong lastNow = new AtomicLong(0);
 
-    public BoardDrawer(BoardDTO boardDTO) {
+
+    public BoardDrawer(BoardDTO boardDTO, AnchorPane anchorPane) {
         this.boardDTO = boardDTO;
+        this.anchorPane = anchorPane;
+        this.graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
     }
 
     public void draw(long now){
-        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
         Canvas canvas = boardDTO.getCanvas();
         Projection2D projection2D = boardDTO.getProjection2D();
         Simulation simulation = boardDTO.getSimulation();
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();
-        BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
         AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
         AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
 
@@ -63,7 +67,7 @@ public class BoardDrawer {
             logicGateDragged.accept(drawLogicElement);
         }
 
-        if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
+        if(boardDTO.getSyncMode() == BoardDTO.SyncMode.SYNCHRONIZED){
             updatesSinceLastFrame.getAndIncrement();
             simulation.runOnce();
         }
@@ -74,7 +78,6 @@ public class BoardDrawer {
 
     //Private functions
     private void clearCanvas(Color color){
-        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
         Canvas canvas = boardDTO.getCanvas();
 
         graphicsContext.setFill(color);
@@ -83,14 +86,12 @@ public class BoardDrawer {
     }
     private void resizeCanvasToAnchorPane(){
         Canvas canvas = boardDTO.getCanvas();
-        AnchorPane anchorPane = boardDTO.getAnchorPane();
 
         canvas.setHeight(anchorPane.getHeight());
         canvas.setWidth(anchorPane.getWidth());
     }
 
     private void drawLogicGates(Iterator<LogicElement> logicElements){
-        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
         Projection2D projection2D = boardDTO.getProjection2D();
 
         LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
@@ -100,7 +101,6 @@ public class BoardDrawer {
     }
 
     private void drawNodes(Iterator<Node> nodes){
-        GraphicsContext graphicsContext = boardDTO.getGraphicsContext();
         Projection2D projection2D = boardDTO.getProjection2D();
 
         NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
@@ -110,7 +110,6 @@ public class BoardDrawer {
     }
 
     private void updateTitleBar(long now){
-        AtomicLong lastNow = boardDTO.getLastNow();
         AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
         AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
 

@@ -17,11 +17,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoardEventHandler {
     private final BoardDTO boardDTO;
-    private Vector2D lastMousePosition;
+    private Vector2D lastMousePressPosition = new Vector2D(0,0);
+    private WireMode wireMode = WireMode.ADDING;
+
+    private final double SCALING_FACTOR = 0.05;
+
+    public enum WireMode{
+        ADDING,
+        REMOVING
+    }
 
     public BoardEventHandler(BoardDTO boardDTO) {
         this.boardDTO = boardDTO;
-        this.lastMousePosition = boardDTO.getLastMousePosition();
 
         initialize();
     }
@@ -33,17 +40,15 @@ public class BoardEventHandler {
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
         double MAX_ZOOM = boardDTO.getMAX_ZOOM();
         double MIN_ZOOM = boardDTO.getMIN_ZOOM();
-        double SCALING_FACTOR = boardDTO.getSCALING_FACTOR();
-        final BoardDTO.WireMode[] wireMode = {boardDTO.getWireMode()};
 
         // ON SCROLL
         EventHandler<ScrollEvent> onScrollEventHandler = event -> {
             double currentScale = projection2D.getScale();
             if(event.getDeltaY()>0 && currentScale < MAX_ZOOM) {
-                projection2D.scale(1+SCALING_FACTOR, lastMousePosition);
+                projection2D.scale(1+SCALING_FACTOR, boardDTO.getLastMousePosition());
             }
             else if(event.getDeltaY()<0 && currentScale > MIN_ZOOM) {
-                projection2D.scale(1-SCALING_FACTOR, lastMousePosition);
+                projection2D.scale(1-SCALING_FACTOR, boardDTO.getLastMousePosition());
             }
         };
         canvas.addEventFilter(ScrollEvent.SCROLL, onScrollEventHandler);
@@ -56,7 +61,7 @@ public class BoardEventHandler {
                     public void transformLogicElement() {
                         rotateLogicElementClockwise();
                     }
-                }.performTransformation(lastMousePosition, projection2D);
+                }.performTransformation(boardDTO.getLastMousePosition(), projection2D);
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
         };
@@ -65,6 +70,7 @@ public class BoardEventHandler {
         //ON MOUSE PRESSED
         EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
             boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
+            lastMousePressPosition = new Vector2D(event.getX(), event.getY());
 
             if(event.getButton() == MouseButton.PRIMARY){
                 new LogicElementMouseHandler(simulation){
@@ -81,8 +87,8 @@ public class BoardEventHandler {
             new WireMouseHandler(simulation){
                 @Override
                 public void transformState() {
-                    if(getWireState() != WireState.NONE) wireMode[0] = BoardDTO.WireMode.REMOVING;
-                    else wireMode[0] = BoardDTO.WireMode.ADDING;
+                    if(getWireState() != WireState.NONE) wireMode = WireMode.REMOVING;
+                    else wireMode = WireMode.ADDING;
                 }
             }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
         };
@@ -127,10 +133,10 @@ public class BoardEventHandler {
             boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
 
             if(event.getButton() == MouseButton.MIDDLE){
-                double deltaX = boardDTO.getLastMousePressPosition().getX() - event.getX();
-                double deltaY = boardDTO.getLastMousePressPosition().getY() - event.getY();
+                double deltaX = lastMousePressPosition.getX() - event.getX();
+                double deltaY = lastMousePressPosition.getY() - event.getY();
 
-                boardDTO.setLastMousePressPosition(new Vector2D(event.getX(), event.getY()));
+                lastMousePressPosition = new Vector2D(event.getX(), event.getY());
 
                 projection2D.translate(new Vector2D(-deltaX, -deltaY));
             }
@@ -139,7 +145,7 @@ public class BoardEventHandler {
                 new WireMouseHandler(simulation){
                     @Override
                     public void transformState() {
-                        if(wireMode[0] == BoardDTO.WireMode.ADDING) this.updateWireState(WireState.HIGH);
+                        if(wireMode == WireMode.ADDING) this.updateWireState(WireState.HIGH);
                         else updateWireState(WireState.NONE);
                     }
                 }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
@@ -149,44 +155,43 @@ public class BoardEventHandler {
 
         //OM MOUSE MOVED
         EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
-            lastMousePosition = new Vector2D(event.getX(), event.getY());
+            boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
         };
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, onMouseMovedEventHandler);
     }
 
     private void createLogicElementAtMouseOnKeyEvent(KeyCode keycode){
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
-        final LogicElement[] logicGateDragged = {boardDTO.getLogicGateDragged()};
 
         int x = 0;
         int y = 0;
         if(keycode == KeyCode.DIGIT1){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new AndGate(x,y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new AndGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT2){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new BufferGate(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new BufferGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT3){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new LogicClock(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new LogicClock(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT4){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new LogicOne(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new LogicOne(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT5){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new NotGate(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new NotGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT6){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new OrGate(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new OrGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT7){
             isLogicGateDragged.set(true);
-            logicGateDragged[0] = new XorGate(x, y, Rotation.RIGHT);
+            boardDTO.setLogicGateDragged(new XorGate(x,y, Rotation.RIGHT));
         }
     }
 }

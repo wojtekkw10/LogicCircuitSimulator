@@ -11,10 +11,11 @@ DONE:
 - refactor defining events in fxml to defining them in code - it should be cleaner
 - divide SimulationCanvasController into Controller and a separate Event Handler class
 - refactor BoardDrawer, BoardEventHandler na CanvasController to use one object with necessary variables
+- extract what possible from BoardDTO to particular classes (if only one class uses it, it should be in that class)
 
 DOING:
 
-- extract what possible from BoardDTO to particular classes (if only one class uses it, it should be in that class)
+
 
 TO BE DONE:
 TODO: drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class

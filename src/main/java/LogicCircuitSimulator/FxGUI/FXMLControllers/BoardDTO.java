@@ -8,9 +8,6 @@ import LogicCircuitSimulator.LogicElements.Rotation;
 import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,30 +16,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BoardDTO {
-    private final double SCALING_FACTOR = 0.05;
-
-    private final AnchorPane anchorPane;
-    private final Canvas canvas;
-    private final GraphicsContext graphicsContext;
-
     private final double MAX_ZOOM = 50;
     private final double MIN_ZOOM = 5;
 
-    private Vector2D lastMousePressPosition = new Vector2D(0,0);
-    private Vector2D lastMousePosition = new Vector2D(0,0);
-
     private final int TARGET_FPS = 100;
     private final int TARGET_UPS = 100;
-
-    private final AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
-    private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
-
-    private final Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
-
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
     private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
-    private  final WireMode wireMode = WireMode.ADDING;
+    private final Canvas canvas;
+    private final Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
+
+    private Vector2D lastMousePosition = new Vector2D(0,0);
+    private final AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
+    private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
+
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     private final Simulation simulation = new Simulation();
 
@@ -50,39 +38,13 @@ public class BoardDTO {
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
     }
-    public enum WireMode{
-        ADDING,
-        REMOVING
-    }
 
-    public BoardDTO(AnchorPane anchorPane, Canvas canvas) {
-        this.anchorPane = anchorPane;
+    public BoardDTO(Canvas canvas) {
         this.canvas = canvas;
-        this.graphicsContext = canvas.getGraphicsContext2D();
-    }
-
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private final Runnable simulationTask = () -> {
-        simulation.runOnce();
-        updatesSinceLastFrame.getAndIncrement();
-    };
-
-    private final AtomicLong lastNow = new AtomicLong(0);
-
-    public double getSCALING_FACTOR() {
-        return SCALING_FACTOR;
-    }
-
-    public AnchorPane getAnchorPane() {
-        return anchorPane;
     }
 
     public Canvas getCanvas() {
         return canvas;
-    }
-
-    public GraphicsContext getGraphicsContext() {
-        return graphicsContext;
     }
 
     public double getMAX_ZOOM() {
@@ -91,14 +53,6 @@ public class BoardDTO {
 
     public double getMIN_ZOOM() {
         return MIN_ZOOM;
-    }
-
-    public Vector2D getLastMousePressPosition() {
-        return lastMousePressPosition;
-    }
-
-    public void setLastMousePressPosition(Vector2D lastMousePressPosition) {
-        this.lastMousePressPosition = lastMousePressPosition;
     }
 
     public Vector2D getLastMousePosition() {
@@ -141,28 +95,11 @@ public class BoardDTO {
         return framesSinceLastFrame;
     }
 
-    public WireMode getWireMode() {
-        return wireMode;
-    }
-
-
     public SyncMode getSyncMode() {
         return syncMode;
     }
 
     public Simulation getSimulation() {
         return simulation;
-    }
-
-    public ScheduledExecutorService getExecutor() {
-        return executor;
-    }
-
-    public Runnable getSimulationTask() {
-        return simulationTask;
-    }
-
-    public AtomicLong getLastNow() {
-        return lastNow;
     }
 }
