@@ -27,7 +27,7 @@ public class App  extends Application {
         primaryStage.setTitle(stageTitle);
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("/FXML/StartMenu.fxml"));
+        loader.setLocation(this.getClass().getResource("/FXML/StartMenu2.fxml"));
 
         Parent pane = null;
         try {

@@ -24,6 +24,8 @@ TODO: imagine that something else is in control of your simulation. Eg. neural n
 
 TODO: refactor tests
 
+TODO: bug - clock nie outputuje w dol
+
 TODO: refactor specifiers
 
 TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
