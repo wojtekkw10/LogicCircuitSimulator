@@ -1,15 +1,11 @@
 package LogicCircuitSimulator.WireGrid;
 
 import LogicCircuitSimulator.Vector2D;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,0 +1,20 @@
+.main_color{
+    -fx-background-color: #2b2e3e;
+    -fx-text-fill: aliceblue;
+}
+
+.menu_button{
+    -fx-background-color: #2b2e3e;
+    -fx-text-fill: aliceblue;
+    -fx-border-color: #2b2e3e;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+
+.menu_button:hover{
+    -fx-background-color: transparent;
+    -fx-text-fill: #2b2e3e;
+    -fx-border-color: #2b2e3e;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}

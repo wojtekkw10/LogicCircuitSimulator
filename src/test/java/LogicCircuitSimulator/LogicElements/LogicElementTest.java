@@ -1,7 +1,10 @@
 package LogicCircuitSimulator.LogicElements;
 
-import LogicCircuitSimulator.LogicElementVisitor;
-import LogicCircuitSimulator.LogicState;
+import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.LogicElements.ComputedValue;
+import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LogicElementTest {
 
-    static class AsymmetricGate extends LogicElement{
+    static class AsymmetricGate extends LogicElement {
 
         public AsymmetricGate(int x, int y, Rotation rot) {
             super(x, y, rot);
@@ -44,7 +47,7 @@ class LogicElementTest {
         }
 
         @Override
-        protected List<LogicState> computeLocalValues(List<LogicState> states) {
+        public List<LogicState> computeLocalValues(List<LogicState> states) {
             return states;
         }
 

@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.WireGrid;
 
-import LogicCircuitSimulator.LogicState;
-import LogicCircuitSimulator.NodeHandler.*;
-import LogicCircuitSimulator.Orientation;
+import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.Orientation;
+import LogicCircuitSimulator.Simulation.NodeHandler.*;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
 

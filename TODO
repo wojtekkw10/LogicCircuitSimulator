@@ -14,9 +14,9 @@ DONE:
 - extract what possible from BoardDTO to particular classes (if only one class uses it, it should be in that class)
 - drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 - limiting UPS from keyboard during run
-
+- Make moving fun.
 DOING:
-TODO: Make moving fun.
+
 
 TO BE DONE:
 
@@ -24,10 +24,10 @@ TODO: imagine that something else is in control of your simulation. Eg. neural n
 
 TODO: refactor tests
 
-
+TODO: refactor specifiers
 
 TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
-TODO: Create an interface for Simulation and it should be the only accesible thing in the package
+TODO: Create an interface for Simulation and it should be the only accessible thing in the package
 TODO: somehow hide as much in the SimulationPackage (module system)
 
 MAYBE:

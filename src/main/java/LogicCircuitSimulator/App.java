@@ -3,7 +3,7 @@
  */
 package LogicCircuitSimulator;
 
-import LogicCircuitSimulator.FxGUI.FXMLControllers.SimulationCanvasController;
+import LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController.SimulationCanvasController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
