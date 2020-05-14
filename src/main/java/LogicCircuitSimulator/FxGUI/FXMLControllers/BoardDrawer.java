@@ -61,7 +61,7 @@ public class BoardDrawer {
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());
                 }
-            }.performNoTransformation(lastMousePosition, projection2D);
+            }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged);
 
             LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
             logicGateDragged.accept(drawLogicElement);

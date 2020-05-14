@@ -61,7 +61,7 @@ public class BoardEventHandler {
                     public void transformLogicElement() {
                         rotateLogicElementClockwise();
                     }
-                }.performTransformation(boardDTO.getLastMousePosition(), projection2D);
+                }.getElementFromMousePosition(boardDTO.getLastMousePosition(), projection2D);
             }
             else if(event.getCode() == KeyCode.P){
                 if(boardDTO.shouldDrawSpeedStats()) boardDTO.setShouldDrawSpeedStats(false);
@@ -95,10 +95,12 @@ public class BoardEventHandler {
                     public void transformLogicElement() {
                         boardDTO.setLogicGateDragged(getLogicElement());
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
+                        System.out.println("IN HANDLER");
+                        System.out.println(getPosition());
                         isLogicGateDragged.set(true);
                         removeLogicElement();
                     }
-                }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
+                }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
             }
 
             new MouseWireSpecifier(simulation){
@@ -122,7 +124,7 @@ public class BoardEventHandler {
                         simulation.addLogicGate(boardDTO.getLogicGateDragged());
                         isLogicGateDragged.set(false);
                     }
-                }.performNoTransformation(mousePos, projection2D);
+                }.getElementPosFromElementAndMousePosition(mousePos, projection2D, boardDTO.getLogicGateDragged());
             }
             else{
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {

@@ -20,10 +20,10 @@ public abstract class MouseLogicElementSpecifier {
 
     abstract public void transformLogicElement();
 
-    public void performTransformation(Vector2D mousePos, Projection2D projection){
+    public void getElementFromMousePosition(Vector2D mousePos, Projection2D projection){
         Vector2D nodePos = getNodePosition(mousePos, projection);
         Vector2D cursorBoardPosition = getExactBoardPosition(mousePos, projection);
-        LogicElement logicElement = getLogicElement(nodePos, cursorBoardPosition, simulation.logicElementIterator());
+        LogicElement logicElement = calculateLogicElement(nodePos, cursorBoardPosition, simulation.logicElementIterator());
         if (logicElement != null) {
             currentLogicElementPos = logicElement.getPosition();
             currentLogicElement = logicElement;
@@ -33,8 +33,15 @@ public abstract class MouseLogicElementSpecifier {
 
     }
 
-    public void performNoTransformation(Vector2D mousePos, Projection2D projection){
-        currentLogicElementPos = getNodePosition(mousePos, projection);
+    public void getElementPosFromElementAndMousePosition(Vector2D mousePos, Projection2D projection, LogicElement logicElement){
+        Vector2D pos = getNodePosition(mousePos, projection);
+        if(logicElement.getRotation() == Rotation.DOWN){
+            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
+        }
+        else if(logicElement.getRotation() == Rotation.UP){
+            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
+        }
+        currentLogicElementPos = pos;
 
         transformLogicElement();
     }
@@ -49,7 +56,7 @@ public abstract class MouseLogicElementSpecifier {
         Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
         int x = (int)pos.getX();
         int y = (int)pos.getY();
-        Vector2D nodePos = new Vector2D(x,y);
+        Vector2D nodePos;
 
 
         double xFraction = pos.getX() - x;
@@ -73,7 +80,20 @@ public abstract class MouseLogicElementSpecifier {
         return nodePos;
     }
 
-    private LogicElement getLogicElement(Vector2D nodePos, Vector2D cursorBoardPos, Iterator<LogicElement> logicElements){
+    private Vector2D calculateLogicElementPos(Vector2D cursorBoardPos, LogicElement logicElement, Projection2D projection2D, Vector2D nodePos){
+
+        Vector2D pos = nodePos;
+        if(logicElement.getRotation() == Rotation.DOWN){
+            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
+        }
+        else if(logicElement.getRotation() == Rotation.UP){
+            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
+        }
+
+        return pos;
+    }
+
+    private LogicElement calculateLogicElement(Vector2D nodePos, Vector2D cursorBoardPos, Iterator<LogicElement> logicElements){
         while(logicElements.hasNext()){
             LogicElement logicElement = logicElements.next();
             int widthOnBoard = getWidthOnBoard(logicElement);
@@ -86,6 +106,8 @@ public abstract class MouseLogicElementSpecifier {
                     //vertical axis
                     && cursorBoardPos.getY() > logicElement.getPosition().getY()
                     && cursorBoardPos.getY() < logicElement.getPosition().getY() + heightOnBoard){
+                System.out.println("INSIDE SPECIFIER");
+                System.out.println(logicElement.getPosition().getY());
                 return logicElement;
             }
             else if(logicElement.getRotation() == Rotation.RIGHT
