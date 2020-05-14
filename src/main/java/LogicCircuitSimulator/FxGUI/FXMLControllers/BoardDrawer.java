@@ -58,7 +58,7 @@ public class BoardDrawer {
         if(isLogicGateDragged.get()) {
             new MouseLogicElementSpecifier(simulation) {
                 @Override
-                public void transformLogicElement() {
+                public void doAction() {
                     logicGateDragged.setPosition(getPosition());
                 }
             }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged);

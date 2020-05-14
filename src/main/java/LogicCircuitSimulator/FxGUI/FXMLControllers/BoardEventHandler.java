@@ -58,7 +58,7 @@ public class BoardEventHandler {
             if(event.getCode() == KeyCode.R){
                 new MouseLogicElementSpecifier(simulation){
                     @Override
-                    public void transformLogicElement() {
+                    public void doAction() {
                         rotateLogicElementClockwise();
                     }
                 }.getElementFromMousePosition(boardDTO.getLastMousePosition(), projection2D);
@@ -92,11 +92,9 @@ public class BoardEventHandler {
             if(event.getButton() == MouseButton.PRIMARY){
                 new MouseLogicElementSpecifier(simulation){
                     @Override
-                    public void transformLogicElement() {
+                    public void doAction() {
                         boardDTO.setLogicGateDragged(getLogicElement());
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
-                        System.out.println("IN HANDLER");
-                        System.out.println(getPosition());
                         isLogicGateDragged.set(true);
                         removeLogicElement();
                     }
@@ -105,7 +103,7 @@ public class BoardEventHandler {
 
             new MouseWireSpecifier(simulation){
                 @Override
-                public void transformState() {
+                public void doAction() {
                     if(getWireState() != WireState.NONE) wireMode = WireMode.REMOVING;
                     else wireMode = WireMode.ADDING;
                 }
@@ -119,7 +117,7 @@ public class BoardEventHandler {
             if(isLogicGateDragged.get()){
                 new MouseLogicElementSpecifier(simulation){
                     @Override
-                    public void transformLogicElement() {
+                    public void doAction() {
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
                         simulation.addLogicGate(boardDTO.getLogicGateDragged());
                         isLogicGateDragged.set(false);
@@ -130,7 +128,7 @@ public class BoardEventHandler {
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {
                     new MouseCrossingSpecifier(simulation){
                         @Override
-                        public void transformCrossing() {
+                        public void doAction() {
                             if (getCrossing() == Node.WireCrossing.TOUCHING) updateCrossing(Node.WireCrossing.NOT_TOUCHING);
                             else updateCrossing(Node.WireCrossing.TOUCHING);
                         }
@@ -163,7 +161,7 @@ public class BoardEventHandler {
             if(event.getButton() == MouseButton.PRIMARY && !isLogicGateDragged.get()){
                 new MouseWireSpecifier(simulation){
                     @Override
-                    public void transformState() {
+                    public void doAction() {
                         if(wireMode == WireMode.ADDING) this.updateWireState(WireState.HIGH);
                         else updateWireState(WireState.NONE);
                     }

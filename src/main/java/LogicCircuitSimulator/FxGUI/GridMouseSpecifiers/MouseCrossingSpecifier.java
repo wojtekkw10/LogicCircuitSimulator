@@ -15,7 +15,7 @@ public abstract class MouseCrossingSpecifier {
         this.simulation = simulation;
     }
 
-    abstract public void transformCrossing();
+    abstract public void doAction();
 
     public void performTransformation(Vector2D mousePos, Projection2D projection){
         Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
@@ -50,7 +50,7 @@ public abstract class MouseCrossingSpecifier {
 
         currentCrossing = simulation.getNode(nodePos).isTouching();
         currentPosition = nodePos;
-        transformCrossing();
+        doAction();
     }
 
     public void updateCrossing(Node.WireCrossing crossing){

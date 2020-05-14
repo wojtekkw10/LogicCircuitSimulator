@@ -20,7 +20,7 @@ public abstract class MouseWireSpecifier {
         this.simulation = simulation;
     }
 
-    abstract public void transformState();
+    abstract public void doAction();
 
     public void performTransformation(Vector2D mousePos, Projection2D projection){
         Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
@@ -44,25 +44,25 @@ public abstract class MouseWireSpecifier {
             currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getRightWire();
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.HORIZONTALLY;
-            transformState();
+            doAction();
         }
         if(isInRightTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX()+1,getY())).getDownWire();
             currentNodePos = new Vector2D(getX()+1,getY());
             currentOrientation = Orientation.VERTICALLY;
-            transformState();
+            doAction();
         }
         if(isInLowerTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX(),getY()+1)).getRightWire();
             currentNodePos = new Vector2D(getX(),getY()+1);
             currentOrientation = Orientation.HORIZONTALLY;
-            transformState();
+            doAction();
         }
         if(isInLeftTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
             currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getDownWire();
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.VERTICALLY;
-            transformState();
+            doAction();
         }
 
     }
