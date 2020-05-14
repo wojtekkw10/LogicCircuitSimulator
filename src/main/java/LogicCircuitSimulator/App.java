@@ -39,6 +39,7 @@ public class App  extends Application {
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
 
         // cleanup controller resources when window closes:
         //SimulationCanvasController controller = loader.getController();

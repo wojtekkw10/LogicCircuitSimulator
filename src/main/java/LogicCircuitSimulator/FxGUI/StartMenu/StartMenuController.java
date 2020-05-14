@@ -30,6 +30,7 @@ public class StartMenuController {
         }
         assert pane != null;
         Scene scene = new Scene(pane);
+        App.primaryStage.setResizable(true);
         App.primaryStage.setScene(scene);
         App.primaryStage.show();
 
