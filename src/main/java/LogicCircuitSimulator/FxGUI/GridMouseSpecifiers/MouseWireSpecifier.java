@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.FxGUI.GridMouseHandler;
+package LogicCircuitSimulator.FxGUI.GridMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Orientation;
@@ -6,7 +6,7 @@ import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.NodeHandler.WireState;
 
-public abstract class WireMouseHandler {
+public abstract class MouseWireSpecifier {
     int x;
     int y;
 
@@ -16,7 +16,7 @@ public abstract class WireMouseHandler {
     Vector2D currentNodePos;
     Orientation currentOrientation;
 
-    public WireMouseHandler(Simulation simulation){
+    public MouseWireSpecifier(Simulation simulation){
         this.simulation = simulation;
     }
 

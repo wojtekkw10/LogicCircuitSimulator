@@ -1,9 +1,9 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.CrossingMouseHandler;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementMouseHandler;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.WireMouseHandler;
+import LogicCircuitSimulator.FxGUI.GridMouseSpecifiers.MouseCrossingSpecifier;
+import LogicCircuitSimulator.FxGUI.GridMouseSpecifiers.MouseLogicElementSpecifier;
+import LogicCircuitSimulator.FxGUI.GridMouseSpecifiers.MouseWireSpecifier;
 import LogicCircuitSimulator.LogicElements.*;
 import LogicCircuitSimulator.NodeHandler.Node;
 import LogicCircuitSimulator.NodeHandler.WireState;
@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
-import java.security.Key;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoardEventHandler {
@@ -57,7 +56,7 @@ public class BoardEventHandler {
         //ON KEY RELEASED
         EventHandler<KeyEvent> onKeyReleasedEventHandler = event -> {
             if(event.getCode() == KeyCode.R){
-                new LogicElementMouseHandler(simulation){
+                new MouseLogicElementSpecifier(simulation){
                     @Override
                     public void transformLogicElement() {
                         rotateLogicElementClockwise();
@@ -91,7 +90,7 @@ public class BoardEventHandler {
             lastMousePressPosition = new Vector2D(event.getX(), event.getY());
 
             if(event.getButton() == MouseButton.PRIMARY){
-                new LogicElementMouseHandler(simulation){
+                new MouseLogicElementSpecifier(simulation){
                     @Override
                     public void transformLogicElement() {
                         boardDTO.setLogicGateDragged(getLogicElement());
@@ -102,7 +101,7 @@ public class BoardEventHandler {
                 }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
             }
 
-            new WireMouseHandler(simulation){
+            new MouseWireSpecifier(simulation){
                 @Override
                 public void transformState() {
                     if(getWireState() != WireState.NONE) wireMode = WireMode.REMOVING;
@@ -116,7 +115,7 @@ public class BoardEventHandler {
         EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
             Vector2D mousePos = new Vector2D(event.getX(), event.getY());
             if(isLogicGateDragged.get()){
-                new LogicElementMouseHandler(simulation){
+                new MouseLogicElementSpecifier(simulation){
                     @Override
                     public void transformLogicElement() {
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
@@ -127,7 +126,7 @@ public class BoardEventHandler {
             }
             else{
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {
-                    new CrossingMouseHandler(simulation){
+                    new MouseCrossingSpecifier(simulation){
                         @Override
                         public void transformCrossing() {
                             if (getCrossing() == Node.WireCrossing.TOUCHING) updateCrossing(Node.WireCrossing.NOT_TOUCHING);
@@ -160,7 +159,7 @@ public class BoardEventHandler {
             }
 
             if(event.getButton() == MouseButton.PRIMARY && !isLogicGateDragged.get()){
-                new WireMouseHandler(simulation){
+                new MouseWireSpecifier(simulation){
                     @Override
                     public void transformState() {
                         if(wireMode == WireMode.ADDING) this.updateWireState(WireState.HIGH);

@@ -13,7 +13,6 @@ public class SimulationCanvasController {
     public AnchorPane mainSimulationAnchorPane;
 
     private BoardDTO boardDTO;
-    private BoardDrawer boardDrawer;
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final Runnable simulationTask = () -> {
@@ -25,7 +24,6 @@ public class SimulationCanvasController {
     void initialize(){
         boardDTO = new BoardDTO(mainSimulationCanvas);
         BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
-        boardDrawer = new BoardDrawer(boardDTO, mainSimulationAnchorPane);
         new BoardEventHandler(boardDTO);
 
         if(syncMode == BoardDTO.SyncMode.NOT_SYNCHRONIZED){
@@ -34,6 +32,7 @@ public class SimulationCanvasController {
         }
 
         new AnimationTimer() {
+            final BoardDrawer boardDrawer = new BoardDrawer(boardDTO, mainSimulationAnchorPane);
             @Override
             public void handle(long now) {
                 if(boardDTO.isUpsChanged() && syncMode == BoardDTO.SyncMode.NOT_SYNCHRONIZED){

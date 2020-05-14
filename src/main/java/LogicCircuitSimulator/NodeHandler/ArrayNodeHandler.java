@@ -3,11 +3,10 @@ package LogicCircuitSimulator.NodeHandler;
 import LogicCircuitSimulator.LogicState;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.ArrayNode;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.ArrayNodeGrid;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundArrayListGrid;
+import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.NodeHandler.NodeGrid.NodeGrid;
-import LogicCircuitSimulator.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 
 import java.util.*;
 
@@ -18,7 +17,7 @@ public final class ArrayNodeHandler implements NodeHandler {
     /**
      * Stores node data
      */
-    NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundArrayListGrid<>());
+    NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundHashMapGrid<>());
 
     @Override
     public void setNode(Node node){

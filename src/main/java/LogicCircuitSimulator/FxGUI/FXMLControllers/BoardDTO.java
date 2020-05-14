@@ -9,11 +9,8 @@ import LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class BoardDTO {
     private final double MAX_ZOOM = 50;
@@ -37,8 +34,6 @@ public class BoardDTO {
     private boolean shouldDrawSpeedStats = true;
     private boolean isUpsLimited = true;
     private boolean upsChanged = false;
-
-
 
     enum SyncMode{
         SYNCHRONIZED,

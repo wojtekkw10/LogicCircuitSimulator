@@ -1,11 +1,11 @@
 package LogicCircuitSimulator.FxGUI.FXMLControllers;
 
 import LogicCircuitSimulator.*;
-import LogicCircuitSimulator.FxGUI.DrawNodeVisitor;
-import LogicCircuitSimulator.FxGUI.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.Drawing.DrawNodeVisitor;
+import LogicCircuitSimulator.FxGUI.Drawing.DrawSquareLogicElementVisitor;
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.GridMouseHandler.LogicElementMouseHandler;
-import LogicCircuitSimulator.FxGUI.SimulationCanvasBackground;
+import LogicCircuitSimulator.FxGUI.GridMouseSpecifiers.MouseLogicElementSpecifier;
+import LogicCircuitSimulator.FxGUI.Drawing.SimulationCanvasBackground;
 import LogicCircuitSimulator.LogicElements.LogicElement;
 import LogicCircuitSimulator.NodeHandler.Node;
 import javafx.scene.canvas.Canvas;
@@ -42,7 +42,6 @@ public class BoardDrawer {
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();
-        AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
         AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
 
         graphicsContext.setLineWidth(1);
@@ -57,7 +56,7 @@ public class BoardDrawer {
         drawSpeedStats(now);
 
         if(isLogicGateDragged.get()) {
-            new LogicElementMouseHandler(simulation) {
+            new MouseLogicElementSpecifier(simulation) {
                 @Override
                 public void transformLogicElement() {
                     logicGateDragged.setPosition(getPosition());

@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.FxGUI;
+package LogicCircuitSimulator.FxGUI.Drawing;
 
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.NodeVisitor;

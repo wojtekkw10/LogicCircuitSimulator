@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.FxGUI.GridMouseHandler;
+package LogicCircuitSimulator.FxGUI.GridMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.LogicElements.LogicElement;
@@ -8,13 +8,13 @@ import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;
 
-public abstract class LogicElementMouseHandler {
+public abstract class MouseLogicElementSpecifier {
 
     private final Simulation simulation;
     private Vector2D currentLogicElementPos;
     private LogicElement currentLogicElement;
 
-    public LogicElementMouseHandler(Simulation simulation){
+    public MouseLogicElementSpecifier(Simulation simulation){
         this.simulation = simulation;
     }
 
@@ -40,6 +40,8 @@ public abstract class LogicElementMouseHandler {
 
         transformLogicElement();
     }
+    //TODO: performWhenFound
+    //TODO: alwaysPerform
 
     private Vector2D getNodePosition(Vector2D mousePos, Projection2D projection){
         Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
