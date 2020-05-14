@@ -33,6 +33,9 @@ TODO: somehow hide as much in the SimulationPackage (module system)
 MAYBE:
 TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid and UnboundList (if the app takes too much memory)
+TODO: actually use 2d array to store elements, but maintain two representations
+    2d array representation would allow for fast point access
+    list representation would allow for fast drawing
 
 NOT DONE:
 - create new faster UnboundGrid (it was supposed to be an arraylist, but going through all the nulls took a while so it was slower than hashmap)

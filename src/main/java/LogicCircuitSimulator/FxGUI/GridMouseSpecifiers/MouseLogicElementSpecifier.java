@@ -22,12 +22,10 @@ public abstract class MouseLogicElementSpecifier {
 
     public void performTransformation(Vector2D mousePos, Projection2D projection){
         Vector2D nodePos = getNodePosition(mousePos, projection);
-        LogicElement logicElement = getLogicElement(nodePos, simulation.logicElementIterator());
+        Vector2D cursorBoardPosition = getExactBoardPosition(mousePos, projection);
+        LogicElement logicElement = getLogicElement(nodePos, cursorBoardPosition, simulation.logicElementIterator());
         if (logicElement != null) {
-            int width = logicElement.getElementWidth();
-            int height = logicElement.getElementWidth();
-
-            currentLogicElementPos = nodePos;
+            currentLogicElementPos = logicElement.getPosition();
             currentLogicElement = logicElement;
 
             transformLogicElement();
@@ -42,6 +40,10 @@ public abstract class MouseLogicElementSpecifier {
     }
     //TODO: performWhenFound
     //TODO: alwaysPerform
+
+    private Vector2D getExactBoardPosition(Vector2D mousePos, Projection2D projection){
+        return projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
+    }
 
     private Vector2D getNodePosition(Vector2D mousePos, Projection2D projection){
         Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
@@ -71,10 +73,46 @@ public abstract class MouseLogicElementSpecifier {
         return nodePos;
     }
 
-    private LogicElement getLogicElement(Vector2D pos, Iterator<LogicElement> logicElements){
+    private LogicElement getLogicElement(Vector2D nodePos, Vector2D cursorBoardPos, Iterator<LogicElement> logicElements){
         while(logicElements.hasNext()){
             LogicElement logicElement = logicElements.next();
-            if(logicElement.getPosition().equals(pos)){
+            int widthOnBoard = getWidthOnBoard(logicElement);
+            int heightOnBoard = getHeightOnBoard(logicElement);
+
+            if(logicElement.getRotation() == Rotation.DOWN
+                    //horizontal axis
+                    && cursorBoardPos.getX() + 0.5 > logicElement.getPosition().getX()
+                    && cursorBoardPos.getX() + 0.5 < logicElement.getPosition().getX() + widthOnBoard
+                    //vertical axis
+                    && cursorBoardPos.getY() > logicElement.getPosition().getY()
+                    && cursorBoardPos.getY() < logicElement.getPosition().getY() + heightOnBoard){
+                return logicElement;
+            }
+            else if(logicElement.getRotation() == Rotation.RIGHT
+                    //horizontal axis
+                    && cursorBoardPos.getX() > logicElement.getPosition().getX()
+                    && cursorBoardPos.getX() < logicElement.getPosition().getX() + widthOnBoard
+                    //vertical axis
+                    && cursorBoardPos.getY() + 0.5 > logicElement.getPosition().getY()
+                    && cursorBoardPos.getY() + 0.5 < logicElement.getPosition().getY() + heightOnBoard){
+                return logicElement;
+            }
+            else if(logicElement.getRotation() == Rotation.LEFT
+                    //horizontal axis
+                    && cursorBoardPos.getX() > logicElement.getPosition().getX()
+                    && cursorBoardPos.getX() < logicElement.getPosition().getX() + widthOnBoard
+                    //vertical axis
+                    && cursorBoardPos.getY() + 0.5 > logicElement.getPosition().getY()
+                    && cursorBoardPos.getY() + 0.5 < logicElement.getPosition().getY() + heightOnBoard){
+                return logicElement;
+            }
+            else if(logicElement.getRotation() == Rotation.UP
+                    //horizontal axis
+                    && cursorBoardPos.getX() + 0.5 > logicElement.getPosition().getX()
+                    && cursorBoardPos.getX() + 0.5 < logicElement.getPosition().getX() + widthOnBoard
+                    //vertical axis
+                    && cursorBoardPos.getY() > logicElement.getPosition().getY()
+                    && cursorBoardPos.getY() < logicElement.getPosition().getY() + heightOnBoard){
                 return logicElement;
             }
         }
@@ -110,6 +148,26 @@ public abstract class MouseLogicElementSpecifier {
 
     public Vector2D getPosition(){
         return currentLogicElementPos;
+    }
+
+    public int getHeightOnBoard(LogicElement logicElement){
+        if(logicElement.getRotation() == Rotation.RIGHT || logicElement.getRotation() == Rotation.LEFT){
+            //on the board it looks like a gate has height
+            //but in the system it has none
+            //it's a line from a to b, no height
+            return logicElement.getElementHeight() + 1;
+        }
+        else return logicElement.getElementWidth();
+    }
+
+    public int getWidthOnBoard(LogicElement logicElement){
+        if(logicElement.getRotation() == Rotation.RIGHT || logicElement.getRotation() == Rotation.LEFT){
+            return logicElement.getElementWidth();
+        }
+        //on the board it looks like a gate has height
+        //but in the system it has none
+        //it's a line from a to b, no height
+        else return logicElement.getElementHeight() + 1;
     }
 
 }
