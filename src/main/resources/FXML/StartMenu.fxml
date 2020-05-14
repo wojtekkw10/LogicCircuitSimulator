@@ -45,7 +45,7 @@
             </Label>
             <Button layoutX="50.0" layoutY="182.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Start" />
             <Button layoutX="50.0" layoutY="258.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
-            <Button layoutX="50.0" layoutY="332.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
+            <Button layoutX="50.0" layoutY="332.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
             <Label layoutX="35.0" layoutY="106.0" text="LOGIC CIRCUIT SIMULATOR">
                <font>
                   <Font name="Karumbi Regular" size="40.0" />

@@ -17,7 +17,7 @@ public class App  extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    static Stage primaryStage;
+    public static Stage primaryStage;
     private static final String stageTitle = "Logic Circuit Simulator";
 
     @Override
@@ -27,10 +27,9 @@ public class App  extends Application {
         primaryStage.setTitle(stageTitle);
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("/FXML/SimulationCanvas.fxml"));
+        loader.setLocation(this.getClass().getResource("/FXML/StartMenu.fxml"));
 
         Parent pane = null;
-        System.out.println(loader.getLocation());
         try {
             pane = loader.load();
         } catch (IOException e) {
@@ -42,7 +41,7 @@ public class App  extends Application {
         primaryStage.show();
 
         // cleanup controller resources when window closes:
-        SimulationCanvasController controller = loader.getController();
-        stage.setOnCloseRequest(e -> controller.shutdown());
+        //SimulationCanvasController controller = loader.getController();
+        //primaryStage.setOnCloseRequest(e -> controller.shutdown());
     }
 }
