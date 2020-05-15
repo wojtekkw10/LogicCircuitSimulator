@@ -110,8 +110,7 @@ public class ArrayNodeGrid implements NodeGrid {
 
             ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
             if(arrayNodeToLeft.getRightWire() == WireState.HIGH)
-                return LogicState.HIGH;
-        }
+                return LogicState.HIGH; }
         else{
             if(orientation == Orientation.VERTICALLY){
                 if(arrayNode.getDownWire() == WireState.HIGH) return LogicState.HIGH;

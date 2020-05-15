@@ -4,6 +4,7 @@ import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
 
 import javax.annotation.concurrent.Immutable;
+import java.util.Objects;
 
 @Immutable
 public class Node {
@@ -88,4 +89,19 @@ public class Node {
         visitor.visit(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(position, node.position) &&
+                right == node.right &&
+                down == node.down &&
+                isTouching == node.isTouching;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, right, down, isTouching);
+    }
 }

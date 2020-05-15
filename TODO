@@ -15,17 +15,20 @@ DONE:
 - drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 - limiting UPS from keyboard during run
 - Make moving fun.
+- bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
 DOING:
 
-TODO: bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
+TODO: refactor tests
 
 TO BE DONE:
 
 TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.
 
-TODO: refactor tests
+
 
 TODO: refactor specifiers
+
+TODO: windowSwitcher in all controllers or as a Singleton
 
 TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
 TODO: Create an interface for Simulation and it should be the only accessible thing in the package
