@@ -45,8 +45,7 @@ public class Simulation {
     public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
-        for (int i = 0; i < logicElements.size(); i++) {
-            LogicElement element = logicElements.get(i);
+        for (LogicElement element : logicElements) {
             List<Vector2D> inputPositions = element.getInputPositions();
             ArrayList<LogicState> inputStates = new ArrayList<>();
 
@@ -59,7 +58,13 @@ public class Simulation {
             List<ComputedValue> results = element.computeValues(inputStates);
             for (int j = 0; j < results.size(); j++) {
                 if (results.get(j).getState() == LogicState.HIGH)
-                    generators.add(new Generator(results.get(j).getPos(), Orientation.HORIZONTALLY));
+                    if(element.getRotation() == Rotation.LEFT || element.getRotation() == Rotation.RIGHT){
+                        generators.add(new Generator(results.get(j).getPos(), Orientation.HORIZONTALLY));
+                    }
+                else {
+                        generators.add(new Generator(results.get(j).getPos(), Orientation.VERTICALLY));
+                    }
+
             }
 
         }

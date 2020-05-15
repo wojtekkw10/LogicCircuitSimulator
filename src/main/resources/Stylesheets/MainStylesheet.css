@@ -1,3 +1,9 @@
+.scroll-pane{
+    -fx-border-style: none;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
 .main_color{
     -fx-background-color: #2b2e3e;
     -fx-text-fill: aliceblue;
@@ -17,4 +23,19 @@
     -fx-border-color: #2b2e3e;
     -fx-border-style: solid;
     -fx-border-width: 1px;
+}
+.label_h1{
+    -fx-background-color: #2b2e3e;
+    -fx-text-fill: aliceblue;
+    -fx-padding: 20 100 ;
+    -fx-border-style: none;
+}
+
+.label_h2{
+    -fx-text-fill: #2b2e3e;
+    -fx-padding: 20 30 ;
+}
+.label_text{
+    -fx-text-fill: #2b2e3e;
+    -fx-padding: 5 40 10 40;
 }

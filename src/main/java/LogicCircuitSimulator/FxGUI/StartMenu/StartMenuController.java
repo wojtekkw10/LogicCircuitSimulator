@@ -19,20 +19,7 @@ public class StartMenuController {
     }
 
     public void onStartButton(ActionEvent actionEvent) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("/FXML/SimulationCanvas.fxml"));
-
-        Parent pane = null;
-        try {
-            pane = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert pane != null;
-        Scene scene = new Scene(pane);
-        App.primaryStage.setResizable(true);
-        App.primaryStage.setScene(scene);
-        App.primaryStage.show();
+        FXMLLoader loader = App.loadAndSetNewScene("/FXML/SimulationCanvas.fxml");
 
         // cleanup controller resources when window closes:
         SimulationCanvasController controller = loader.getController();
@@ -41,5 +28,9 @@ public class StartMenuController {
 
     public void onExitButton(ActionEvent actionEvent) {
         Platform.exit();
+    }
+
+    public void onHelpButton(ActionEvent actionEvent) {
+        App.loadAndSetNewScene("/FXML/HelpPage.fxml");
     }
 }

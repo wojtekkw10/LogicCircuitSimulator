@@ -17,14 +17,13 @@ DONE:
 - Make moving fun.
 DOING:
 
+TODO: bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
 
 TO BE DONE:
 
 TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.
 
 TODO: refactor tests
-
-TODO: bug - clock nie outputuje w dol
 
 TODO: refactor specifiers
 

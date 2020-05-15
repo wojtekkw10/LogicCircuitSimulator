@@ -1,5 +1,6 @@
 package LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
 
+import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseCrossingSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseLogicElementSpecifier;
@@ -11,10 +12,13 @@ import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static LogicCircuitSimulator.App.primaryStage;
 
 public class BoardEventHandler {
     private final BoardDTO boardDTO;
@@ -68,7 +72,7 @@ public class BoardEventHandler {
                 if(boardDTO.shouldDrawSpeedStats()) boardDTO.setShouldDrawSpeedStats(false);
                 else boardDTO.setShouldDrawSpeedStats(true);
             }
-            else if(event.getCode() == KeyCode.L) {
+            else if(event.getCode() == KeyCode.K) {
                 if (boardDTO.isUpsLimited()) {
                     boardDTO.setTARGET_UPS(1_000_000);
                     boardDTO.setUpsLimited(false);
@@ -79,7 +83,9 @@ public class BoardEventHandler {
                     boardDTO.setUpsLimited(true);
                     boardDTO.setUpsChanged(true);
                 }
-
+            }
+            else if(event.getCode() == KeyCode.ESCAPE){
+                App.loadAndSetNewScene("/FXML/StartMenu2.fxml");
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
         };
@@ -186,7 +192,7 @@ public class BoardEventHandler {
         int y = 0;
         if(keycode == KeyCode.DIGIT1){
             isLogicGateDragged.set(true);
-            boardDTO.setLogicGateDragged(new AndGate(x,y, Rotation.RIGHT));
+            boardDTO.setLogicGateDragged(new LogicClock(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT2){
             isLogicGateDragged.set(true);
@@ -194,19 +200,19 @@ public class BoardEventHandler {
         }
         else if(keycode == KeyCode.DIGIT3){
             isLogicGateDragged.set(true);
-            boardDTO.setLogicGateDragged(new LogicClock(x,y, Rotation.RIGHT));
+            boardDTO.setLogicGateDragged(new LogicOne(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT4){
             isLogicGateDragged.set(true);
-            boardDTO.setLogicGateDragged(new LogicOne(x,y, Rotation.RIGHT));
+            boardDTO.setLogicGateDragged(new NotGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT5){
             isLogicGateDragged.set(true);
-            boardDTO.setLogicGateDragged(new NotGate(x,y, Rotation.RIGHT));
+            boardDTO.setLogicGateDragged(new OrGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT6){
             isLogicGateDragged.set(true);
-            boardDTO.setLogicGateDragged(new OrGate(x,y, Rotation.RIGHT));
+            boardDTO.setLogicGateDragged(new AndGate(x,y, Rotation.RIGHT));
         }
         else if(keycode == KeyCode.DIGIT7){
             isLogicGateDragged.set(true);

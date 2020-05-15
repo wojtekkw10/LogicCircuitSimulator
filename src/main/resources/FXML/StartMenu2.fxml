@@ -10,30 +10,7 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../Stylesheets/MainStylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.StartMenu.StartMenuController">
    <children>
-      <Pane prefHeight="500.0" prefWidth="394.0" styleClass="main_color" stylesheets="@../Stylesheets/MainStylesheet.css">
-         <children>
-            <ImageView fitHeight="500.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Other/back.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="103.0" fitWidth="154.0" layoutX="149.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Other/logo.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="158.0" layoutY="250.0" styleClass="main_color" text="Welcome To">
-               <font>
-                  <Font name="LKLUG" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="53.0" layoutY="261.0" style="-fx-text-fill: #FFF;" text="LOGIC CIRCUIT SIMULATOR">
-               <font>
-                  <Font name="Karumbi Regular" size="34.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
+      <fx:include prefWidth="400.0" source="StartMenuLeftSide.fxml" />
       <Pane layoutX="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFF;">
          <children>
             <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -46,9 +23,10 @@
                   <Font name="LKLUG" size="19.0" />
                </font>
             </Label>
-            <Button layoutX="50.0" layoutY="181.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Start" />
-            <Button layoutX="50.0" layoutY="258.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
-            <Button layoutX="50.0" layoutY="332.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
+            <Button layoutX="50.0" layoutY="180.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Start" />
+            <Button layoutX="50.0" layoutY="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
+            <Button layoutX="50.0" layoutY="320.0" mnemonicParsing="false" onAction="#onHelpButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Help" />
+            <Button layoutX="50.0" layoutY="390.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
             <Label layoutX="28.0" layoutY="106.0" text="LOGIC CIRCUIT SIMULATOR">
                <font>
                   <Font name="Karumbi Regular" size="40.0" />

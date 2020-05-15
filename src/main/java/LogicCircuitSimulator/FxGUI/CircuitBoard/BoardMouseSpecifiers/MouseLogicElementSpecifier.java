@@ -33,14 +33,10 @@ public abstract class MouseLogicElementSpecifier {
     }
 
     public void getElementPosFromElementAndMousePosition(Vector2D mousePos, Projection2D projection, LogicElement logicElement){
-        Vector2D pos = getNodePosition(mousePos, projection);
-        if(logicElement.getRotation() == Rotation.DOWN){
-            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
-        }
-        else if(logicElement.getRotation() == Rotation.UP){
-            pos = new Vector2D(pos.getX(), pos.getY() - 0.5);
-        }
-        currentLogicElementPos = pos;
+        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
+        if(logicElement.getRotation() == Rotation.UP || logicElement.getRotation() == Rotation.DOWN)
+            pos = new Vector2D(pos.getX()+0.5, pos.getY()-0.5);
+        currentLogicElementPos = getNodePosition(pos, projection);
 
         doAction();
     }
@@ -49,15 +45,15 @@ public abstract class MouseLogicElementSpecifier {
         return projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
     }
 
-    private Vector2D getNodePosition(Vector2D mousePos, Projection2D projection){
-        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
-        int x = (int)pos.getX();
-        int y = (int)pos.getY();
+    private Vector2D getNodePosition(Vector2D mouseBoardPos, Projection2D projection){
+
+        int x = (int)mouseBoardPos.getX();
+        int y = (int)mouseBoardPos.getY();
         Vector2D nodePos;
 
 
-        double xFraction = pos.getX() - x;
-        double yFraction = pos.getY() - y;
+        double xFraction = mouseBoardPos.getX() - x;
+        double yFraction = mouseBoardPos.getY() - y;
 
         if(xFraction < 0) {
             xFraction = 1-(-xFraction);
