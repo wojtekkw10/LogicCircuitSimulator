@@ -40,25 +40,25 @@ public abstract class MouseWireSpecifier {
         double unresponsiveSpace = 0.2;
 
         if(isInUpperTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
-            currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getRightWire();
+            currentWireState = simulation.getRightWire(new Vector2D(getX(),getY()));
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.HORIZONTALLY;
             doAction();
         }
         if(isInRightTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
-            currentWireState = simulation.getNode(new Vector2D(getX()+1,getY())).getDownWire();
+            currentWireState = simulation.getDownWire(new Vector2D(getX()+1,getY()));
             currentNodePos = new Vector2D(getX()+1,getY());
             currentOrientation = Orientation.VERTICALLY;
             doAction();
         }
         if(isInLowerTriangle(xFraction, yFraction) && xFraction > unresponsiveSpace && xFraction < 1 - unresponsiveSpace){
-            currentWireState = simulation.getNode(new Vector2D(getX(),getY()+1)).getRightWire();
+            currentWireState = simulation.getRightWire(new Vector2D(getX(),getY()+1));
             currentNodePos = new Vector2D(getX(),getY()+1);
             currentOrientation = Orientation.HORIZONTALLY;
             doAction();
         }
         if(isInLeftTriangle(xFraction, yFraction) && yFraction > unresponsiveSpace && yFraction < 1 - unresponsiveSpace){
-            currentWireState = simulation.getNode(new Vector2D(getX(),getY())).getDownWire();
+            currentWireState = simulation.getDownWire(new Vector2D(getX(),getY()));
             currentNodePos = new Vector2D(getX(),getY());
             currentOrientation = Orientation.VERTICALLY;
             doAction();

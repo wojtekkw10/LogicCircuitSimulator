@@ -5,6 +5,7 @@ import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseCrossingSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseLogicElementSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseWireSpecifier;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.LogicElements.*;
@@ -12,13 +13,10 @@ import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static LogicCircuitSimulator.App.primaryStage;
 
 public class BoardEventHandler {
     private final BoardDTO boardDTO;
@@ -137,8 +135,8 @@ public class BoardEventHandler {
                     new MouseCrossingSpecifier(simulation){
                         @Override
                         public void doAction() {
-                            if (getCrossing() == Node.WireCrossing.TOUCHING) updateCrossing(Node.WireCrossing.NOT_TOUCHING);
-                            else updateCrossing(Node.WireCrossing.TOUCHING);
+                            if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
+                            else updateCrossing(Crossing.TOUCHING);
                         }
                     }.performTransformation(mousePos, projection2D);
                 }

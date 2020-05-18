@@ -38,7 +38,7 @@ public interface NodeHandler {
      * @param pos position of the crossing
      * @param crossing new crossingType applied to the crossing
      */
-    void updateCrossing(Vector2D pos, Node.WireCrossing crossing);
+    void updateCrossing(Vector2D pos, Crossing crossing);
 
     /**
      * Iterator for all non-empty wire grid nodes.

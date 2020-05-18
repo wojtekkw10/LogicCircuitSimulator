@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.NodeGrid;
 
 import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNodeGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.NodeGrid;
@@ -22,9 +23,9 @@ class ArrayNodeGridTest {
     @BeforeEach
     void init(){
         nodeGrid = new ArrayNodeGrid(new UnboundHashMapGrid<>());
-        nodeGrid.setNode(new Node(new Vector2D(5,6), WireState.HIGH, WireState.LOW, Node.WireCrossing.TOUCHING));
-        nodeGrid.setNode(new Node(new Vector2D(4,6), WireState.HIGH, WireState.NONE, Node.WireCrossing.NOT_TOUCHING));
-        nodeGrid.setNode(new Node(new Vector2D(5,5), WireState.NONE, WireState.LOW, Node.WireCrossing.NOT_TOUCHING));
+        nodeGrid.setNode(new Node(new Vector2D(5,6), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
+        nodeGrid.setNode(new Node(new Vector2D(4,6), WireState.HIGH, WireState.NONE, Crossing.NOT_TOUCHING));
+        nodeGrid.setNode(new Node(new Vector2D(5,5), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
     }
 
     private void setAndGetNodeTest(List<Node> nodes){
@@ -40,40 +41,40 @@ class ArrayNodeGridTest {
     @Test
     void setAndGetNodeInFirstQuadrantTest(){
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node(new Vector2D(5, 0), WireState.LOW, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(0, 6), WireState.HIGH, WireState.LOW, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(8, 9), WireState.NONE, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(123_456, 654_321), WireState.LOW, WireState.NONE, Node.WireCrossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(5, 0), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(0, 6), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(8, 9), WireState.NONE, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(123_456, 654_321), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
         setAndGetNodeTest(nodes);
     }
 
     @Test
     void setAndGetNodeInSecondQuadrantTest(){
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node(new Vector2D(-5, 0), WireState.LOW, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(0, 6), WireState.HIGH, WireState.LOW, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(-8, 9), WireState.NONE, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(-123_456, 654_321), WireState.LOW, WireState.NONE, Node.WireCrossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-5, 0), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(0, 6), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-8, 9), WireState.NONE, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-123_456, 654_321), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
         setAndGetNodeTest(nodes);
     }
 
     @Test
     void setAndGetNodeInThirdQuadrantTest(){
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node(new Vector2D(-5, 0), WireState.LOW, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(0, -6), WireState.HIGH, WireState.LOW, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(-8, -9), WireState.NONE, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(-123_456, -654_321), WireState.LOW, WireState.NONE, Node.WireCrossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-5, 0), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(0, -6), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-8, -9), WireState.NONE, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(-123_456, -654_321), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
         setAndGetNodeTest(nodes);
     }
 
     @Test
     void setAndGetNodeInFourthQuadrantTest(){
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node(new Vector2D(5, 0), WireState.LOW, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(0, -6), WireState.HIGH, WireState.LOW, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(8, -9), WireState.NONE, WireState.HIGH, Node.WireCrossing.TOUCHING));
-        nodes.add(new Node(new Vector2D(123_456, -654_321), WireState.LOW, WireState.NONE, Node.WireCrossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(5, 0), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(0, -6), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(8, -9), WireState.NONE, WireState.HIGH, Crossing.TOUCHING));
+        nodes.add(new Node(new Vector2D(123_456, -654_321), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
         setAndGetNodeTest(nodes);
     }
 
@@ -99,9 +100,9 @@ class ArrayNodeGridTest {
 
     @Test
     void getCrossingTest(){
-        assertEquals(Node.WireCrossing.TOUCHING, nodeGrid.getCrossing(new Vector2D(5,6)));
-        assertEquals(Node.WireCrossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(4,6)));
-        assertEquals(Node.WireCrossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(5,5)));
+        assertEquals(Crossing.TOUCHING, nodeGrid.getCrossing(new Vector2D(5,6)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(4,6)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(5,5)));
     }
 
     @Test
@@ -119,17 +120,17 @@ class ArrayNodeGridTest {
 
     @Test
     void setCrossingTest(){
-        nodeGrid.setCrossing(new Vector2D(11, 11), Node.WireCrossing.TOUCHING);
-        assertEquals(Node.WireCrossing.TOUCHING, nodeGrid.getCrossing(new Vector2D(11,11)));
-        nodeGrid.setCrossing(new Vector2D(11, 11), Node.WireCrossing.NOT_TOUCHING);
-        assertEquals(Node.WireCrossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(11,11)));
+        nodeGrid.setCrossing(new Vector2D(11, 11), Crossing.TOUCHING);
+        assertEquals(Crossing.TOUCHING, nodeGrid.getCrossing(new Vector2D(11,11)));
+        nodeGrid.setCrossing(new Vector2D(11, 11), Crossing.NOT_TOUCHING);
+        assertEquals(Crossing.NOT_TOUCHING, nodeGrid.getCrossing(new Vector2D(11,11)));
     }
 
     @Test
     void getStateForVerticalWireNotTouchingCrossingTest(){
         nodeGrid.setDownWire(new Vector2D(20,20), WireState.HIGH);
-        nodeGrid.setCrossing(new Vector2D(20, 20), Node.WireCrossing.NOT_TOUCHING);
-        nodeGrid.setCrossing(new Vector2D(20, 21), Node.WireCrossing.NOT_TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 20), Crossing.NOT_TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 21), Crossing.NOT_TOUCHING);
 
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,21), Orientation.VERTICALLY));
@@ -140,8 +141,8 @@ class ArrayNodeGridTest {
     @Test
     void getStateForVerticalWireTouchingCrossingTest(){
         nodeGrid.setDownWire(new Vector2D(20,20), WireState.HIGH);
-        nodeGrid.setCrossing(new Vector2D(20, 20), Node.WireCrossing.TOUCHING);
-        nodeGrid.setCrossing(new Vector2D(20, 21), Node.WireCrossing.TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 20), Crossing.TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 21), Crossing.TOUCHING);
 
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,21), Orientation.VERTICALLY));
@@ -152,8 +153,8 @@ class ArrayNodeGridTest {
     @Test
     void getStateForHorizontalWireNotTouchingCrossingTest(){
         nodeGrid.setRightWire(new Vector2D(20,20), WireState.HIGH);
-        nodeGrid.setCrossing(new Vector2D(20, 20), Node.WireCrossing.NOT_TOUCHING);
-        nodeGrid.setCrossing(new Vector2D(21, 20), Node.WireCrossing.NOT_TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 20), Crossing.NOT_TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(21, 20), Crossing.NOT_TOUCHING);
 
         assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(21,20), Orientation.VERTICALLY));
@@ -164,8 +165,8 @@ class ArrayNodeGridTest {
     @Test
     void getStateForHorizontalWireTouchingCrossingTest(){
         nodeGrid.setRightWire(new Vector2D(20,20), WireState.HIGH);
-        nodeGrid.setCrossing(new Vector2D(20, 20), Node.WireCrossing.TOUCHING);
-        nodeGrid.setCrossing(new Vector2D(21, 20), Node.WireCrossing.TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(20, 20), Crossing.TOUCHING);
+        nodeGrid.setCrossing(new Vector2D(21, 20), Crossing.TOUCHING);
 
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(21,20), Orientation.VERTICALLY));

@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
@@ -81,14 +82,14 @@ public class ArrayNodeGrid implements NodeGrid {
     }
 
     @Override
-    public void setCrossing(Vector2D pos, Node.WireCrossing crossing) {
+    public void setCrossing(Vector2D pos, Crossing crossing) {
         Node node = getNode(pos);
         ArrayNode arrayNode = new ArrayNode(node.getRightWire(), node.getDownWire(), crossing);
         nodes.set(pos, arrayNode);
     }
 
     @Override
-    public Node.WireCrossing getCrossing(Vector2D pos) {
+    public Crossing getCrossing(Vector2D pos) {
         return getNode(pos).isTouching();
     }
 
@@ -101,7 +102,7 @@ public class ArrayNodeGrid implements NodeGrid {
 
         ArrayNode arrayNode = getArrayNode(pos);
 
-        if(arrayNode.isTouching() == Node.WireCrossing.TOUCHING){
+        if(arrayNode.isTouching() == Crossing.TOUCHING){
             if(arrayNode.getDownWire() == WireState.HIGH) return LogicState.HIGH;
             if(arrayNode.getRightWire() == WireState.HIGH) return LogicState.HIGH;
 
@@ -198,7 +199,7 @@ public class ArrayNodeGrid implements NodeGrid {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if(grid.get(j).get(i).isTouching() == Node.WireCrossing.TOUCHING) stringBuilder.append("*");
+                if(grid.get(j).get(i).isTouching() == Crossing.TOUCHING) stringBuilder.append("*");
                 else stringBuilder.append("+");
 
                 if(grid.get(j).get(i).getRightWire() == WireState.HIGH) stringBuilder.append(highStateColor).append("-").append(reset);

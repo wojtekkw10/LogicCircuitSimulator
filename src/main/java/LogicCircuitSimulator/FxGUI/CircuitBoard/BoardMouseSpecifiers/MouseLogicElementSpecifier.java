@@ -137,13 +137,7 @@ public abstract class MouseLogicElementSpecifier {
     }
 
     public void removeLogicElement(){
-        Iterator<LogicElement> logicElements = simulation.logicElementIterator();
-        while(logicElements.hasNext()){
-            LogicElement logicElement = logicElements.next();
-            if(logicElement.getPosition().equals(currentLogicElementPos)){
-                logicElements.remove();
-            }
-        }
+        simulation.removeLogicElement(currentLogicElementPos);
     }
 
     public Vector2D getPosition(){

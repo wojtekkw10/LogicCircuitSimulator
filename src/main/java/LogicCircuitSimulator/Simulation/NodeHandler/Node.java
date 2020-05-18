@@ -9,20 +9,6 @@ import java.util.Objects;
 @Immutable
 public class Node {
 
-    /**
-     * The way two wires cross
-     */
-    public enum WireCrossing{
-        /**
-         * They're touching, signal from horizontal wire propagates to the vertical wire and vice versa
-         */
-        TOUCHING,
-        /**
-         * They're not touching, signal from horizontal wire does NOT propagate to the vertical wire and vice versa
-         */
-        NOT_TOUCHING,
-    }
-
     public final Vector2D getPosition() {
         return position;
     }
@@ -45,19 +31,19 @@ public class Node {
     /**
      * Whether or not the wires are touching at this node
      */
-    private final Node.WireCrossing isTouching;
+    private final Crossing isTouching;
 
     /**
      * Creates a node
      * @param right signal state of the wire to the right of the node
      * @param down signal state of the wire down of the node
-     * @param wireCrossing the way wires cross at this node
+     * @param crossing the way wires cross at this node
      */
-    public Node(Vector2D position, WireState right, WireState down, Node.WireCrossing wireCrossing){
+    public Node(Vector2D position, WireState right, WireState down, Crossing crossing){
         this.position = position;
         this.right = right;
         this.down = down;
-        this.isTouching = wireCrossing;
+        this.isTouching = crossing;
     }
 
     /**
@@ -77,7 +63,7 @@ public class Node {
     /**
      * @return the way the wires are crossing
      */
-    public Node.WireCrossing isTouching() {
+    public Crossing isTouching() {
         return isTouching;
     }
 

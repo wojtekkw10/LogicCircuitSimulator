@@ -1,5 +1,6 @@
 package LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid;
 
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 
@@ -24,7 +25,7 @@ final public class ArrayNode {
     /**
      * Whether or not the wires are touching at this node
      */
-    private final Node.WireCrossing isTouching;
+    private final Crossing isTouching;
 
     /**
      * Creates a default node with no wires in it and NOT_TOUCHING crossing
@@ -32,19 +33,19 @@ final public class ArrayNode {
     public ArrayNode(){
         right = WireState.NONE;
         down = WireState.NONE;
-        isTouching = Node.WireCrossing.NOT_TOUCHING;
+        isTouching = Crossing.NOT_TOUCHING;
     }
 
     /**
      * Creates a node
      * @param right signal state of the wire to the right of the node
      * @param down signal state of the wire down of the node
-     * @param wireCrossing the way wires cross at this node
+     * @param crossing the way wires cross at this node
      */
-    public ArrayNode(WireState right, WireState down, Node.WireCrossing wireCrossing){
+    public ArrayNode(WireState right, WireState down, Crossing crossing){
         this.right = right;
         this.down = down;
-        this.isTouching = wireCrossing;
+        this.isTouching = crossing;
     }
 
     /**
@@ -64,7 +65,7 @@ final public class ArrayNode {
     /**
      * @return the way the wires are crossing
      */
-    public Node.WireCrossing isTouching() {
+    public Crossing isTouching() {
         return isTouching;
     }
 

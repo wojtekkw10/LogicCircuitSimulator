@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
@@ -9,7 +10,7 @@ public abstract class MouseCrossingSpecifier {
 
     private final Simulation simulation;
     private Vector2D currentPosition;
-    private Node.WireCrossing currentCrossing;
+    private Crossing currentCrossing;
 
     public MouseCrossingSpecifier(Simulation simulation){
         this.simulation = simulation;
@@ -48,16 +49,16 @@ public abstract class MouseCrossingSpecifier {
             nodePos = new Vector2D(x+1, y+1);
         }
 
-        currentCrossing = simulation.getNode(nodePos).isTouching();
+        currentCrossing = simulation.getCrossing(nodePos);
         currentPosition = nodePos;
         doAction();
     }
 
-    public void updateCrossing(Node.WireCrossing crossing){
+    public void updateCrossing(Crossing crossing){
         simulation.updateCrossing(currentPosition, crossing);
     }
 
-    public Node.WireCrossing getCrossing(){
+    public Crossing getCrossing(){
         return currentCrossing;
     }
 

@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
@@ -22,8 +23,8 @@ public interface NodeGrid {
     void setRightWire(Vector2D pos, WireState state);
     void setDownWire(Vector2D pos, WireState state);
 
-    void setCrossing(Vector2D pos, Node.WireCrossing crossing);
-    Node.WireCrossing getCrossing(Vector2D pos);
+    void setCrossing(Vector2D pos, Crossing crossing);
+    Crossing getCrossing(Vector2D pos);
 
     LogicState getState(Vector2D pos, Orientation orientation);
     Iterator<Node> iterator();

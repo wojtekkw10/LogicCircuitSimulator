@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing;
 
 import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
@@ -36,7 +37,7 @@ public class DrawNodeVisitor implements NodeVisitor {
             else graphicsContext.setStroke(Color.AQUA);
             graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
         }
-        if(node.isTouching() == Node.WireCrossing.TOUCHING){
+        if(node.isTouching() == Crossing.TOUCHING){
             graphicsContext.setFill(Color.AQUA);
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(new Vector2D(pos.getX()-0.1, pos.getY()-0.1));

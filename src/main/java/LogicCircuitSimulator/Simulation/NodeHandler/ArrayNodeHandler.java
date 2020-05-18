@@ -50,7 +50,7 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
-    public void updateCrossing(Vector2D pos, Node.WireCrossing crossing) {
+    public void updateCrossing(Vector2D pos, Crossing crossing) {
         nodeGrid.setCrossing(pos, crossing);
     }
 
