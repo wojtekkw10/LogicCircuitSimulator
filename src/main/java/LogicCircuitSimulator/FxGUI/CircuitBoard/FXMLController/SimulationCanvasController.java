@@ -14,7 +14,8 @@ public class SimulationCanvasController {
 
     private BoardDTO boardDTO;
 
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService executor;
+
     private final Runnable simulationTask = () -> {
         boardDTO.getSimulation().runOnce();
         boardDTO.getUpdatesSinceLastFrame().getAndIncrement();
@@ -23,6 +24,7 @@ public class SimulationCanvasController {
     @FXML
     void initialize(){
         boardDTO = new BoardDTO(mainSimulationCanvas);
+        executor = boardDTO.getExecutor();
         BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
         new BoardEventHandler(boardDTO);
 

@@ -85,6 +85,7 @@ public class BoardEventHandler {
                 }
             }
             else if(event.getCode() == KeyCode.ESCAPE){
+                boardDTO.getExecutor().shutdownNow();
                 App.loadAndSetNewScene("/FXML/StartMenu2.fxml");
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());

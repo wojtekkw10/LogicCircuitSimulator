@@ -9,6 +9,8 @@ import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,9 +37,19 @@ public class BoardDTO {
     private boolean isUpsLimited = true;
     private boolean upsChanged = false;
 
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
+    }
+
+    public ScheduledExecutorService getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(ScheduledExecutorService executor) {
+        this.executor = executor;
     }
 
     public BoardDTO(Canvas canvas) {
