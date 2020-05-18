@@ -18,6 +18,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 
     id "com.github.johnrengelman.shadow" version "5.2.0"
+
+    id 'edu.sc.seis.launch4j' version '2.4.6'
 }
 
 repositories {
@@ -34,11 +36,16 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
-    // https://mvnrepository.com/artifact/org.mockito/mockito-core
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 
-    compile group: 'org.ejml', name: 'ejml-all', version: '0.39'
+    implementation group: 'org.ejml', name: 'ejml-all', version: '0.39'
+}
 
+launch4j {
+    mainClassName = 'LogicCircuitSimulator.Launcher'
+    copyConfigurable = project.tasks.shadowJar.outputs.files
+    jar = "lib/${project.tasks.shadowJar.archiveName}"
+    outfile = 'Simulator.exe'
 }
 
 application {
