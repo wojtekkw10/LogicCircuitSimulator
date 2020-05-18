@@ -14,7 +14,6 @@ public class Simulation {
 
     public Simulation() {
         initTestSimulation();
-
     }
 
     public void runOnce() {

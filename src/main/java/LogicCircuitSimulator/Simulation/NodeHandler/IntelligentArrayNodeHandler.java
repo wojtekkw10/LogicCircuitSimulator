@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Intelligently updates crossings where needed to create cohesive circuits
+ * Intelligently assumes touching crossings where needed to create cohesive circuits
  */
 public class IntelligentArrayNodeHandler implements NodeHandler{
     NodeHandler arrayNodeHandler = new ArrayNodeHandler();
