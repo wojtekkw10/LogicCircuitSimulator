@@ -58,9 +58,14 @@ launch4j {
     outfile = 'Simulator.exe'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator/LogicCircuitSimulator.Launcher'
+    mainClassName = 'LogicCircuitSimulator.Launcher'
 }
 
 javafx{
@@ -74,6 +79,11 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+
+
+//compileJava.options.fork = true
+//compileJava.options.forkOptions.executable = '/usr/lib/jvm/java-1.14.0-openjdk-amd64/bin/javac'
+//compileJava.options.forkOptions.executable = '/usr/lib/jvm/java-1.14.0-openjdk-amd64/bin/javac'
 
 apply plugin: 'idea'
 idea {

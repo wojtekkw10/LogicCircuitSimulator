@@ -1,3 +1,4 @@
+/*
 module LogicCircuitSimulator {
     requires java.base;
     requires javafx.controls;
@@ -8,4 +9,4 @@ module LogicCircuitSimulator {
     opens LogicCircuitSimulator.FxGUI.StartMenu;
     opens LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
     opens LogicCircuitSimulator.FxGUI.HelpPage;
-}
+}*/
