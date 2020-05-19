@@ -27,7 +27,7 @@ public class App  extends Application {
         app = this;
 
 
-        System.out.println(app.getClass());
+        //System.out.println(app.getClass());
         primaryStage.setTitle(stageTitle);
         loadAndSetNewScene("/StartMenu2.fxml");
     }
