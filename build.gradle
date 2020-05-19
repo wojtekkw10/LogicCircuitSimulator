@@ -20,6 +20,8 @@ plugins {
     id "com.github.johnrengelman.shadow" version "5.2.0"
 
     id 'edu.sc.seis.launch4j' version '2.4.6'
+
+    id "org.beryx.jlink" version "2.19.0"
 }
 
 repositories {
@@ -38,7 +40,15 @@ dependencies {
 
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 
-    implementation group: 'org.ejml', name: 'ejml-all', version: '0.39'
+    implementation (group: 'org.ejml', name: 'ejml-simple', version: '0.39'){
+        exclude group: 'org.ejml', module: 'ejml-fdense'
+        exclude group: 'org.ejml', module: 'ejml-zdense'
+        //exclude group: 'org.ejml', module: 'ejml-ddense'
+        exclude group: 'org.ejml', module: 'ejml-cdense'
+        exclude group: 'org.ejml', module: 'ejml-dsparse'
+        exclude group: 'org.ejml', module: 'ejml-csparse'
+    }
+
 }
 
 launch4j {
@@ -50,7 +60,7 @@ launch4j {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator.Launcher'
+    mainClassName = 'LogicCircuitSimulator/LogicCircuitSimulator.Launcher'
 }
 
 javafx{
@@ -62,5 +72,22 @@ test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
+    }
+}
+
+apply plugin: 'idea'
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
+jlink { //doesn't work on java 11.0.6, recommended java 14
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    addExtraDependencies("javafx")
+    launcher {
+        name = 'helloFX'
+        jvmArgs = ['-Djdk.gtk.version=2'] // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
+
     }
 }

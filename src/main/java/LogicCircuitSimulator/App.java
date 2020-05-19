@@ -26,10 +26,10 @@ public class App  extends Application {
         primaryStage = stage;
         app = this;
 
+
+        System.out.println(app.getClass());
         primaryStage.setTitle(stageTitle);
-        loadAndSetNewScene("/FXML/StartMenu2.fxml");
-
-
+        loadAndSetNewScene("/StartMenu2.fxml");
     }
 
     public static FXMLLoader loadAndSetNewScene(String url){

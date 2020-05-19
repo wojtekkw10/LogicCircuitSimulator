@@ -6,7 +6,6 @@ import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseCrossi
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseLogicElementSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseWireSpecifier;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
@@ -84,7 +83,7 @@ public class BoardEventHandler {
             }
             else if(event.getCode() == KeyCode.ESCAPE){
                 boardDTO.getExecutor().shutdownNow();
-                App.loadAndSetNewScene("/FXML/StartMenu2.fxml");
+                App.loadAndSetNewScene("/StartMenu2.fxml");
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
         };
