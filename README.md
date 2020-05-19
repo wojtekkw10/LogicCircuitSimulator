@@ -13,6 +13,8 @@ Add this line to VM Options:
 ```
 ok. This is unnecessary.
 
+# Runs on JAVA 8
+
 # To run it
 ```bash
 gradle run
