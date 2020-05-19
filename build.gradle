@@ -59,8 +59,8 @@ launch4j {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_14
+    targetCompatibility = JavaVersion.VERSION_14
 }
 
 application {
@@ -81,10 +81,6 @@ test {
 }
 
 
-//compileJava.options.fork = true
-//compileJava.options.forkOptions.executable = '/usr/lib/jvm/java-1.14.0-openjdk-amd64/bin/javac'
-//compileJava.options.forkOptions.executable = '/usr/lib/jvm/java-1.14.0-openjdk-amd64/bin/javac'
-
 apply plugin: 'idea'
 idea {
     module {
@@ -92,12 +88,11 @@ idea {
     }
 }
 
-jlink { //doesn't work on java 11.0.6, recommended java 14
+jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     addExtraDependencies("javafx")
     launcher {
         name = 'helloFX'
-        jvmArgs = ['-Djdk.gtk.version=2'] // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
-
+        jvmArgs = ['-Djdk.gtk.version=2']
     }
 }
