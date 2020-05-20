@@ -19,8 +19,6 @@ plugins {
 
     id "com.github.johnrengelman.shadow" version "5.2.0"
 
-    id 'edu.sc.seis.launch4j' version '2.4.6'
-
     id "org.beryx.jlink" version "2.19.0"
 }
 
@@ -35,15 +33,14 @@ dependencies {
     implementation 'com.google.guava:guava:28.2-jre'
 
     // Use JUnit test framework
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+    //testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 
     implementation (group: 'org.ejml', name: 'ejml-simple', version: '0.39'){
         exclude group: 'org.ejml', module: 'ejml-fdense'
         exclude group: 'org.ejml', module: 'ejml-zdense'
-        //exclude group: 'org.ejml', module: 'ejml-ddense'
         exclude group: 'org.ejml', module: 'ejml-cdense'
         exclude group: 'org.ejml', module: 'ejml-dsparse'
         exclude group: 'org.ejml', module: 'ejml-csparse'
@@ -51,21 +48,14 @@ dependencies {
 
 }
 
-launch4j {
-    mainClassName = 'LogicCircuitSimulator.Launcher'
-    copyConfigurable = project.tasks.shadowJar.outputs.files
-    jar = "lib/${project.tasks.shadowJar.archiveName}"
-    outfile = 'Simulator.exe'
-}
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator.Launcher'
+    mainClassName = 'LogicCircuitSimulator/LogicCircuitSimulator.Launcher'
 }
 
 javafx{
@@ -80,19 +70,9 @@ test {
     }
 }
 
-
-apply plugin: 'idea'
-idea {
-    module {
-        inheritOutputDirs = true
-    }
-}
-
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    addExtraDependencies("javafx")
     launcher {
-        name = 'helloFX'
-        jvmArgs = ['-Djdk.gtk.version=2']
+        name = 'Simulator'
     }
 }

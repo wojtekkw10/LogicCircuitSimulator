@@ -13,7 +13,7 @@ Add this line to VM Options:
 ```
 ok. This is unnecessary.
 
-# To run it
+# To run it (Java 14 required)
 ```bash
 gradle run
 ```
