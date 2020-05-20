@@ -20,6 +20,7 @@ public class StartMenuController {
 
     public void onStartButton(ActionEvent actionEvent) {
         FXMLLoader loader = App.loadAndSetNewScene("/FXML/SimulationCanvas.fxml");
+        App.primaryStage.setResizable(true);
 
         // cleanup controller resources when window closes:
         SimulationCanvasController controller = loader.getController();
