@@ -12,10 +12,6 @@ public class Simulation {
     public NodeHandler nodeHandler = new ArrayNodeHandler();
     List<LogicElement> logicElements = new ArrayList<>();
 
-    public Simulation() {
-        initTestSimulation();
-    }
-
     public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
@@ -104,7 +100,7 @@ public class Simulation {
 
     }
 
-    private void initTestSimulation(){
+    public void initTestSimulation(){
         addNotLoop(new Vector2D(10, 3));
         addNotLoop(new Vector2D(10, 5));
 

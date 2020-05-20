@@ -1,3 +1,14 @@
+@font-face {
+    /*-fx-font-family: 'PermanentMarker';*/
+    src: url("../other/PermanentMarker-Regular.ttf");
+}
+
+@font-face {
+    /*-fx-font-family: 'Indie Flower';*/
+    src: url("../other/IndieFlower-Regular.ttf");
+}
+
+
 .scroll-pane{
     -fx-border-style: none;
     -fx-padding: 0;
@@ -38,4 +49,8 @@
 .label_text{
     -fx-text-fill: #2b2e3e;
     -fx-padding: 5 40 10 40;
+}
+
+.indieFlowerFont{
+    -fx-font-family: 'Indie Flower';
 }

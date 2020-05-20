@@ -17,31 +17,22 @@ DONE:
 - Make moving fun.
 - bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
 - create separate branches for java 11 and java 8 + readme stating what's necessary to run it
+- make the logo empty space smaller
+- remove Node class dependency in NodeHandler
 
 DOING:
 
-- make the logo empty space smaller
-
 
 TO BE DONE:
-TODO: delete Node class dependency in NodeHandler
+
 TODO: embed fonts, because on windows it appears as a different font
-TODO: refactor tests
-
-TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.
-
-TODO: opakować javafx tak, żeby logika była na moich funckjach, które są zaimplementowane przez Javfx
-    np. klasa która ma funkję draw, i przechowuje projection2D
-
-TODO: refactor specifiers
+TODO: refactor tests/add more tests
 
 TODO: dodaj graficzne opisy wejść i wyjść
 
 TODO: windowSwitcher in all controllers or as a Singleton
 
-TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
-TODO: Create an interface for Simulation and it should be the only accessible thing in the package
-TODO: somehow hide as much in the SimulationPackage (module system)
+TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
 
 MAYBE:
 TODO: generic Vector2D
@@ -49,6 +40,7 @@ TODO: allow for removing elements from NodeGrid and UnboundList (if the app take
 TODO: actually use 2d array to store elements, but maintain two representations
     2d array representation would allow for fast point access
     list representation would allow for fast drawing
+TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
 
 NOT DONE:
 - Set up makefile so that it creates a jar file in root folder

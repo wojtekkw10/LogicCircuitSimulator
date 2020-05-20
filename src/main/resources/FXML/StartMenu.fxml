@@ -27,9 +27,9 @@
             <Button layoutX="50.0" layoutY="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
             <Button layoutX="50.0" layoutY="320.0" mnemonicParsing="false" onAction="#onHelpButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Help" />
             <Button layoutX="50.0" layoutY="390.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
-            <Label layoutX="28.0" layoutY="106.0" text="LOGIC CIRCUIT SIMULATOR">
+            <Label layoutX="56.0" layoutY="113.0" styleClass="indieFlowerFont" text="LOGIC CIRCUIT SIMULATOR">
                <font>
-                  <Font name="Karumbi Regular" size="40.0" />
+                  <Font name="Karumbi Regular" size="27.0" />
                </font>
             </Label>
          </children>

@@ -54,6 +54,7 @@ public class BoardDTO {
 
     public BoardDTO(Canvas canvas) {
         this.canvas = canvas;
+        this.simulation.initTestSimulation();
     }
 
     public Canvas getCanvas() {
