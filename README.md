@@ -32,6 +32,6 @@ P: toggle FPS/UPS stats
 # Changelog
 20.05.2020 - Version 0.0.1
 - Adding and removing wires
-- Adding, moving and removing logic gates 
+- Adding, moving, rotating and removing logic gates 
 - Available gates: clock, one, buffer, not, or, not, xor
 - Help Page
