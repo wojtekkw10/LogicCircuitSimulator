@@ -9,16 +9,16 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
-    <Pane prefHeight="500.0" prefWidth="400.0" styleClass="main_color" stylesheets="@../Stylesheets/MainStylesheet.css">
+    <Pane prefHeight="500.0" prefWidth="400.0" styleClass="main_color" stylesheets="@../stylesheets/MainStylesheet.css">
         <children>
             <ImageView fitHeight="500.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../Other/back.png" />
+                    <Image url="@../other/back.png" />
                 </image>
             </ImageView>
-            <ImageView fitHeight="103.0" fitWidth="154.0" layoutX="149.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="79.0" fitWidth="94.0" layoutX="153.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../Other/logo.png" />
+                    <Image url="@../other/logo_low_res.png" />
                 </image>
             </ImageView>
             <Label layoutX="158.0" layoutY="250.0" style="-fx-text-fill: #FFF;" text="Welcome To">

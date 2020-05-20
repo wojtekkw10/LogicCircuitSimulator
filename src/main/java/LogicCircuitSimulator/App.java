@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,7 +30,8 @@ public class App  extends Application {
 
         //System.out.println(app.getClass());
         primaryStage.setTitle(stageTitle);
-        loadAndSetNewScene("/FXML/StartMenu2.fxml");
+        stage.getIcons().add(new Image("file:resources/other/logo_grey.png"));
+        loadAndSetNewScene("/FXML/StartMenu.fxml");
     }
 
     public static FXMLLoader loadAndSetNewScene(String url){

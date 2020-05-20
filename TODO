@@ -24,7 +24,8 @@ DOING:
 
 
 TO BE DONE:
-
+TODO: delete Node class dependency in NodeHandler
+TODO: embed fonts, because on windows it appears as a different font
 TODO: refactor tests
 
 TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.

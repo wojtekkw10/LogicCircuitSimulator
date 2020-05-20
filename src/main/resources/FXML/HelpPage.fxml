@@ -9,13 +9,13 @@
 
 <AnchorPane minWidth="300.0" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.HelpPage.HelpPageController">
    <children>
-      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" style="-fx-background-color: #666666;" stylesheets="@../Stylesheets/MainStylesheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" style="-fx-background-color: #666666;" stylesheets="@../stylesheets/MainStylesheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
             <AnchorPane prefHeight="400.0" prefWidth="800.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label prefHeight="0.0" prefWidth="800.0" styleClass="label_h1" stylesheets="@../Stylesheets/MainStylesheet.css" text="ADDING" />
+                        <Label prefHeight="0.0" prefWidth="800.0" styleClass="label_h1" stylesheets="@../stylesheets/MainStylesheet.css" text="ADDING" />
                         <Label styleClass="label_h2" text="LOGIC GATES" />
                         <Label styleClass="label_text" text="Num 1: Clock" />
                         <Label styleClass="label_text" text="Num 2: Buffer" />
@@ -25,10 +25,10 @@
                         <Label styleClass="label_text" text="Num 6: AND gate" />
                         <Label styleClass="label_text" text="Num 7: XOR gate" />
                         <Label layoutX="10.0" layoutY="308.0" styleClass="label_text" text="Left Mouse Click: Wire" />
-                        <Label prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../Stylesheets/MainStylesheet.css" text="REMOVING" />
+                        <Label prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../stylesheets/MainStylesheet.css" text="REMOVING" />
                         <Label layoutX="10.0" layoutY="308.0" styleClass="label_text" text="Left Mouse Click: Remove Wire" />
                         <Label layoutX="10.0" layoutY="426.0" styleClass="label_text" text="Right Mouse Click: Remove Logic Gate" />
-                        <Label layoutX="10.0" layoutY="370.0" prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../Stylesheets/MainStylesheet.css" text="OTHER" />
+                        <Label layoutX="10.0" layoutY="370.0" prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../stylesheets/MainStylesheet.css" text="OTHER" />
                         <Label layoutX="10.0" layoutY="457.0" styleClass="label_text" text="R: Rotate logic gate" />
                         <Label layoutX="10.0" layoutY="544.0" styleClass="label_text" text="K: Toggle UPS limit" />
                         <Label layoutX="10.0" layoutY="544.0" styleClass="label_text" text="P: Toggle FPS/UPS stats" />
