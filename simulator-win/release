@@ -1,0 +1,2 @@
+JAVA_VERSION="14.0.1"
+MODULES="java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.logging jdk.unsupported LogicCircuitSimulator.merged.module ejml.simple javafx.base javafx.graphics javafx.controls java.scripting javafx.fxml jsr305 LogicCircuitSimulator"
