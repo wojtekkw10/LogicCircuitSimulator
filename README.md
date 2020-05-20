@@ -5,8 +5,8 @@ Logic Circuit Simulator is a desktop application that allows for creating comple
 # Installation
 1. Download the repository or click [here](https://github.com/wojtekkw10/LogicCircuitSimulator/archive/master.zip).
 2. Unpack it in a desired directory
-3. If you're on windows, go to Simulator-win/bin directory
-4. If you're on linux, go to Simulator-lin/bin directory
+3. If you're on windows, go to ``simulator-win/bin`` directory
+4. If you're on linux, go to ``simulator-lin/bin`` directory
 5. Run the simulator.bat file
 
 # Controls

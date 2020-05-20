@@ -27,7 +27,6 @@ TO BE DONE:
 
 TODO: refactor tests
 
-
 TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.
 
 TODO: opakować javafx tak, żeby logika była na moich funckjach, które są zaimplementowane przez Javfx
