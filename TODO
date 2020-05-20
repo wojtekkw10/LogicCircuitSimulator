@@ -16,14 +16,17 @@ DONE:
 - limiting UPS from keyboard during run
 - Make moving fun.
 - bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
+- create separate branches for java 11 and java 8 + readme stating what's necessary to run it
+
 DOING:
 
-create seperate branches for java 11 and java 8 + readme stating what's necessary to run it
+- make the logo empty space smaller
+
 
 TO BE DONE:
 
 TODO: refactor tests
-TODO: Set up makefile so that it creates a jar file in root folder
+
 
 TODO: imagine that something else is in control of your simulation. Eg. neural network. How much change would it require to do it.
 
@@ -48,6 +51,7 @@ TODO: actually use 2d array to store elements, but maintain two representations
     list representation would allow for fast drawing
 
 NOT DONE:
+- Set up makefile so that it creates a jar file in root folder
 - create new faster UnboundGrid (it was supposed to be an arraylist, but going through all the nulls took a while so it was slower than hashmap)
 - create a proxy for the Unbound2DList that returns empty objects instead of nulls OR rewrite Unbound2DList for it ||| Should just make ArrayWireGrid smaller
 - remove the iterator2D because it's unnecessary - the Node contains position information

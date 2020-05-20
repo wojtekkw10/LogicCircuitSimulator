@@ -12,6 +12,6 @@ public class HelpPageController {
 
 
     public void goBackButton(ActionEvent actionEvent) {
-        App.loadAndSetNewScene("/StartMenu2.fxml");
+        App.loadAndSetNewScene("/FXML/StartMenu2.fxml");
     }
 }

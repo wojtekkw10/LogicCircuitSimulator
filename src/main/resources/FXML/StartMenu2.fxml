@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@Stylesheets/MainStylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.StartMenu.StartMenuController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../Stylesheets/MainStylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.StartMenu.StartMenuController">
    <children>
-      <fx:include source="FXML/StartMenuLeftSide.fxml" />
+      <fx:include source="StartMenuLeftSide.fxml" />
       <Pane layoutX="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFF;">
          <children>
             <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Other/logo_grey.png" />
+                  <Image url="@../Other/logo_grey.png" />
                </image>
             </ImageView>
             <Label layoutX="117.0" layoutY="41.0" text="Welcome Back To">

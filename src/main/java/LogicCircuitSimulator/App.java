@@ -29,7 +29,7 @@ public class App  extends Application {
 
         //System.out.println(app.getClass());
         primaryStage.setTitle(stageTitle);
-        loadAndSetNewScene("/StartMenu2.fxml");
+        loadAndSetNewScene("/FXML/StartMenu2.fxml");
     }
 
     public static FXMLLoader loadAndSetNewScene(String url){
