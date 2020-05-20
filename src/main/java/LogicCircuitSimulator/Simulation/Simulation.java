@@ -51,22 +51,26 @@ public class Simulation {
     }
 
     public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
-        nodeHandler.updateWire(pos, orientation, state);
+        if(orientation == Orientation.HORIZONTALLY)
+            nodeHandler.setRightWire(pos, state);
+        else {
+            nodeHandler.setDownWire(pos, state);
+        }
     }
 
     public void updateCrossing(Vector2D pos, Crossing crossing) {
-        nodeHandler.updateCrossing(pos, crossing);
+        nodeHandler.setCrossing(pos, crossing);
     }
 
     public Crossing getCrossing(Vector2D pos){
-        return nodeHandler.getNode(pos).isTouching();
+        return nodeHandler.getCrossing(pos);
     }
 
     public WireState getRightWire(Vector2D pos){
-        return nodeHandler.getNode(pos).getRightWire();
+        return nodeHandler.getRightWire(pos);
     }
     public WireState getDownWire(Vector2D pos){
-        return nodeHandler.getNode(pos).getDownWire();
+        return nodeHandler.getDownWire(pos);
     }
 
     public void addLogicGate(LogicElement logicElement){
@@ -76,14 +80,17 @@ public class Simulation {
     private void addNotLoop(Vector2D pos){
         int x = (int)pos.getX();
         int y = (int)pos.getY();
-        nodeHandler.setNode(new Node(new Vector2D(x, y), WireState.LOW, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x, y+1), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+1, y+1), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+2, y+1), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+1, y), WireState.NONE, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+2, y), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+3, y), WireState.NONE, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(x+3, y+1), WireState.NONE, WireState.NONE, Crossing.TOUCHING));
+        nodeHandler.setRightWire(new Vector2D(x, y), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(x, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x, y), Crossing.TOUCHING);
+        nodeHandler.setRightWire(new Vector2D(x, y+1), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x, y+1), Crossing.TOUCHING);
+        nodeHandler.setRightWire(new Vector2D(x+1, y+1), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(x+2, y+1), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(x+2, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x+3, y), Crossing.TOUCHING);
+        nodeHandler.setDownWire(new Vector2D(x+3, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x+3, y+1), Crossing.TOUCHING);
     }
 
     public void removeLogicElement(Vector2D pos){
@@ -108,7 +115,7 @@ public class Simulation {
         for (int i = 0; i < 10; i++) {
             logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
-            nodeHandler.setNode(new Node(new Vector2D(pos, 1), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+            nodeHandler.setRightWire(new Vector2D(pos, 1), WireState.LOW);
             pos++;
         }
     }

@@ -12,25 +12,34 @@ import java.util.List;
  */
 public class IntelligentArrayNodeHandler implements NodeHandler{
     NodeHandler arrayNodeHandler = new ArrayNodeHandler();
-    //TODO: add code here
 
     @Override
-    public void setNode(Node node) {
+    public void setRightWire(Vector2D pos, WireState state) {
 
     }
 
     @Override
-    public Node getNode(Vector2D pos) {
+    public void setDownWire(Vector2D pos, WireState state) {
+
+    }
+
+    @Override
+    public WireState getRightWire(Vector2D pos) {
         return null;
     }
 
     @Override
-    public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
-
+    public WireState getDownWire(Vector2D pos) {
+        return null;
     }
 
     @Override
-    public void updateCrossing(Vector2D pos, Crossing crossing) {
+    public Crossing getCrossing(Vector2D pos) {
+        return null;
+    }
+
+    @Override
+    public void setCrossing(Vector2D pos, Crossing crossing) {
 
     }
 
@@ -48,4 +57,5 @@ public class IntelligentArrayNodeHandler implements NodeHandler{
     public void propagateGenerators(List<Generator> generators) {
 
     }
+    //TODO: add code here
 }

@@ -12,33 +12,19 @@ import java.util.List;
  */
 public interface NodeHandler {
 
-    /**
-     * Sets a Wire element in the grid
-     * @param node specified wire
-     */
-    void setNode(Node node);
+    void setRightWire(Vector2D pos, WireState state);
+    void setDownWire(Vector2D pos, WireState state);
 
-    /**
-     * Returns a Node element at a specified position
-     * @param pos position of the wire
-     * @return node at a specified position
-     */
-    Node getNode(Vector2D pos);
-
-    /**
-     * Updates WireState of the wire at a given position. Recommended for removing a wire from grid.
-     * @param pos position of the wire. When wire is vertical, it's the upper point. When it's horizontal it's the leftmost point.
-     * @param orientation orientation of the wire. Either Horizontally or Vertically
-     * @param state new state applied to the specified wire
-     */
-    void updateWire(Vector2D pos, Orientation orientation, WireState state);
+    WireState getRightWire(Vector2D pos);
+    WireState getDownWire(Vector2D pos);
+    Crossing getCrossing(Vector2D pos);
 
     /**
      * Updates type of the crossing at a specified position in the grid
      * @param pos position of the crossing
      * @param crossing new crossingType applied to the crossing
      */
-    void updateCrossing(Vector2D pos, Crossing crossing);
+    void setCrossing(Vector2D pos, Crossing crossing);
 
     /**
      * Iterator for all non-empty wire grid nodes.

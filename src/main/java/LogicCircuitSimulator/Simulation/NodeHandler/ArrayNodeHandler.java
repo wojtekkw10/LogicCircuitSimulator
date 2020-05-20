@@ -17,22 +17,11 @@ public final class ArrayNodeHandler implements NodeHandler {
     /**
      * Stores node data
      */
-    NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundHashMapGrid<>());
-
-
-    @Override
-    public void setNode(Node node){
-        nodeGrid.setNode(node);
-    }
+    private final NodeGrid nodeGrid = new ArrayNodeGrid(new UnboundHashMapGrid<>());
 
     @Override
     public LogicState getState(Vector2D pos, Orientation orientation){
         return nodeGrid.getState(pos, orientation);
-    }
-
-    @Override
-    public Node getNode(Vector2D pos) {
-        return nodeGrid.getNode(pos);
     }
 
     @Override
@@ -41,17 +30,32 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
-    public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
-        if(orientation == Orientation.HORIZONTALLY){
-            nodeGrid.setRightWire(pos, state);
-        }
-        else {
-            nodeGrid.setDownWire(pos, state);
-        }
+    public void setRightWire(Vector2D pos, WireState state) {
+        nodeGrid.setRightWire(pos, state);
     }
 
     @Override
-    public void updateCrossing(Vector2D pos, Crossing crossing) {
+    public void setDownWire(Vector2D pos, WireState state) {
+        nodeGrid.setDownWire(pos, state);
+    }
+
+    @Override
+    public WireState getRightWire(Vector2D pos) {
+        return nodeGrid.getRightWire(pos);
+    }
+
+    @Override
+    public WireState getDownWire(Vector2D pos) {
+        return nodeGrid.getDownWire(pos);
+    }
+
+    @Override
+    public Crossing getCrossing(Vector2D pos) {
+        return nodeGrid.getCrossing(pos);
+    }
+
+    @Override
+    public void setCrossing(Vector2D pos, Crossing crossing) {
         nodeGrid.setCrossing(pos, crossing);
     }
 
@@ -102,14 +106,14 @@ public final class ArrayNodeHandler implements NodeHandler {
 
     private void resetNodeWiresToLow(Vector2D pos){
         if(getArrayNode(pos).getRightWire() == WireState.HIGH){
-            updateWire(pos, Orientation.HORIZONTALLY, WireState.LOW);
+            setRightWire(pos, WireState.LOW);
         }
         if(getArrayNode(pos).getDownWire() == WireState.HIGH){
-            updateWire(pos, Orientation.VERTICALLY, WireState.LOW);
+            setDownWire(pos, WireState.LOW);
         }
     }
 
-    List<Vector2D> getSurroundingCandidates(Vector2D pos, Orientation orientation){
+    private List<Vector2D> getSurroundingCandidates(Vector2D pos, Orientation orientation){
         List<Vector2D> candidates = new ArrayList<>();
         if (orientation == Orientation.HORIZONTALLY) {
             if (rightWireExists(pos)) candidates.add(new Vector2D(pos.getX() + 1, pos.getY()));
@@ -123,7 +127,7 @@ public final class ArrayNodeHandler implements NodeHandler {
         return candidates;
     }
 
-    void setSurroundingWiresIfExistToHigh(Vector2D pos, Orientation orientation){
+    private void setSurroundingWiresIfExistToHigh(Vector2D pos, Orientation orientation){
         if (orientation == Orientation.HORIZONTALLY) {
             if (rightWireExists(pos)) nodeGrid.setRightWire(pos, WireState.HIGH);
             if (leftWireExists(pos)) nodeGrid.setLeftWire(pos, WireState.HIGH);
@@ -158,8 +162,13 @@ public final class ArrayNodeHandler implements NodeHandler {
         return ArrayNode.fromNode(nodeGrid.getNode(pos));
     }
 
+    private Node getNode(Vector2D pos) {
+        return nodeGrid.getNode(pos);
+    }
+
     @Override
     public String toString() {
         return nodeGrid.toString();
     }
+
 }
