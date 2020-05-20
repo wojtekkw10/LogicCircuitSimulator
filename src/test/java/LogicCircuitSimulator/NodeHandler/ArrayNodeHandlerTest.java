@@ -16,280 +16,33 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArrayNodeHandlerTest {
 
     @Test
-    void setAndGetElementWithinInitialDimensionsTest() {
+    void setAndGetWireTest() {
         //Arrange
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
         //Act
-        nodeHandler.setNode(new Node(new Vector2D(2,5), WireState.HIGH, WireState.LOW, Crossing.NOT_TOUCHING));
+        nodeHandler.setRightWire(new Vector2D(2,5), WireState.HIGH);
+        nodeHandler.setDownWire(new Vector2D(2,5), WireState.LOW);
 
         //Assert
-        assertEquals(WireState.HIGH, nodeHandler.getNode(new Vector2D(2,5)).getRightWire());
-        assertEquals(WireState.LOW, nodeHandler.getNode(new Vector2D(2,5)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(2,5)).isTouching());
-
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(1,5)).getRightWire());
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(1,5)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(1,5)).isTouching());
-
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(4,9)).getRightWire());
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(4,9)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(4,9)).isTouching());
-    }
-
-    @Test
-    void setAndGetElementOutsideOfInitialDimensionsTest() {
-        //Arrange
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        //Act
-
-        nodeHandler.setNode(new Node(new Vector2D(5,10), WireState.HIGH, WireState.LOW, Crossing.NOT_TOUCHING));
-
-        //Assert
-        assertEquals(WireState.HIGH, nodeHandler.getNode(new Vector2D(5,10)).getRightWire());
-        assertEquals(WireState.LOW, nodeHandler.getNode(new Vector2D(5,10)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(5,10)).isTouching());
-    }
-
-    @Test
-    void getElementOutsideOfInitialDimensionsTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(1,10)).getRightWire());
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(1,10)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(1,10)).isTouching());
-
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(10,1)).getRightWire());
-        assertEquals(WireState.NONE, nodeHandler.getNode(new Vector2D(10,1)).getDownWire());
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getNode(new Vector2D(10,1)).isTouching());
-    }
-
-    @Test
-    void getStateOutsideOfDimensionsTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-        LogicState logicState1H = nodeHandler.getState(new Vector2D(100, 1), Orientation.HORIZONTALLY);
-        LogicState logicState1V = nodeHandler.getState(new Vector2D(100, 1), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.LOW, logicState1H);
-        assertEquals(LogicState.LOW, logicState1V);
-
-        LogicState logicState2H = nodeHandler.getState(new Vector2D(1, 100), Orientation.HORIZONTALLY);
-        LogicState logicState2V = nodeHandler.getState(new Vector2D(1, 100), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.LOW, logicState2H);
-        assertEquals(LogicState.LOW, logicState2V);
-    }
-
-    @Test
-    void getStateWithinDimensionsHorizontallyNotTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.HIGH, WireState.LOW, Crossing.NOT_TOUCHING));
-
-        LogicState stateHLeft = nodeHandler.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
-        LogicState stateVLeft = nodeHandler.getState(new Vector2D(5,5), Orientation.VERTICALLY);
-
-        LogicState stateHRight = nodeHandler.getState(new Vector2D(6,5), Orientation.HORIZONTALLY);
-        LogicState stateVRight = nodeHandler.getState(new Vector2D(6,5), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateHLeft);
-        assertEquals(LogicState.LOW, stateVLeft);
-
-        assertEquals(LogicState.HIGH, stateHRight);
-        assertEquals(LogicState.LOW, stateVRight);
-    }
-
-    @Test
-    void getStateWithinDimensionsVerticallyNotTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.LOW, WireState.HIGH, Crossing.NOT_TOUCHING));
-
-        LogicState stateHUp = nodeHandler.getState(new Vector2D(5,4), Orientation.HORIZONTALLY);
-        LogicState stateVUp = nodeHandler.getState(new Vector2D(5,4), Orientation.VERTICALLY);
-
-        LogicState stateHDown = nodeHandler.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
-        LogicState stateVDown = nodeHandler.getState(new Vector2D(5,5), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateVUp);
-        assertEquals(LogicState.LOW, stateHUp);
-
-        assertEquals(LogicState.HIGH, stateVDown);
-        assertEquals(LogicState.LOW, stateHDown);
-    }
-
-    @Test
-    void getStateWithinDimensionsHorizontallyTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
-
-        LogicState stateHLeft = nodeHandler.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
-        LogicState stateVLeft = nodeHandler.getState(new Vector2D(5,5), Orientation.VERTICALLY);
-
-        LogicState stateHRight = nodeHandler.getState(new Vector2D(6,5), Orientation.HORIZONTALLY);
-        LogicState stateVRight = nodeHandler.getState(new Vector2D(6,5), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateHLeft);
-        assertEquals(LogicState.HIGH, stateVLeft);
-
-        assertEquals(LogicState.HIGH, stateHRight);
-        assertEquals(LogicState.LOW, stateVRight);
-
-    }
-
-    @Test
-    void getStateWithinDimensionsVerticallyTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
-
-        LogicState stateHUp = nodeHandler.getState(new Vector2D(5,4), Orientation.HORIZONTALLY);
-        LogicState stateVUp = nodeHandler.getState(new Vector2D(5,4), Orientation.VERTICALLY);
-
-        LogicState stateHDown = nodeHandler.getState(new Vector2D(5,5), Orientation.HORIZONTALLY);
-        LogicState stateVDown = nodeHandler.getState(new Vector2D(5,5), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateVUp);
-        assertEquals(LogicState.HIGH, stateHUp);
-
-        assertEquals(LogicState.HIGH, stateVDown);
-        assertEquals(LogicState.LOW, stateHDown);
-
-    }
-
-    @Test
-    void getStateAtEdgesNotTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        //Vertically
-        nodeHandler.setNode(new Node(new Vector2D(0,0), WireState.LOW, WireState.HIGH, Crossing.NOT_TOUCHING));
-
-        LogicState stateH = nodeHandler.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
-        LogicState stateV = nodeHandler.getState(new Vector2D(0,0), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateV);
-        assertEquals(LogicState.LOW, stateH);
-
-        //Horizontally
-        nodeHandler.setNode(new Node(new Vector2D(0,0), WireState.HIGH, WireState.LOW, Crossing.NOT_TOUCHING));
-
-        stateH = nodeHandler.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
-        stateV = nodeHandler.getState(new Vector2D(0,0), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.LOW, stateV);
-        assertEquals(LogicState.HIGH, stateH);
-    }
-
-    @Test
-    void getStateAtEdgesTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        //Vertically
-        nodeHandler.setNode(new Node(new Vector2D(0,0), WireState.LOW, WireState.HIGH, Crossing.TOUCHING));
-
-        LogicState stateH = nodeHandler.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
-        LogicState stateV = nodeHandler.getState(new Vector2D(0,0), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateV);
-        assertEquals(LogicState.HIGH, stateH);
-
-        //Horizontally
-        nodeHandler.setNode(new Node(new Vector2D(0,0), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
-
-        stateH = nodeHandler.getState(new Vector2D(0,0), Orientation.HORIZONTALLY);
-        stateV = nodeHandler.getState(new Vector2D(0,0), Orientation.VERTICALLY);
-
-        assertEquals(LogicState.HIGH, stateV);
-        assertEquals(LogicState.HIGH, stateH);
-    }
-
-    @Test
-    void getStateEdgeCasesTouchingTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        //Horizontally
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.HIGH, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.NONE, WireState.NONE, Crossing.TOUCHING));
-
-        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(6,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(6,5), Orientation.VERTICALLY));
-
-        //Vertically
-        nodeHandler = new ArrayNodeHandler();
-
-        //Horizontally
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.HIGH, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.NONE, WireState.NONE, Crossing.TOUCHING));
-
-        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,5), Orientation.VERTICALLY));
-    }
-
-    @Test
-    void resetWiresToLowTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.HIGH, WireState.HIGH, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(1,1), WireState.HIGH, WireState.HIGH, Crossing.NOT_TOUCHING));
-
-        Iterator<Node> it = nodeHandler.iterator();
-
-        boolean containsHigh = false;
-        while(it.hasNext()) {
-            Node node = it.next();
-            if (node.getRightWire() == WireState.HIGH || node.getDownWire() == WireState.HIGH)
-                containsHigh = true;
-            double x = node.getPosition().getX();
-            double y = node.getPosition().getY();
-            if(nodeHandler.getState(new Vector2D(x, y), Orientation.VERTICALLY) == LogicState.HIGH)
-                containsHigh = true;
-            if(nodeHandler.getState(new Vector2D(x, y), Orientation.HORIZONTALLY) == LogicState.HIGH)
-                containsHigh = true;
-        }
-
-        assertTrue(containsHigh);
-
-        List<Generator> generators = new ArrayList<>();
-        nodeHandler.propagateGenerators(generators);
-
-        containsHigh = false;
-        while(it.hasNext()) {
-            Node node = it.next();
-            if (node.getRightWire() == WireState.HIGH || node.getDownWire() == WireState.HIGH)
-                containsHigh = true;
-            double x = node.getPosition().getX();
-            double y = node.getPosition().getY();
-            if(nodeHandler.getState(new Vector2D(x, y), Orientation.VERTICALLY) == LogicState.HIGH)
-                containsHigh = true;
-            if(nodeHandler.getState(new Vector2D(x, y), Orientation.HORIZONTALLY) == LogicState.HIGH)
-                containsHigh = true;
-        }
-
-        assertFalse(containsHigh);
-
+        assertEquals(WireState.HIGH, nodeHandler.getRightWire(new Vector2D(2,5)));
+        assertEquals(WireState.LOW, nodeHandler.getDownWire(new Vector2D(2,5)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(2,5)));
+
+        assertEquals(WireState.NONE, nodeHandler.getRightWire(new Vector2D(1,5)));
+        assertEquals(WireState.NONE, nodeHandler.getDownWire(new Vector2D(1,5)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(1,5)));
+
+        assertEquals(WireState.NONE, nodeHandler.getRightWire(new Vector2D(4,9)));
+        assertEquals(WireState.NONE, nodeHandler.getDownWire(new Vector2D(4,9)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(4,9)));
     }
 
     @Test
     void propagationNotTouchingTest(){
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.LOW, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(8,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(9,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,6), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,7), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,7), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,8), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,9), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,3), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(3,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+        addInitialWires(nodeHandler);
 
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
@@ -332,21 +85,12 @@ class ArrayNodeHandlerTest {
     void propagationTouchingTest(){
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.LOW, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,5), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(8,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(9,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,6), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,7), WireState.NONE, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,7), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,8), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,9), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,3), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(3,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+        nodeHandler.setCrossing(new Vector2D(5,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(7,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,7), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(4,7), Crossing.TOUCHING);
+
+        addInitialWires(nodeHandler);
 
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
@@ -406,21 +150,12 @@ class ArrayNodeHandlerTest {
     void generatorOutsideOfDimensionsVertically(){
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.LOW, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,5), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(8,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(9,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,6), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,7), WireState.NONE, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,7), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,8), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,9), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,3), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(3,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+        nodeHandler.setCrossing(new Vector2D(5,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(7,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,7), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(4,7), Crossing.TOUCHING);
+
+        addInitialWires(nodeHandler);
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,10), Orientation.VERTICALLY));
@@ -444,21 +179,12 @@ class ArrayNodeHandlerTest {
     void generatorOutsideOfDimensionsHorizontally(){
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.LOW, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,5), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(8,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(9,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,6), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,7), WireState.NONE, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,7), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,8), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,9), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,3), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(3,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+        nodeHandler.setCrossing(new Vector2D(5,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(7,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,7), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(4,7), Crossing.TOUCHING);
+
+        addInitialWires(nodeHandler);
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
@@ -482,21 +208,11 @@ class ArrayNodeHandlerTest {
     void toStringTest(){
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
-        nodeHandler.setNode(new Node(new Vector2D(5,5), WireState.LOW, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(6,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,5), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(7,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(8,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(9,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,6), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,7), WireState.NONE, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,7), WireState.LOW, WireState.NONE, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,8), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,9), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,4), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(5,3), WireState.NONE, WireState.LOW, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(4,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(3,5), WireState.LOW, WireState.NONE, Crossing.NOT_TOUCHING));
+        nodeHandler.setCrossing(new Vector2D(7,5), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,7), Crossing.TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(4,7), Crossing.TOUCHING);
+
+        addInitialWires(nodeHandler);
 
         List<Generator> generators = new ArrayList<>();
         generators.add(new Generator(new Vector2D(5,5), Orientation.VERTICALLY));
@@ -524,8 +240,14 @@ class ArrayNodeHandlerTest {
     void iteratorTest(){
         //Arrange
         NodeHandler nodeHandler = new ArrayNodeHandler();
-        nodeHandler.setNode(new Node(new Vector2D(0,0), WireState.HIGH, WireState.LOW, Crossing.TOUCHING));
-        nodeHandler.setNode(new Node(new Vector2D(1,1), WireState.LOW, WireState.HIGH, Crossing.NOT_TOUCHING));
+        nodeHandler.setRightWire(new Vector2D(0,0), WireState.HIGH);
+        nodeHandler.setDownWire(new Vector2D(0,0), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(0,0), Crossing.TOUCHING);
+
+        nodeHandler.setRightWire(new Vector2D(1,1), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(1, 1), WireState.HIGH);
+        nodeHandler.setCrossing(new Vector2D(1,1), Crossing.NOT_TOUCHING);
+
         Iterator<Node> iterator = nodeHandler.iterator();
 
         //Act & Assert
@@ -552,21 +274,22 @@ class ArrayNodeHandlerTest {
         assertThrows(NoSuchElementException.class, iterator::next);
     }
 
-    @Test
-    void updateTest(){
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-
-        nodeHandler.updateWire(new Vector2D(0,0), Orientation.HORIZONTALLY, WireState.LOW);
-        nodeHandler.updateWire(new Vector2D(1,1), Orientation.VERTICALLY, WireState.HIGH);
-        nodeHandler.updateWire(new Vector2D(100,100), Orientation.VERTICALLY, WireState.HIGH);
-        nodeHandler.updateCrossing(new Vector2D(0,1), Crossing.TOUCHING);
-        nodeHandler.updateCrossing(new Vector2D(100,100), Crossing.TOUCHING);
-
-        assertEquals(WireState.LOW, nodeHandler.getNode(new Vector2D(0,0)).getRightWire());
-        assertEquals(WireState.HIGH, nodeHandler.getNode(new Vector2D(1,1)).getDownWire());
-        assertEquals(WireState.HIGH, nodeHandler.getNode(new Vector2D(100,100)).getDownWire());
-        assertEquals(Crossing.TOUCHING, nodeHandler.getNode(new Vector2D(0,1)).isTouching());
-        assertEquals(Crossing.TOUCHING, nodeHandler.getNode(new Vector2D(100,100)).isTouching());
-
+    private void addInitialWires(NodeHandler nodeHandler){
+        nodeHandler.setRightWire(new Vector2D(5,5), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,5), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(6,5), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(7,5), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(7,4), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(8,5), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(9,5), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,6), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,7), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(4,7), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,8), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,9), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,4), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(5,3), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(4,5), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(3,5), WireState.LOW);
     }
 }
