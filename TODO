@@ -19,16 +19,19 @@ DONE:
 - create separate branches for java 11 and java 8 + readme stating what's necessary to run it
 - make the logo empty space smaller
 - remove Node class dependency in NodeHandler
-
+- embed fonts, because on windows it appears as a different font
+- refactor tests/add more tests
 DOING:
 
 
 TO BE DONE:
-
-TODO: embed fonts, because on windows it appears as a different font
-TODO: refactor tests/add more tests
+TODO: intelligent NodeHandler
+TODO: zapisywanie i czytanie z pliku
+TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
+TODO: dodawanie bramek przez przeciąganie
 
 TODO: dodaj graficzne opisy wejść i wyjść
+TODO: popraw bug - brak maksymalizacji okna grid
 
 TODO: windowSwitcher in all controllers or as a Singleton
 
