@@ -103,7 +103,6 @@ public class BoardEventHandler {
                         isLogicGateDragged.set(true);
                         boardDTO.setRelativeMouseToLogicGatePos(getRelativeMousePos());
                         removeLogicElement();
-                        System.out.println(getRelativeMousePos());
                     }
                 }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
             }
@@ -187,6 +186,7 @@ public class BoardEventHandler {
 
     private void createLogicElementAtMouseOnKeyEvent(KeyCode keycode){
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
+        boardDTO.setRelativeMouseToLogicGatePos(new Vector2D(0.5,0));
 
         int x = 0;
         int y = 0;

@@ -33,7 +33,7 @@ final public class ArrayNode {
     public ArrayNode(){
         right = WireState.NONE;
         down = WireState.NONE;
-        isTouching = Crossing.NOT_TOUCHING;
+        isTouching = Crossing.TOUCHING;
     }
 
     /**

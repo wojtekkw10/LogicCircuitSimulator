@@ -50,6 +50,16 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
+    public WireState getUpWire(Vector2D pos) {
+        return nodeGrid.getUpWire(pos);
+    }
+
+    @Override
+    public WireState getLeftWire(Vector2D pos) {
+        return nodeGrid.getLeftWire(pos);
+    }
+
+    @Override
     public Crossing getCrossing(Vector2D pos) {
         return nodeGrid.getCrossing(pos);
     }

@@ -23,16 +23,15 @@ DONE:
 - refactor tests/add more tests
 - popraw bug - brak maksymalizacji okna grid
 - lepsze przesuwanie bramek (bramka długości 2 nie przeskakuje przy przeciąganiu za końcowy róg)
+- Zrób node crossing toucing by default and Only draw crossing when 3 or more wires around
 DOING:
 
-TODO: Zrób node crossing toucing by default and Only draw crossing when 3 or more wires around
-
+TODO: dodawanie bramek przez przeciąganie z toolboxa z boku
 
 TO BE DONE:
 TODO: zapisywanie i czytanie z pliku
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
-TODO: dodawanie bramek przez przeciąganie z toolboxa z boku
 TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść
 TODO: windowSwitcher in all controllers or as a Singleton

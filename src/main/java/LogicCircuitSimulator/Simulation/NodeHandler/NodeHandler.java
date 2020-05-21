@@ -17,6 +17,8 @@ public interface NodeHandler {
 
     WireState getRightWire(Vector2D pos);
     WireState getDownWire(Vector2D pos);
+    WireState getUpWire(Vector2D pos);
+    WireState getLeftWire(Vector2D pos);
     Crossing getCrossing(Vector2D pos);
 
     /**

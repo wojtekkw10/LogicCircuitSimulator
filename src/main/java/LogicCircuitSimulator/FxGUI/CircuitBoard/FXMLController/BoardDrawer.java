@@ -8,8 +8,10 @@ import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D
 import LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing.SimulationCanvasBackground;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
+import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Simulation.Simulation;
 import javafx.scene.canvas.Canvas;
@@ -104,10 +106,25 @@ public class BoardDrawer {
         Projection2D projection2D = boardDTO.getProjection2D();
         Iterator<Node> nodes = nodeHandler.iterator();
 
-        NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
+        NodeVisitor drawNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D);
         while(nodes.hasNext()){
-            nodes.next().accept(drawNode);
+            Node node = nodes.next();
+            int numberOfSurroundingWires = getNumberOfSurroundingWires(node, nodeHandler);
+            if(numberOfSurroundingWires < 3)
+                node = new Node(node.getPosition(), node.getRightWire(), node.getDownWire(), Crossing.NOT_TOUCHING);
+
+            node.accept(drawNodeVisitor);
         }
+    }
+
+    private int getNumberOfSurroundingWires(Node node, NodeHandler nodeHandler){
+        int number = 0;
+        if(nodeHandler.getUpWire(node.getPosition()) != WireState.NONE) number++;
+        if(nodeHandler.getRightWire(node.getPosition()) != WireState.NONE) number++;
+        if(nodeHandler.getDownWire(node.getPosition()) != WireState.NONE) number++;
+        if(nodeHandler.getLeftWire(node.getPosition()) != WireState.NONE) number++;
+        return number;
+
     }
 
     private void drawSpeedStats(long now){

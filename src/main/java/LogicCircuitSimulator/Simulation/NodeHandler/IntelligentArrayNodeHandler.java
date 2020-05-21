@@ -34,6 +34,16 @@ public class IntelligentArrayNodeHandler implements NodeHandler{
     }
 
     @Override
+    public WireState getUpWire(Vector2D pos) {
+        return null;
+    }
+
+    @Override
+    public WireState getLeftWire(Vector2D pos) {
+        return null;
+    }
+
+    @Override
     public Crossing getCrossing(Vector2D pos) {
         return null;
     }
