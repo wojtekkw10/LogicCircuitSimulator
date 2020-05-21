@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection;
 
 import LogicCircuitSimulator.Vector2D;
 import org.ejml.simple.SimpleMatrix;

@@ -1,6 +1,6 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;

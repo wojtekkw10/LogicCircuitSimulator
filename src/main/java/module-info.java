@@ -5,6 +5,7 @@ module LogicCircuitSimulator {
     requires ejml.simple;
     exports LogicCircuitSimulator;
     opens LogicCircuitSimulator.FxGUI.StartMenu;
-    opens LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
+    opens LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
     opens LogicCircuitSimulator.FxGUI.HelpPage;
+    opens  LogicCircuitSimulator.FxGUI.Board;
 }

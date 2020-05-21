@@ -1,7 +1,7 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
-import LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController.BoardDTO;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

@@ -1,8 +1,12 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
+import LogicCircuitSimulator.App;
+import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Vector2D;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.concurrent.*;
@@ -23,6 +27,7 @@ public class SimulationCanvasController {
 
     @FXML
     void initialize(){
+        App.primaryStage.setOnCloseRequest(e -> this.shutdown());
         boardDTO = new BoardDTO(mainSimulationCanvas);
         executor = boardDTO.getExecutor();
         BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
@@ -49,6 +54,12 @@ public class SimulationCanvasController {
                 boardDrawer.draw(now);
             }
         }.start();
+    }
+
+    public void setLogicGateDragged(LogicElement logicElement){
+        boardDTO.setLogicGateDragged(logicElement);
+        boardDTO.getIsLogicGateDragged().set(true);
+        boardDTO.setRelativeMouseToLogicGatePos(new Vector2D(0.5, 0));
     }
 
     public void shutdown(){

@@ -1,15 +1,11 @@
 package LogicCircuitSimulator.FxGUI.StartMenu;
 
 import LogicCircuitSimulator.App;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController.SimulationCanvasController;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-
-import java.io.IOException;
 
 public class StartMenuController {
 
@@ -19,12 +15,9 @@ public class StartMenuController {
     }
 
     public void onStartButton(ActionEvent actionEvent) {
-        FXMLLoader loader = App.loadAndSetNewScene("/FXML/SimulationCanvas.fxml");
+        App.loadAndSetNewScene("/FXML/Board.fxml");
         App.primaryStage.setResizable(true);
 
-        // cleanup controller resources when window closes:
-        SimulationCanvasController controller = loader.getController();
-        App.primaryStage.setOnCloseRequest(e -> controller.shutdown());
     }
 
     public void onExitButton(ActionEvent actionEvent) {

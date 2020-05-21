@@ -1,7 +1,7 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.SimpleMatrixProjection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicOne;
 import LogicCircuitSimulator.Simulation.Rotation;
@@ -32,7 +32,7 @@ public class BoardDTO {
 
 
 
-    private Vector2D relativeMouseToLogicGatePos;
+    private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     private final Simulation simulation = new Simulation();

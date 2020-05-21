@@ -1,10 +1,10 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.App;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseCrossingSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseLogicElementSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseWireSpecifier;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseCrossingSpecifier;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseWireSpecifier;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.LogicElements.*;
@@ -86,6 +86,7 @@ public class BoardEventHandler {
                 App.loadAndSetNewScene("/FXML/StartMenu.fxml");
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
+            event.consume();
         };
         canvas.addEventFilter(KeyEvent.KEY_RELEASED, onKeyReleasedEventHandler);
 

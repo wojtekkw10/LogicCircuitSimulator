@@ -1,11 +1,11 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.FXMLController;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.*;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers.MouseLogicElementSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing.DrawNodeVisitor;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing.DrawSquareLogicElementVisitor;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing.SimulationCanvasBackground;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.DrawNodeVisitor;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.SimulationCanvasBackground;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;

@@ -36,7 +36,7 @@ TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i
 TODO: dodaj graficzne opisy wejść i wyjść
 TODO: windowSwitcher in all controllers or as a Singleton
 TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
-
+NOTE: jest funkcja loader.setController()
 MAYBE:
 TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid and UnboundList (if the app takes too much memory)

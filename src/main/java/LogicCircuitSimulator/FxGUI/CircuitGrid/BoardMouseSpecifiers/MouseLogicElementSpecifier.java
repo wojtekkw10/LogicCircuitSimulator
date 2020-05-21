@@ -1,6 +1,6 @@
-package LogicCircuitSimulator.FxGUI.CircuitBoard.BoardMouseSpecifiers;
+package LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers;
 
-import LogicCircuitSimulator.FxGUI.CircuitBoard.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
