@@ -35,6 +35,23 @@
     -fx-border-style: solid;
     -fx-border-width: 1px;
 }
+
+.button_on_dark{
+    -fx-background-color: #2b2e3e;
+    -fx-text-fill: aliceblue;
+    -fx-border-color: aliceblue;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+
+.button_on_dark:hover{
+    -fx-background-color: aliceblue;
+    -fx-text-fill: #2b2e3e;
+    -fx-border-color: aliceblue;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+
 .label_h1{
     -fx-background-color: #2b2e3e;
     -fx-text-fill: aliceblue;

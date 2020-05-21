@@ -25,17 +25,6 @@ public class BoardController {
     void initialize(){
     }
 
-    public void logoOnMousePressed(MouseEvent mouseEvent) {
-        System.out.println("LOGO PRESSED");
-    }
-
-    public void clockButtonOnAction(ActionEvent actionEvent) {
-
-    }
-
-    public void clkOnMouseClick(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new LogicClock(0,0, Rotation.RIGHT));
-    }
 
     public void bfrOnMouseClicked(MouseEvent mouseEvent) {
         simulationController.setLogicGateDragged(new BufferGate(0,0, Rotation.RIGHT));
@@ -44,17 +33,14 @@ public class BoardController {
 
     public void oneOnMouseClicked(MouseEvent mouseEvent) {
         simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
-
     }
 
     public void notOnMouseClicked(MouseEvent mouseEvent) {
         simulationController.setLogicGateDragged(new NotGate(0,0, Rotation.RIGHT));
-
     }
 
     public void orOnMouseClicked(MouseEvent mouseEvent) {
         simulationController.setLogicGateDragged(new OrGate(0,0, Rotation.RIGHT));
-
     }
 
     public void andOnMouseClicked(MouseEvent mouseEvent) {
@@ -62,8 +48,10 @@ public class BoardController {
     }
 
     public void xorOnMouseClicked(MouseEvent mouseEvent) {
-        System.out.println("XOR");
         simulationController.setLogicGateDragged(new XorGate(0,0, Rotation.RIGHT));
+    }
 
+    public void clkOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new LogicClock(0,0, Rotation.RIGHT));
     }
 }
