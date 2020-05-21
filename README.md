@@ -9,6 +9,18 @@ Logic Circuit Simulator is a desktop application that allows for creating comple
 4. If you're on linux, go to ``simulator-lin/bin`` directory
 5. Run the simulator.bat file
 
+Note: This will get you the lastest release version. If you want the latest development version you need to:
+1. Be on linux
+2. Install openjdk-14 e.g. with 
+    ```bash
+    sudo apt install openjdk-14-jdk
+    ```
+3. Run command 
+    ```bash
+    ./gradlew run
+    ````
+    from the main directory
+
 # Controls
 ## Gates
 To add a gate:\
