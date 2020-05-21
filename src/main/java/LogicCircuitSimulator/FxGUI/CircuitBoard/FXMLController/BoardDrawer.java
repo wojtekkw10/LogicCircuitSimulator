@@ -9,6 +9,7 @@ import LogicCircuitSimulator.FxGUI.CircuitBoard.Drawing.SimulationCanvasBackgrou
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Simulation.Simulation;
 import javafx.scene.canvas.Canvas;
@@ -55,7 +56,7 @@ public class BoardDrawer {
         clearCanvas(Color.BLACK);
         new SimulationCanvasBackground(canvas, boardDTO).draw(projection2D);
         drawLogicGates(simulation.logicElementIterator());
-        drawNodes(simulation.nodeIterator());
+        drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
 
         if(isLogicGateDragged.get()) {
@@ -64,7 +65,7 @@ public class BoardDrawer {
                 public void doAction() {
                     logicGateDragged.setPosition(getPosition());
                 }
-            }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged);
+            }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged, boardDTO.getRelativeMouseToLogicGatePos());
 
             LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
             logicGateDragged.accept(drawLogicElement);
@@ -99,8 +100,9 @@ public class BoardDrawer {
         }
     }
 
-    private void drawNodes(Iterator<Node> nodes){
+    private void drawNodes(NodeHandler nodeHandler){
         Projection2D projection2D = boardDTO.getProjection2D();
+        Iterator<Node> nodes = nodeHandler.iterator();
 
         NodeVisitor drawNode = new DrawNodeVisitor(graphicsContext, projection2D);
         while(nodes.hasNext()){

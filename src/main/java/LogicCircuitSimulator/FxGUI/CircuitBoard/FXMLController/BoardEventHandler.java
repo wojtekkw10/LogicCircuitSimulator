@@ -101,7 +101,9 @@ public class BoardEventHandler {
                         boardDTO.setLogicGateDragged(getLogicElement());
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
                         isLogicGateDragged.set(true);
+                        boardDTO.setRelativeMouseToLogicGatePos(getRelativeMousePos());
                         removeLogicElement();
+                        System.out.println(getRelativeMousePos());
                     }
                 }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
             }
@@ -127,7 +129,7 @@ public class BoardEventHandler {
                         simulation.addLogicGate(boardDTO.getLogicGateDragged());
                         isLogicGateDragged.set(false);
                     }
-                }.getElementPosFromElementAndMousePosition(mousePos, projection2D, boardDTO.getLogicGateDragged());
+                }.getElementPosFromElementAndMousePosition(mousePos, projection2D, boardDTO.getLogicGateDragged(), boardDTO.getRelativeMouseToLogicGatePos());
             }
             else{
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {

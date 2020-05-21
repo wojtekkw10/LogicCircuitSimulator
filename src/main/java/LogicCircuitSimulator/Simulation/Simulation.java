@@ -9,7 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Simulation {
-    public NodeHandler nodeHandler = new ArrayNodeHandler();
+
+
+    private NodeHandler nodeHandler = new ArrayNodeHandler();
     List<LogicElement> logicElements = new ArrayList<>();
 
     public void runOnce() {
@@ -114,5 +116,9 @@ public class Simulation {
             nodeHandler.setRightWire(new Vector2D(pos, 1), WireState.LOW);
             pos++;
         }
+    }
+
+    public NodeHandler getNodeHandler() {
+        return nodeHandler;
     }
 }

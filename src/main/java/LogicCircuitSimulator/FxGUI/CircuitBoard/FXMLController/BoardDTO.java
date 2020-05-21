@@ -30,6 +30,10 @@ public class BoardDTO {
     private final AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
     private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
+
+
+    private Vector2D relativeMouseToLogicGatePos;
+
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
     private final Simulation simulation = new Simulation();
 
@@ -42,6 +46,13 @@ public class BoardDTO {
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
+    }
+    public Vector2D getRelativeMouseToLogicGatePos() {
+        return relativeMouseToLogicGatePos;
+    }
+
+    public void setRelativeMouseToLogicGatePos(Vector2D relativeMouseToLogicGatePos) {
+        this.relativeMouseToLogicGatePos = relativeMouseToLogicGatePos;
     }
 
     public ScheduledExecutorService getExecutor() {

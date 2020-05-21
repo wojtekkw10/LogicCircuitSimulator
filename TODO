@@ -21,20 +21,21 @@ DONE:
 - remove Node class dependency in NodeHandler
 - embed fonts, because on windows it appears as a different font
 - refactor tests/add more tests
+- popraw bug - brak maksymalizacji okna grid
+- lepsze przesuwanie bramek (bramka długości 2 nie przeskakuje przy przeciąganiu za końcowy róg)
 DOING:
+
+TODO: Zrób node crossing toucing by default and Only draw crossing when 3 or more wires around
 
 
 TO BE DONE:
-TODO: intelligent NodeHandler
 TODO: zapisywanie i czytanie z pliku
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
-TODO: dodawanie bramek przez przeciąganie
-
+TODO: ctrl-z, ctrl-shift-z
+TODO: dodawanie bramek przez przeciąganie z toolboxa z boku
+TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść
-TODO: popraw bug - brak maksymalizacji okna grid
-
 TODO: windowSwitcher in all controllers or as a Singleton
-
 TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
 
 MAYBE:

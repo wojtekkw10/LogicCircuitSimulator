@@ -14,6 +14,10 @@ public abstract class MouseLogicElementSpecifier {
     private Vector2D currentLogicElementPos;
     private LogicElement currentLogicElement;
 
+
+
+    private Vector2D relativeMousePos;
+
     public MouseLogicElementSpecifier(Simulation simulation){
         this.simulation = simulation;
     }
@@ -23,20 +27,25 @@ public abstract class MouseLogicElementSpecifier {
     public void getElementFromMousePosition(Vector2D mousePos, Projection2D projection){
         Vector2D cursorBoardPosition = getExactBoardPosition(mousePos, projection);
         LogicElement logicElement = findLogicElement(cursorBoardPosition, simulation.logicElementIterator());
+
         if (logicElement != null) {
             currentLogicElementPos = logicElement.getPosition();
             currentLogicElement = logicElement;
+            relativeMousePos = new Vector2D(cursorBoardPosition.getX() - logicElement.getPosition().getX(),
+                    cursorBoardPosition.getY() - logicElement.getPosition().getY());
 
             doAction();
         }
 
     }
 
-    public void getElementPosFromElementAndMousePosition(Vector2D mousePos, Projection2D projection, LogicElement logicElement){
-        Vector2D pos = projection.projectBack(new Vector2D(mousePos.getX(), mousePos.getY()));
-        if(logicElement.getRotation() == Rotation.UP || logicElement.getRotation() == Rotation.DOWN)
-            pos = new Vector2D(pos.getX()+0.5, pos.getY()-0.5);
-        currentLogicElementPos = getNodePosition(pos, projection);
+    public void getElementPosFromElementAndMousePosition(Vector2D mousePos, Projection2D projection,
+                                                         LogicElement logicElement, Vector2D relativeMousePos){
+        Vector2D pos = projection.projectBack(mousePos);
+
+        Vector2D adjustedPos = new Vector2D(pos.getX() - relativeMousePos.getX()+0.5, pos.getY() - relativeMousePos.getY());
+        currentLogicElementPos = getNodePosition(adjustedPos, projection);
+
 
         doAction();
     }
@@ -162,6 +171,10 @@ public abstract class MouseLogicElementSpecifier {
         //but in the system it has none
         //it's a line from a to b, no height
         else return logicElement.getElementHeight() + 1;
+    }
+
+    public Vector2D getRelativeMousePos() {
+        return relativeMousePos;
     }
 
 }
