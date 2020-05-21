@@ -1,8 +1,7 @@
 package LogicCircuitSimulator.FxGUI.Board;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicClock;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,9 +30,40 @@ public class BoardController {
     }
 
     public void clockButtonOnAction(ActionEvent actionEvent) {
-        System.out.println("CLOCK");
-        isLogicElementDragged = true;
-        logicElementDragged = new LogicClock(0,0, Rotation.RIGHT);
-        simulationController.setLogicGateDragged(logicElementDragged);
+
+    }
+
+    public void clkOnMouseClick(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new LogicClock(0,0, Rotation.RIGHT));
+    }
+
+    public void bfrOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new BufferGate(0,0, Rotation.RIGHT));
+
+    }
+
+    public void oneOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
+
+    }
+
+    public void notOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new NotGate(0,0, Rotation.RIGHT));
+
+    }
+
+    public void orOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new OrGate(0,0, Rotation.RIGHT));
+
+    }
+
+    public void andOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new AndGate(0,0, Rotation.RIGHT));
+    }
+
+    public void xorOnMouseClicked(MouseEvent mouseEvent) {
+        System.out.println("XOR");
+        simulationController.setLogicGateDragged(new XorGate(0,0, Rotation.RIGHT));
+
     }
 }

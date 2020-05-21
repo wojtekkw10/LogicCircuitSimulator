@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="boardAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.Board.BoardController">
    <children>
@@ -24,9 +25,30 @@
                               <Insets bottom="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Button focusTraversable="false" mnemonicParsing="false" onAction="#clockButtonOnAction" text="CLOCK" />
-                        <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
-                        <Button focusTraversable="false" mnemonicParsing="false" text="Button" />
+                        <Label style="-fx-text-fill: #FFF;" styleClass="indieFlowerFont" stylesheets="@../stylesheets/MainStylesheet.css" text="GATES">
+                           <font>
+                              <Font size="33.0" />
+                           </font>
+                        </Label>
+                        <HBox>
+                           <children>
+                              <Label onMouseClicked="#clkOnMouseClick" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="CLK" />
+                              <Label onMouseClicked="#bfrOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="BFR" />
+                              <Label layoutX="110.0" layoutY="10.0" onMouseClicked="#oneOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="ONE" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="172.0">
+                           <children>
+                              <Label onMouseClicked="#notOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="NOT" />
+                              <Label onMouseClicked="#orOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="OR" />
+                              <Label layoutX="110.0" layoutY="10.0" onMouseClicked="#andOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="AND" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="210.0">
+                           <children>
+                              <Label onMouseClicked="#xorOnMouseClicked" style="-fx-text-fill: #FFF;" styleClass="toolboxLogicGateLabel" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

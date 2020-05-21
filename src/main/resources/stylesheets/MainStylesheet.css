@@ -54,3 +54,13 @@
 .indieFlowerFont{
     -fx-font-family: 'Indie Flower';
 }
+
+.toolboxLogicGateLabel{
+    -fx-text-fill: aliceblue;
+    -fx-border-style: solid;
+    -fx-padding: 10px 15px;
+    -fx-border-color: aliceblue;
+    -fx-fit-to-width: true;
+    -fx-pref-width: 66px;
+    -fx-max-width: 100px;
+}

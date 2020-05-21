@@ -121,7 +121,7 @@ public class BoardEventHandler {
         //ON MOUSE RELEASED
         EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
             Vector2D mousePos = new Vector2D(event.getX(), event.getY());
-            if(isLogicGateDragged.get()){
+            if(isLogicGateDragged.get() && event.getButton() == MouseButton.PRIMARY){
                 new MouseLogicElementSpecifier(simulation){
                     @Override
                     public void doAction() {
