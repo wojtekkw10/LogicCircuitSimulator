@@ -30,6 +30,11 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
+    public void setNode(Node node) {
+        nodeGrid.setNode(node);
+    }
+
+    @Override
     public void setRightWire(Vector2D pos, WireState state) {
         nodeGrid.setRightWire(pos, state);
     }

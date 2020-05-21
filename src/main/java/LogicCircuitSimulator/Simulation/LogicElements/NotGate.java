@@ -42,6 +42,11 @@ public class NotGate extends LogicElement{
     }
 
     @Override
+    public String getName() {
+        return "NOT";
+    }
+
+    @Override
     public void accept(LogicElementVisitor visitor) {
         visitor.visit(this);
     }

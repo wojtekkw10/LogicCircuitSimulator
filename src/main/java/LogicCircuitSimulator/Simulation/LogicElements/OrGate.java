@@ -29,6 +29,11 @@ public class OrGate extends LogicElement{
     }
 
     @Override
+    public String getName() {
+        return "OR";
+    }
+
+    @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         List<LogicState> outputState = new ArrayList<>();
         if(states.get(0) == LogicState.HIGH || states.get(1) == LogicState.HIGH){

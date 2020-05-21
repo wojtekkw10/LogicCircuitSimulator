@@ -2,6 +2,7 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -60,6 +61,10 @@ public class SimulationCanvasController {
         boardDTO.setLogicGateDragged(logicElement);
         boardDTO.getIsLogicGateDragged().set(true);
         boardDTO.setRelativeMouseToLogicGatePos(new Vector2D(0.5, 0));
+    }
+
+    public Simulation getSimulation(){
+        return boardDTO.getSimulation();
     }
 
     public void shutdown(){

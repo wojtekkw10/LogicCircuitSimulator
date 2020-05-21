@@ -33,9 +33,9 @@
                         </Label>
                         <HBox>
                            <children>
-                              <Button onMouseClicked="#clkOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="CLK" />
-                              <Button onMouseClicked="#bfrOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BFR" />
-                              <Button onMouseClicked="#oneOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="ONE" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#clkOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="CLK" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#bfrOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BFR" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#oneOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="ONE" />
                            </children>
                            <VBox.margin>
                               <Insets />
@@ -46,9 +46,9 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="172.0">
                            <children>
-                              <Button onMouseClicked="#notOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="NOT" />
-                              <Button onMouseClicked="#orOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="OR" />
-                              <Button onMouseClicked="#andOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="AND" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#notOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="NOT" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#orOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="OR" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#andOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="AND" />
                            </children>
                            <padding>
                               <Insets left="25.0" />
@@ -56,7 +56,7 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="210.0">
                            <children>
-                              <Button onMouseClicked="#xorOnMouseClicked" mnemonicParsing="false" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#xorOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
                            </children>
                            <padding>
                               <Insets left="25.0" />
@@ -65,11 +65,11 @@
                               <Insets bottom="40.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button maxWidth="200.0" mnemonicParsing="false" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="SAVE">
+                        <Button focusTraversable="false" maxWidth="200.0" mnemonicParsing="false" onMouseClicked="#onSaveButtonClicked" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="SAVE">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin></Button>
-                        <Button layoutX="35.0" layoutY="326.0" maxWidth="200.0" mnemonicParsing="false" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="LOAD" />
+                        <Button focusTraversable="false" layoutX="35.0" layoutY="326.0" maxWidth="200.0" mnemonicParsing="false" onMouseClicked="#onLoadButtonClicked" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="LOAD" />
                      </children>
                   </VBox>
                </children>

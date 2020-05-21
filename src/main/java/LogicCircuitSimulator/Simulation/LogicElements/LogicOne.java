@@ -34,6 +34,11 @@ public class LogicOne extends LogicElement {
     }
 
     @Override
+    public String getName() {
+        return "ONE";
+    }
+
+    @Override
     public void accept(LogicElementVisitor visitor) {
         visitor.visit(this);
     }

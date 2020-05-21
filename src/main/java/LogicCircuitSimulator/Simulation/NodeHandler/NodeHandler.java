@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface NodeHandler {
 
+    void setNode(Node node);
+
     void setRightWire(Vector2D pos, WireState state);
     void setDownWire(Vector2D pos, WireState state);
 

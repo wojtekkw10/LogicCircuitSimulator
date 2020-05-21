@@ -30,6 +30,11 @@ public class LogicClock extends LogicElement{
     }
 
     @Override
+    public String getName() {
+        return "CLK";
+    }
+
+    @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         List<LogicState> outputStates = new ArrayList<>();
         if(timer == SIGNAL_LENGTH){

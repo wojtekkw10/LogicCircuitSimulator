@@ -90,4 +90,14 @@ public class Node {
     public int hashCode() {
         return Objects.hash(position, right, down, isTouching);
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "position=" + position +
+                ", right=" + right +
+                ", down=" + down +
+                ", isTouching=" + isTouching +
+                '}';
+    }
 }

@@ -33,6 +33,11 @@ public class LogicZero extends LogicElement {
     }
 
     @Override
+    public String getName() {
+        return "ZERO";
+    }
+
+    @Override
     public void accept(LogicElementVisitor visitor) {
         visitor.visit(this);
     }

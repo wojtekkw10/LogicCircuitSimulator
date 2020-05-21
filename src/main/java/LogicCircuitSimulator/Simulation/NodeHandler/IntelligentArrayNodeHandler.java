@@ -14,6 +14,11 @@ public class IntelligentArrayNodeHandler implements NodeHandler{
     NodeHandler arrayNodeHandler = new ArrayNodeHandler();
 
     @Override
+    public void setNode(Node node) {
+
+    }
+
+    @Override
     public void setRightWire(Vector2D pos, WireState state) {
 
     }

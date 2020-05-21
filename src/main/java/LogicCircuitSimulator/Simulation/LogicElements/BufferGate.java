@@ -36,4 +36,9 @@ public class BufferGate extends LogicElement{
         outputPositions.add(new Vector2D(1,0));
         return outputPositions;
     }
+
+    @Override
+    public String getName() {
+        return "BFR";
+    }
 }

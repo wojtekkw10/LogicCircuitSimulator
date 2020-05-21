@@ -30,6 +30,9 @@ DOING:
 TODO: zapisywanie i czytanie z pliku
 
 TO BE DONE:
+TODO: add toggle logic element
+TODO: refactor saving string to file (interface)
+TODO: refactor serializer
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i przewodach
