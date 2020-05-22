@@ -11,4 +11,6 @@ public interface LogicElementVisitor {
     void visit(NotGate notGate);
     void visit(XorGate xorGate);
     void visit(LogicClock clock);
+    void visit(ToggleOn toggleOn);
+    void visit(ToggleOff toggleOff);
 }

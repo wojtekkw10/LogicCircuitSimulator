@@ -26,11 +26,14 @@ DONE:
 - make node crossing touching by default - only draw crossing with 3 or more wires around
 - left toolbox with logic gates
 - saving and loading from a file
+- refactor serializer
+- refactor saving string to file (interface)
+- fix bug that prevents the user from editing the grid after loading a file
 
 DOING:
 
-TODO: refactor saving string to file (interface)
-TODO: refactor serializer
+
+
 
 TO BE DONE:
 TODO: add toggle logic element

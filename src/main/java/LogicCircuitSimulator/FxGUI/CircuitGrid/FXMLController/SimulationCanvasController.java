@@ -70,6 +70,10 @@ public class SimulationCanvasController {
     public void shutdown(){
         executor.shutdownNow();
     }
+
+    public void setSimulation(Simulation simulation) {
+        boardDTO.setSimulation(simulation);
+    }
 }
 
 

@@ -1,8 +1,10 @@
 package LogicCircuitSimulator.FxGUI.Board;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
+import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDataStorage;
 import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
+import LogicCircuitSimulator.Simulation.Serialization.SimpleSimulationSerializer;
 import LogicCircuitSimulator.Simulation.Simulation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,36 +67,16 @@ public class BoardController {
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         Simulation simulation = simulationController.getSimulation();
-        String serializedSimulation = simulation.serialize();
-        FileChooser fileChooser = new FileChooser();
-
-        File selectedFile = fileChooser.showSaveDialog(primaryStage);
-
-        if(selectedFile != null){
-            try(FileWriter fr = new FileWriter(selectedFile)){
-                fr.write(serializedSimulation);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        String serializedSimulation = new SimpleSimulationSerializer().serialize(simulation);
+        new FileSystemExternalDataStorage().save(null, serializedSimulation);
     }
 
     public void onLoadButtonClicked(MouseEvent mouseEvent) {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(primaryStage);
-        if(selectedFile != null){
-            try {
-                Scanner scanner = new Scanner(selectedFile);
-                StringBuilder serializedSimulation = new StringBuilder();
-                while(scanner.hasNextLine()){
-                    String line = scanner.nextLine();
-                    serializedSimulation.append(line).append("\n");
-                }
-                simulationController.getSimulation().deSerialize(serializedSimulation.toString());
+        String serializedSimulation = new FileSystemExternalDataStorage().load(null);
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        if(serializedSimulation != null){
+            Simulation simulation =  new SimpleSimulationSerializer().deserialize(serializedSimulation);
+            simulationController.setSimulation(simulation);
         }
     }
 }

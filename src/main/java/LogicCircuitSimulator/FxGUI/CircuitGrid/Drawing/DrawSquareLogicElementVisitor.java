@@ -60,6 +60,16 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         drawGate(clock, "CLK");
     }
 
+    @Override
+    public void visit(ToggleOn toggleOn) {
+        drawGate(toggleOn, "ON");
+    }
+
+    @Override
+    public void visit(ToggleOff toggleOff) {
+        drawGate(toggleOff, "OFF");
+    }
+
     void drawGate(LogicElement le, String text){
         graphicsContext.setLineWidth(1);
         double scale = projection2D.getScale();

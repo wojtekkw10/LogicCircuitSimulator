@@ -35,13 +35,17 @@ public class BoardDTO {
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-    private final Simulation simulation = new Simulation();
+    private Simulation simulation = new Simulation();
 
     private boolean shouldDrawSpeedStats = true;
     private boolean isUpsLimited = true;
     private boolean upsChanged = false;
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
 
     enum SyncMode{
         SYNCHRONIZED,
