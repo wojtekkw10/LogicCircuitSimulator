@@ -29,15 +29,16 @@ DONE:
 - refactor serializer
 - refactor saving string to file (interface)
 - fix bug that prevents the user from editing the grid after loading a file
+- add toggle logic element
 
 DOING:
 
-
-
+TODO: add button logic element
 
 TO BE DONE:
-TODO: add toggle logic element
-TODO: add button logic element
+TODO: refactor logic elements names to enums
+TODO: refactor buttons in board
+
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i przewodach

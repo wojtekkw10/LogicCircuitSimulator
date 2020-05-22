@@ -45,7 +45,7 @@ public class BoardDrawer {
         Canvas canvas = boardDTO.getCanvas();
         Projection2D projection2D = boardDTO.getProjection2D();
         Simulation simulation = boardDTO.getSimulation();
-        AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateDragged();
+        AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateLifted();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();
         AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();

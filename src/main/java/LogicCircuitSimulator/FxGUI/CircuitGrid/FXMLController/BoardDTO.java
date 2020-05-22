@@ -19,7 +19,7 @@ public class BoardDTO {
     private final double MIN_ZOOM = 5;
 
     private final int TARGET_FPS = 100;
-    private int TARGET_UPS = 100;
+    private int TARGET_UPS = 60;
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
     private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
@@ -27,7 +27,7 @@ public class BoardDTO {
     private final Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
 
     private Vector2D lastMousePosition = new Vector2D(0,0);
-    private final AtomicBoolean isLogicGateDragged = new AtomicBoolean(false);
+    private final AtomicBoolean isLogicGateLifted = new AtomicBoolean(false);
     private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
 
@@ -104,8 +104,8 @@ public class BoardDTO {
         return TARGET_UPS;
     }
 
-    public AtomicBoolean getIsLogicGateDragged() {
-        return isLogicGateDragged;
+    public AtomicBoolean getIsLogicGateLifted() {
+        return isLogicGateLifted;
     }
 
     public LogicElement getLogicGateDragged() {

@@ -7,7 +7,6 @@ import LogicCircuitSimulator.Vector2D;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.concurrent.*;
@@ -59,7 +58,7 @@ public class SimulationCanvasController {
 
     public void setLogicGateDragged(LogicElement logicElement){
         boardDTO.setLogicGateDragged(logicElement);
-        boardDTO.getIsLogicGateDragged().set(true);
+        boardDTO.getIsLogicGateLifted().set(true);
         boardDTO.setRelativeMouseToLogicGatePos(new Vector2D(0.5, 0));
     }
 

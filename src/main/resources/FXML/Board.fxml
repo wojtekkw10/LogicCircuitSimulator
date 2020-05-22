@@ -57,6 +57,7 @@
                         <HBox layoutX="10.0" layoutY="210.0">
                            <children>
                               <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#xorOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
+                              <Button focusTraversable="false" layoutX="35.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#tglOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="TGL" />
                            </children>
                            <padding>
                               <Insets left="25.0" />

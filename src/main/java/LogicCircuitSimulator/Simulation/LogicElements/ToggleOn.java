@@ -16,7 +16,6 @@ public class ToggleOn extends LogicElement{
     @Override
     public List<Vector2D> getLocalInputPositions() {
         ArrayList<Vector2D> inputPositions = new ArrayList<>();
-        inputPositions.add(new Vector2D(0,0));
         return inputPositions;
     }
 
