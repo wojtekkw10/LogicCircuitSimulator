@@ -147,6 +147,12 @@ public class BoardEventHandler {
                             LogicElement toggleOn = new ToggleOn((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
                             boardDTO.getSimulation().addLogicGate(toggleOn);
                         }
+                        else if(selectedElement.getName().equals("BTN")){
+                            Vector2D pos = getPosition();
+                            removeLogicElement();
+                            LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
+                            boardDTO.getSimulation().addLogicGate(toggleOn);
+                        }
                     }
                 }.getElementFromMousePosition(mousePos, projection2D);
             }
@@ -243,6 +249,10 @@ public class BoardEventHandler {
         else if(keycode == KeyCode.DIGIT8){
             isLogicGateDragged.set(true);
             boardDTO.setLogicGateDragged(new ToggleOff(x,y, Rotation.RIGHT));
+        }
+        else if(keycode == KeyCode.DIGIT9){
+            isLogicGateDragged.set(true);
+            boardDTO.setLogicGateDragged(new ButtonLogicElement(x,y, Rotation.RIGHT));
         }
     }
 }

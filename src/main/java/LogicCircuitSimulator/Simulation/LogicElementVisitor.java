@@ -13,4 +13,5 @@ public interface LogicElementVisitor {
     void visit(LogicClock clock);
     void visit(ToggleOn toggleOn);
     void visit(ToggleOff toggleOff);
+    void visit(ButtonLogicElement buttonLogicElement);
 }
