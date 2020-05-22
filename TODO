@@ -15,31 +15,33 @@ DONE:
 - drawing FPS and UPS in the canvas, because the canvas class shouldn't have access to the main App class
 - limiting UPS from keyboard during run
 - Make moving fun.
-- bug - clock nie outputuje w dol, ( z bramki generator zawsze jest poziomo )
+- bug - clock doesn't work when vertically
 - create separate branches for java 11 and java 8 + readme stating what's necessary to run it
 - make the logo empty space smaller
 - remove Node class dependency in NodeHandler
 - embed fonts, because on windows it appears as a different font
 - refactor tests/add more tests
-- popraw bug - brak maksymalizacji okna grid
-- lepsze przesuwanie bramek (bramka długości 2 nie przeskakuje przy przeciąganiu za końcowy róg)
-- Zrób node crossing toucing by default and Only draw crossing when 3 or more wires around
-- dodawanie bramek przez przeciąganie z toolboxa z boku
+- fix a bug - can't maximize the window
+- improved moving logic gates
+- make node crossing touching by default - only draw crossing with 3 or more wires around
+- left toolbox with logic gates
+- saving and loading from a file
+
 DOING:
 
-TODO: zapisywanie i czytanie z pliku
+TODO: refactor saving string to file (interface)
+TODO: refactor serializer
 
 TO BE DONE:
 TODO: add toggle logic element
-TODO: refactor saving string to file (interface)
-TODO: refactor serializer
+TODO: add button logic element
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie doddawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść
 TODO: windowSwitcher in all controllers or as a Singleton
 TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
-NOTE: jest funkcja loader.setController()
+
 MAYBE:
 TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid and UnboundList (if the app takes too much memory)
@@ -47,6 +49,9 @@ TODO: actually use 2d array to store elements, but maintain two representations
     2d array representation would allow for fast point access
     list representation would allow for fast drawing
 TODO: Simulation should have visitors for drawing (code smell G14 in Clean Code) or maybe not. Iterators are good enough. We will see
+TODO: nested anchor pane to create multiple controllers operating on the same canvas
+
+NOTE: jest funkcja loader.setController()
 
 NOT DONE:
 - Set up makefile so that it creates a jar file in root folder

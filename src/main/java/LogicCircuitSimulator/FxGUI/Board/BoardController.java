@@ -77,8 +77,6 @@ public class BoardController {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     public void onLoadButtonClicked(MouseEvent mouseEvent) {

@@ -24,7 +24,7 @@
                </font>
             </Label>
             <Button layoutX="50.0" layoutY="180.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Start" />
-            <Button layoutX="50.0" layoutY="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
+            <Button layoutX="50.0" layoutY="250.0" mnemonicParsing="false" onAction="#onLoadButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Load" />
             <Button layoutX="50.0" layoutY="320.0" mnemonicParsing="false" onAction="#onHelpButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Help" />
             <Button layoutX="50.0" layoutY="390.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="50.0" prefWidth="300.0" styleClass="menu_button" text="Exit" />
             <Label layoutX="56.0" layoutY="113.0" styleClass="indieFlowerFont" text="LOGIC CIRCUIT SIMULATOR">
