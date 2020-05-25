@@ -47,6 +47,11 @@ class LogicElementTest {
         }
 
         @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
         public List<LogicState> computeLocalValues(List<LogicState> states) {
             return states;
         }

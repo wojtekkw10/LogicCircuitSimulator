@@ -58,6 +58,7 @@
                            <children>
                               <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#xorOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
                               <Button focusTraversable="false" layoutX="35.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#tglOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="TGL" />
+                              <Button focusTraversable="false" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#btnOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BTN" />
                            </children>
                            <padding>
                               <Insets left="25.0" />

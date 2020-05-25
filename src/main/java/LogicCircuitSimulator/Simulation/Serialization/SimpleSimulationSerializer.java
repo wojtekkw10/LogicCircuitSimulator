@@ -19,8 +19,8 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
         while(nodes.hasNext()){
             Node node = nodes.next();
             stringBuilder.append("WI ");
-            stringBuilder.append(node.getPosition().getX()).append(" ");
-            stringBuilder.append(node.getPosition().getY()).append(" ");
+            stringBuilder.append((int)node.getPosition().getX()).append(" ");
+            stringBuilder.append((int)node.getPosition().getY()).append(" ");
             stringBuilder.append(node.getRightWire()).append(" ");
             stringBuilder.append(node.getDownWire()).append(" ");
             stringBuilder.append(node.isTouching()).append(" ");
@@ -41,8 +41,8 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
     private String serializeLogicElement(LogicElement logicElement){
 
         return logicElement.getName() + " " +
-                logicElement.getPosition().getX() + " " +
-                logicElement.getPosition().getY() + " " +
+                (int)logicElement.getPosition().getX() + " " +
+                (int)logicElement.getPosition().getY() + " " +
                 logicElement.getRotation();
     }
 

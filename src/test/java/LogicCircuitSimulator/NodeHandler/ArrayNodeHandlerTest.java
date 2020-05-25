@@ -27,15 +27,15 @@ class ArrayNodeHandlerTest {
         //Assert
         assertEquals(WireState.HIGH, nodeHandler.getRightWire(new Vector2D(2,5)));
         assertEquals(WireState.LOW, nodeHandler.getDownWire(new Vector2D(2,5)));
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(2,5)));
+        assertEquals(Crossing.TOUCHING, nodeHandler.getCrossing(new Vector2D(2,5)));
 
         assertEquals(WireState.NONE, nodeHandler.getRightWire(new Vector2D(1,5)));
         assertEquals(WireState.NONE, nodeHandler.getDownWire(new Vector2D(1,5)));
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(1,5)));
+        assertEquals(Crossing.TOUCHING, nodeHandler.getCrossing(new Vector2D(1,5)));
 
         assertEquals(WireState.NONE, nodeHandler.getRightWire(new Vector2D(4,9)));
         assertEquals(WireState.NONE, nodeHandler.getDownWire(new Vector2D(4,9)));
-        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(4,9)));
+        assertEquals(Crossing.TOUCHING, nodeHandler.getCrossing(new Vector2D(4,9)));
     }
 
     @Test
@@ -43,6 +43,9 @@ class ArrayNodeHandlerTest {
         NodeHandler nodeHandler = new ArrayNodeHandler();
 
         addInitialWires(nodeHandler);
+        nodeHandler.setCrossing(new Vector2D(5,5), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(7,5), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,7), Crossing.NOT_TOUCHING);
 
         //HORIZONTALLY
         List<Generator> generators = new ArrayList<>();
@@ -218,19 +221,19 @@ class ArrayNodeHandlerTest {
         generators.add(new Generator(new Vector2D(5,5), Orientation.VERTICALLY));
         nodeHandler.propagateGenerators(generators);
 
-        String expected = "+ + + + + + + \n" +
+        String expected = "* * + * * * * \n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +
-                "+ + + + + + + \n" +
-                "    \u001B[33;1m| \u001B[0m  \u001B[38;5;245m| \u001B[0m    \n" +
-                "+\u001B[38;5;245m-\u001B[0m+\u001B[38;5;245m-\u001B[0m+\u001B[38;5;245m-\u001B[0m+\u001B[38;5;245m-\u001B[0m*\u001B[38;5;245m-\u001B[0m+\u001B[38;5;245m-\u001B[0m+\u001B[38;5;245m-\u001B[0m\n" +
+                "* * * * + * * \n" +
+                "    \u001B[33;1m| \u001B[0m  \u001B[33;1m| \u001B[0m    \n" +
+                "+\u001B[33;1m-\u001B[0m*\u001B[33;1m-\u001B[0m*\u001B[33;1m-\u001B[0m*\u001B[33;1m-\u001B[0m*\u001B[33;1m-\u001B[0m*\u001B[33;1m-\u001B[0m+\u001B[33;1m-\u001B[0m\n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +
-                "+ + + + + + + \n" +
+                "* * * * * * * \n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +
-                "+ *\u001B[33;1m-\u001B[0m* + + + + \n" +
+                "* *\u001B[33;1m-\u001B[0m* * * * * \n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +
-                "+ + + + + + + \n" +
+                "* * * * * * * \n" +
                 "    \u001B[33;1m| \u001B[0m        \n" +
-                "+ + + + + + + \n" +
+                "* * + * * * * \n" +
                 "    \u001B[33;1m| \u001B[0m        \n";
 
         assertEquals(expected, nodeHandler.toString());
@@ -277,11 +280,15 @@ class ArrayNodeHandlerTest {
     private void addInitialWires(NodeHandler nodeHandler){
         nodeHandler.setRightWire(new Vector2D(5,5), WireState.LOW);
         nodeHandler.setDownWire(new Vector2D(5,5), WireState.LOW);
+        //nodeHandler.setCrossing(new Vector2D(5,5), Crossing.NOT_TOUCHING);
         nodeHandler.setRightWire(new Vector2D(6,5), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(7,5), WireState.LOW);
         nodeHandler.setDownWire(new Vector2D(7,4), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(8,5), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(9,5), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(9,5), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,9), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(7,4), Crossing.NOT_TOUCHING);
         nodeHandler.setDownWire(new Vector2D(5,6), WireState.LOW);
         nodeHandler.setDownWire(new Vector2D(5,7), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(4,7), WireState.LOW);
@@ -291,5 +298,8 @@ class ArrayNodeHandlerTest {
         nodeHandler.setDownWire(new Vector2D(5,3), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(4,5), WireState.LOW);
         nodeHandler.setRightWire(new Vector2D(3,5), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(5,3), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(3,5), Crossing.NOT_TOUCHING);
+        nodeHandler.setCrossing(new Vector2D(5,9), Crossing.NOT_TOUCHING);
     }
 }

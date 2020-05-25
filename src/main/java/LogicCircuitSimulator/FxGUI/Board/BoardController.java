@@ -84,4 +84,8 @@ public class BoardController {
         simulationController.setLogicGateDragged(new ToggleOff(0,0, Rotation.RIGHT));
 
     }
+
+    public void btnOnMouseClicked(MouseEvent mouseEvent) {
+        simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT));
+    }
 }
