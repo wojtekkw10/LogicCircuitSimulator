@@ -2,23 +2,26 @@ package LogicCircuitSimulator.Simulation;
 
 import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 public class Simulation {
 
-
     private NodeHandler nodeHandler = new ArrayNodeHandler();
-    private List<LogicElement> logicElements = new ArrayList<>();
+    private UnboundGrid<LogicElement> logicElements = new UnboundHashMapGrid<>();
 
     public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
-        for (LogicElement element : logicElements) {
+        GridIterator<LogicElement> logicElementIterator = logicElements.iterator();
+        while(logicElementIterator.hasNext()) {
+            LogicElement element = logicElementIterator.next();
             List<Vector2D> inputPositions = element.getGeometry().getInputPositions();
             ArrayList<LogicState> inputStates = new ArrayList<>();
 
@@ -46,7 +49,7 @@ public class Simulation {
     }
 
     public Iterator<LogicElement> logicElementIterator() {
-        return logicElements.iterator();
+        return new LogicElementIterator();
     }
 
     public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
@@ -73,7 +76,7 @@ public class Simulation {
     }
 
     public void addLogicGate(LogicElement logicElement){
-        logicElements.add(logicElement);
+        logicElements.set(logicElement.getPosition(), logicElement);
     }
 
     private void addNotLoop(Vector2D pos){
@@ -107,12 +110,12 @@ public class Simulation {
         addNotLoop(new Vector2D(10, 3));
         addNotLoop(new Vector2D(10, 5));
 
-        logicElements.add(new NotGate(11, 3, Rotation.DOWN));
-        logicElements.add(new NotGate(11, 5, Rotation.RIGHT));
+        addLogicGate(new NotGate(11,3, Rotation.DOWN));
+        addLogicGate(new NotGate(11, 5, Rotation.RIGHT));
 
         int pos = 4;
         for (int i = 0; i < 10; i++) {
-            logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
+            addLogicGate(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
             nodeHandler.setRightWire(new Vector2D(pos, 1), WireState.LOW);
             pos++;
@@ -127,7 +130,26 @@ public class Simulation {
         this.nodeHandler = nodeHandler;
     }
 
-    public void setLogicElements(List<LogicElement> logicElements) {
+    public void setLogicElements(UnboundGrid<LogicElement> logicElements) {
         this.logicElements = logicElements;
+    }
+
+    private class LogicElementIterator implements Iterator<LogicElement>{
+        GridIterator<LogicElement> iterator = logicElements.iterator();
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public LogicElement next() {
+            return iterator.next();
+        }
+
+        @Override
+        public void remove() {
+            logicElements.remove(iterator.currentPosition());
+        }
     }
 }

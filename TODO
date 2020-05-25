@@ -35,13 +35,13 @@ DONE:
 - refactor buttons in board to use onAction event
 - create a logicElement Factory (by name)
 - fix: logicElement breaks srp
+- rotating while logicElement lifted
+- bug - simulation randomly stops updating when clicking buttonLogicElement (probably fixed - honestly I'm not sure)
+- removing on right click
 DOING:
 
 
-
 TO BE DONE:
-TODO: rotating while logicElement lifted
-TODO: bug - simulation randomly stops updating when clicking buttonLogicElement
 
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
@@ -50,6 +50,7 @@ TODO: dodaj graficzne opisy wejść i wyjść
 TODO: windowSwitcher in all controllers or as a Singleton
 TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
 ToDO: maybe refactor simulation so that it's only the algorithm. Have direct access to NodeHandler and LogicElements in GUI
+TODO:
 MAYBE:
 TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid (if the app takes too much memory)

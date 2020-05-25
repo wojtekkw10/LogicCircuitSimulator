@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BoardEventHandler {
     private final BoardDTO boardDTO;
     private Vector2D lastMousePressPosition = new Vector2D(0,0);
-    private WireMode wireMode = WireMode.ADDING;
 
     private final double SCALING_FACTOR = 0.05;
 
@@ -37,7 +36,7 @@ public class BoardEventHandler {
     private void initialize(){
         Canvas canvas = boardDTO.getCanvas();
         Projection2D projection2D = boardDTO.getProjection2D();
-        AtomicBoolean isLogicGateLefted = boardDTO.getIsLogicGateLifted();
+        AtomicBoolean isLogicGateLifted = boardDTO.getIsLogicGateLifted();
         double MAX_ZOOM = boardDTO.getMAX_ZOOM();
         double MIN_ZOOM = boardDTO.getMIN_ZOOM();
 
@@ -118,34 +117,26 @@ public class BoardEventHandler {
                     public void doAction() {
                         boardDTO.setLogicGateDragged(getLogicElement());
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
-                        isLogicGateLefted.set(true);
+                        isLogicGateLifted.set(true);
                         boardDTO.setRelativeMouseToLogicGatePos(getRelativeMousePos());
                         removeLogicElement();
                     }
                 }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
             }
-
-            new MouseWireSpecifier(boardDTO.getSimulation()){
-                @Override
-                public void doAction() {
-                    if(getWireState() != WireState.NONE) wireMode = WireMode.REMOVING;
-                    else wireMode = WireMode.ADDING;
-                }
-            }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
         };
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, onMousePressedEventHandler);
 
         //ON MOUSE RELEASED
         EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
             Vector2D mousePos = new Vector2D(event.getX(), event.getY());
-            if(isLogicGateLefted.get() && event.getButton() == MouseButton.PRIMARY){
+            if(isLogicGateLifted.get() && event.getButton() == MouseButton.PRIMARY){
 
                 new MouseLogicElementSpecifier(boardDTO.getSimulation()){
                     @Override
                     public void doAction() {
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
                         boardDTO.getSimulation().addLogicGate(boardDTO.getLogicGateDragged());
-                        isLogicGateLefted.set(false);
+                        isLogicGateLifted.set(false);
                     }
                 }.getElementPosFromElementAndMousePosition(mousePos, projection2D, boardDTO.getLogicGateDragged(), boardDTO.getRelativeMouseToLogicGatePos());
 
@@ -211,12 +202,27 @@ public class BoardEventHandler {
                 projection2D.translate(new Vector2D(-deltaX, -deltaY));
             }
 
-            if(event.getButton() == MouseButton.PRIMARY && !isLogicGateLefted.get()){
+            if(event.getButton() == MouseButton.SECONDARY){
                 new MouseWireSpecifier(boardDTO.getSimulation()){
                     @Override
                     public void doAction() {
-                        if(wireMode == WireMode.ADDING) this.updateWireState(WireState.HIGH);
-                        else updateWireState(WireState.NONE);
+                        this.updateWireState(WireState.NONE);
+                    }
+                }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
+
+                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                    @Override
+                    public void doAction() {
+                        removeLogicElement();
+                    }
+                }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
+            }
+
+            if(event.getButton() == MouseButton.PRIMARY && !boardDTO.getIsLogicGateLifted().get()){
+                new MouseWireSpecifier(boardDTO.getSimulation()){
+                    @Override
+                    public void doAction() {
+                        this.updateWireState(WireState.HIGH);
                     }
                 }.performTransformation(new Vector2D(event.getX(), event.getY()), projection2D);
             }

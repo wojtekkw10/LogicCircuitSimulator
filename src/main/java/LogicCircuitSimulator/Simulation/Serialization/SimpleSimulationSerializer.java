@@ -2,13 +2,13 @@ package LogicCircuitSimulator.Simulation.Serialization;
 
 import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 
 public class SimpleSimulationSerializer implements SimulationSerializer{
@@ -50,7 +50,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
     public Simulation deserialize(String simulation) {
         Simulation newSimulation = new Simulation();
         NodeHandler nodeHandler = new ArrayNodeHandler();
-        List<LogicElement> logicElements = new ArrayList<>();
+        UnboundGrid<LogicElement> logicElements = new UnboundHashMapGrid<>();
 
         Scanner scanner = new Scanner(simulation);
 
@@ -64,7 +64,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             }
             if(label.equals("LE")){
                 LogicElement logicElement = deserializeLogicElement(lineScanner);
-                logicElements.add(logicElement);
+                logicElements.set(logicElement.getPosition(), logicElement);
             }
 
         }
