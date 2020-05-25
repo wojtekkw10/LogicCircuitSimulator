@@ -56,12 +56,31 @@ public class BoardEventHandler {
         //ON KEY RELEASED
         EventHandler<KeyEvent> onKeyReleasedEventHandler = event -> {
             if(event.getCode() == KeyCode.R){
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
-                    @Override
-                    public void doAction() {
-                        rotateLogicElementClockwise();
+                if(boardDTO.getIsLogicGateLifted().get()){
+                    LogicElement dragged = boardDTO.getLogicGateDragged();
+
+                    if(dragged.getGeometry().getRotation() == Rotation.RIGHT){
+                        boardDTO.getLogicGateDragged().setRotation(Rotation.DOWN);
                     }
-                }.getElementFromMousePosition(boardDTO.getLastMousePosition(), projection2D);
+                    else if(dragged.getGeometry().getRotation() == Rotation.DOWN){
+                        boardDTO.getLogicGateDragged().setRotation(Rotation.LEFT);
+                    }
+                    else if(dragged.getGeometry().getRotation() == Rotation.LEFT){
+                        boardDTO.getLogicGateDragged().setRotation(Rotation.UP);
+                    }
+                    else if(dragged.getGeometry().getRotation() == Rotation.UP){
+                        boardDTO.getLogicGateDragged().setRotation(Rotation.RIGHT);
+                    }
+                }
+                else{
+                    new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                        @Override
+                        public void doAction() {
+                            rotateLogicElementClockwise();
+                        }
+                    }.getElementFromMousePosition(boardDTO.getLastMousePosition(), projection2D);
+                }
+
             }
             else if(event.getCode() == KeyCode.P){
                 if(boardDTO.shouldDrawSpeedStats()) boardDTO.setShouldDrawSpeedStats(false);
