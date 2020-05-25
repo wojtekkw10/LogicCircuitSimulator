@@ -17,14 +17,14 @@ class LogicOneTest {
 
     @Test
     void inputPositionsTest(){
-        List<Vector2D> positions = gate.getLocalInputPositions();
+        List<Vector2D> positions = gate.getGeometry().getLocalInputPositions();
 
         assertEquals(0, positions.size());
     }
 
     @Test
     void outputPositionsTest(){
-        List<Vector2D> positions = gate.getLocalOutputPositions();
+        List<Vector2D> positions = gate.getGeometry().getLocalOutputPositions();
 
         assertEquals(new Vector2D(1,0), positions.get(0));
         assertEquals(1, positions.size());

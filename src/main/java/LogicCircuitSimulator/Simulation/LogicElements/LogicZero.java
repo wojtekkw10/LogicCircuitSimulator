@@ -14,11 +14,6 @@ public class LogicZero extends LogicElement {
     }
 
     @Override
-    public List<Vector2D> getLocalInputPositions() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
         outputStates.add(LogicState.LOW);
@@ -26,15 +21,26 @@ public class LogicZero extends LogicElement {
     }
 
     @Override
-    public List<Vector2D> getLocalOutputPositions() {
-        ArrayList<Vector2D> outputs = new ArrayList<>();
-        outputs.add(new Vector2D(1,0));
-        return outputs;
+    public String getName() {
+        return "ZERO";
     }
 
     @Override
-    public String getName() {
-        return "ZERO";
+    public LogicElementGeometry getNewGeometry() {
+        return new LogicElementGeometry() {
+            @Override
+            public List<Vector2D> getLocalInputPositions() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<Vector2D> getLocalOutputPositions() {
+                ArrayList<Vector2D> outputs = new ArrayList<>();
+                outputs.add(new Vector2D(1,0));
+                return outputs;
+            }
+        };
+
     }
 
     @Override

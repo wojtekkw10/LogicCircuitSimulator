@@ -2,6 +2,7 @@ package LogicCircuitSimulator.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElements.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.Rotation;
@@ -23,32 +24,37 @@ class LogicElementTest {
         }
 
         @Override
-        public ArrayList<Vector2D> getLocalInputPositions() {
-            //*----
-            //-*---
-            //--*--
-            ArrayList<Vector2D> localInputPositions = new ArrayList<>();
-            localInputPositions.add(new Vector2D(0,0));
-            localInputPositions.add(new Vector2D(1,1));
-            localInputPositions.add(new Vector2D(2,2));
-            return localInputPositions;
-        }
-
-        @Override
-        public ArrayList<Vector2D> getLocalOutputPositions() {
-            //-----*
-            //----*-
-            //----*-
-            ArrayList<Vector2D> localOutputPositions = new ArrayList<>();
-            localOutputPositions.add(new Vector2D(5, 0));
-            localOutputPositions.add(new Vector2D(4, 1));
-            localOutputPositions.add(new Vector2D(4, 2));
-            return localOutputPositions;
-        }
-
-        @Override
         public String getName() {
             return null;
+        }
+
+        @Override
+        public LogicElementGeometry getNewGeometry() {
+            return new LogicElementGeometry() {
+                @Override
+                public List<Vector2D> getLocalInputPositions() {
+                    //*----
+                    //-*---
+                    //--*--
+                    ArrayList<Vector2D> localInputPositions = new ArrayList<>();
+                    localInputPositions.add(new Vector2D(0,0));
+                    localInputPositions.add(new Vector2D(1,1));
+                    localInputPositions.add(new Vector2D(2,2));
+                    return localInputPositions;
+                }
+
+                @Override
+                public List<Vector2D> getLocalOutputPositions() {
+                    //-----*
+                    //----*-
+                    //----*-
+                    ArrayList<Vector2D> localOutputPositions = new ArrayList<>();
+                    localOutputPositions.add(new Vector2D(5, 0));
+                    localOutputPositions.add(new Vector2D(4, 1));
+                    localOutputPositions.add(new Vector2D(4, 2));
+                    return localOutputPositions;
+                }
+            };
         }
 
         @Override
@@ -64,8 +70,8 @@ class LogicElementTest {
     @Test
     void getPositionsRightTest(){
         LogicElement asymmetric = new AsymmetricGate(5, 10, Rotation.RIGHT);
-        List<Vector2D> inputPositions = asymmetric.getInputPositions();
-        List<Vector2D> outputPositions = asymmetric.getOutputPositions();
+        List<Vector2D> inputPositions = asymmetric.getGeometry().getInputPositions();
+        List<Vector2D> outputPositions = asymmetric.getGeometry().getOutputPositions();
 
         assertTrue(inputPositions.contains(new Vector2D(5,10)));
         assertTrue(inputPositions.contains(new Vector2D(6,11)));
@@ -79,8 +85,8 @@ class LogicElementTest {
     @Test
     void getPositionsLeftTest(){
         LogicElement asymmetric = new AsymmetricGate(5, 10, Rotation.LEFT);
-        List<Vector2D> inputPositions = asymmetric.getInputPositions();
-        List<Vector2D> outputPositions = asymmetric.getOutputPositions();
+        List<Vector2D> inputPositions = asymmetric.getGeometry().getInputPositions();
+        List<Vector2D> outputPositions = asymmetric.getGeometry().getOutputPositions();
 
         assertTrue(inputPositions.contains(new Vector2D(8,10)));
         assertTrue(inputPositions.contains(new Vector2D(9,11)));
@@ -94,8 +100,8 @@ class LogicElementTest {
     @Test
     void getPositionsDownTest(){
         LogicElement asymmetric = new AsymmetricGate(5, 10, Rotation.DOWN);
-        List<Vector2D> inputPositions = asymmetric.getInputPositions();
-        List<Vector2D> outputPositions = asymmetric.getOutputPositions();
+        List<Vector2D> inputPositions = asymmetric.getGeometry().getInputPositions();
+        List<Vector2D> outputPositions = asymmetric.getGeometry().getOutputPositions();
 
         assertTrue(inputPositions.contains(new Vector2D(5,12)));
         assertTrue(inputPositions.contains(new Vector2D(6,11)));
@@ -109,11 +115,8 @@ class LogicElementTest {
     @Test
     void getPositionsUpTest(){
         LogicElement asymmetric = new AsymmetricGate(5, 10, Rotation.UP);
-        List<Vector2D> inputPositions = asymmetric.getInputPositions();
-        List<Vector2D> outputPositions = asymmetric.getOutputPositions();
-
-        System.out.println(inputPositions);
-        System.out.println(outputPositions);
+        List<Vector2D> inputPositions = asymmetric.getGeometry().getInputPositions();
+        List<Vector2D> outputPositions = asymmetric.getGeometry().getOutputPositions();
 
         assertTrue(inputPositions.contains(new Vector2D(5,15)));
         assertTrue(inputPositions.contains(new Vector2D(6,14)));
@@ -153,13 +156,13 @@ class LogicElementTest {
     @Test
     void moveAndRotateTest(){
         LogicElement asymmetric = new AsymmetricGate(100, 100, Rotation.RIGHT);
-        asymmetric.move(new Vector2D(5, 10));
+        asymmetric.setPosition(new Vector2D(5, 10));
         asymmetric.setRotation(Rotation.DOWN);
 
         assertEquals(new Vector2D(5, 10), asymmetric.getPosition());
 
-        List<Vector2D> inputPositions = asymmetric.getInputPositions();
-        List<Vector2D> outputPositions = asymmetric.getOutputPositions();
+        List<Vector2D> inputPositions = asymmetric.getGeometry().getInputPositions();
+        List<Vector2D> outputPositions = asymmetric.getGeometry().getOutputPositions();
 
         assertTrue(inputPositions.contains(new Vector2D(5,12)));
         assertTrue(inputPositions.contains(new Vector2D(6,11)));
@@ -168,9 +171,5 @@ class LogicElementTest {
         assertTrue(outputPositions.contains(new Vector2D(5,14)));
         assertTrue(outputPositions.contains(new Vector2D(6,14)));
         assertTrue(outputPositions.contains(new Vector2D(7,15)));
-
-
-
-
     }
 }

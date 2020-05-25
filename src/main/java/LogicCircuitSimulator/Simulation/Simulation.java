@@ -19,7 +19,7 @@ public class Simulation {
         List<Generator> generators = new ArrayList<>();
 
         for (LogicElement element : logicElements) {
-            List<Vector2D> inputPositions = element.getInputPositions();
+            List<Vector2D> inputPositions = element.getGeometry().getInputPositions();
             ArrayList<LogicState> inputStates = new ArrayList<>();
 
             for (Vector2D position : inputPositions) {

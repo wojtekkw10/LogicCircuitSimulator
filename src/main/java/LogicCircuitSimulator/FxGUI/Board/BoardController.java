@@ -8,19 +8,8 @@ import LogicCircuitSimulator.Simulation.Serialization.SimpleSimulationSerializer
 import LogicCircuitSimulator.Simulation.Simulation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-
-import static LogicCircuitSimulator.App.primaryStage;
 
 public class BoardController {
 
@@ -30,40 +19,10 @@ public class BoardController {
     @FXML
     public AnchorPane boardAnchorPane;
 
-
     @FXML
     void initialize(){
     }
 
-
-    public void bfrOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new BufferGate(0,0, Rotation.RIGHT));
-
-    }
-
-    public void oneOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
-    }
-
-    public void notOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new NotGate(0,0, Rotation.RIGHT));
-    }
-
-    public void orOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new OrGate(0,0, Rotation.RIGHT));
-    }
-
-    public void andOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new AndGate(0,0, Rotation.RIGHT));
-    }
-
-    public void xorOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new XorGate(0,0, Rotation.RIGHT));
-    }
-
-    public void clkOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new LogicClock(0,0, Rotation.RIGHT));
-    }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         Simulation simulation = simulationController.getSimulation();
@@ -80,12 +39,40 @@ public class BoardController {
         }
     }
 
-    public void tglOnMouseClicked(MouseEvent mouseEvent) {
-        simulationController.setLogicGateDragged(new ToggleOff(0,0, Rotation.RIGHT));
+    public void onNotButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new NotGate(0,0, Rotation.RIGHT));
 
     }
 
-    public void btnOnMouseClicked(MouseEvent mouseEvent) {
+    public void onOrButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new OrGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onAndButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new AndGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onXorButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new XorGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onToggleButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new ToggleOff(0,0, Rotation.RIGHT));
+    }
+
+    public void onButtonButtonAction(ActionEvent actionEvent) {
         simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT));
+    }
+
+    public void onClkButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new LogicClock(0,0, Rotation.RIGHT));
+    }
+
+    public void onBufferButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new BufferGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onOneButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
     }
 }

@@ -158,19 +158,19 @@ public abstract class MouseLogicElementSpecifier {
             //on the board it looks like a gate has height
             //but in the system it has none
             //it's a line from a to b, no height
-            return logicElement.getElementHeight() + 1;
+            return logicElement.getGeometry().getElementHeight() + 1;
         }
-        else return logicElement.getElementWidth();
+        else return logicElement.getGeometry().getElementWidth();
     }
 
     public int getWidthOnBoard(LogicElement logicElement){
         if(logicElement.getRotation() == Rotation.RIGHT || logicElement.getRotation() == Rotation.LEFT){
-            return logicElement.getElementWidth();
+            return logicElement.getGeometry().getElementWidth();
         }
         //on the board it looks like a gate has height
         //but in the system it has none
         //it's a line from a to b, no height
-        else return logicElement.getElementHeight() + 1;
+        else return logicElement.getGeometry().getElementHeight() + 1;
     }
 
     public Vector2D getRelativeMousePos() {

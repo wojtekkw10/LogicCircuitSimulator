@@ -33,9 +33,9 @@
                         </Label>
                         <HBox>
                            <children>
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#clkOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="CLK" />
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#bfrOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BFR" />
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#oneOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="ONE" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onClkButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="CLK" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onBufferButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BFR" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onOneButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="ONE" />
                            </children>
                            <VBox.margin>
                               <Insets />
@@ -46,9 +46,9 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="172.0">
                            <children>
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#notOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="NOT" />
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#orOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="OR" />
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#andOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="AND" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onNotButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="NOT" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onOrButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="OR" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onAndButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="AND" />
                            </children>
                            <padding>
                               <Insets left="25.0" />
@@ -56,9 +56,9 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="210.0">
                            <children>
-                              <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#xorOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
-                              <Button focusTraversable="false" layoutX="35.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#tglOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="TGL" />
-                              <Button focusTraversable="false" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#btnOnMouseClicked" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BTN" />
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onXorButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="XOR" />
+                              <Button focusTraversable="false" layoutX="35.0" layoutY="10.0" mnemonicParsing="false" onAction="#onToggleButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="TGL" />
+                              <Button focusTraversable="false" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onAction="#onButtonButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="BTN" />
                            </children>
                            <padding>
                               <Insets left="25.0" />

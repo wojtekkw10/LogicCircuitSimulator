@@ -30,8 +30,6 @@ class SimpleSimulationSerializerTest {
 
         String serialized = simulationSerializer.serialize(simulation);
 
-        System.out.println(serialized);
-
         assertTrue(serialized.contains("WI 20 30 NONE LOW TOUCHING"));
         assertTrue(serialized.contains("WI 40 45 HIGH NONE NOT_TOUCHING"));
     }
@@ -58,7 +56,6 @@ class SimpleSimulationSerializerTest {
         simulation.addLogicGate(new LogicClock(324, 1, Rotation.LEFT));
         simulation.addLogicGate(new NotGate(-45, -1, Rotation.DOWN));
         String serialized = new SimpleSimulationSerializer().serialize(simulation);
-        System.out.println(serialized);
 
         assertTrue(serialized.contains("LE XOR 30 50 UP"));
         assertTrue(serialized.contains("LE CLK 324 1 LEFT"));

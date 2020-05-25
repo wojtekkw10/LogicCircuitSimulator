@@ -16,11 +16,6 @@ public class ButtonLogicElement extends LogicElement{
     }
 
     @Override
-    public List<Vector2D> getLocalInputPositions() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
         if(counter > 0) outputStates.add(LogicState.HIGH);
@@ -35,14 +30,24 @@ public class ButtonLogicElement extends LogicElement{
     }
 
     @Override
-    public List<Vector2D> getLocalOutputPositions() {
-        ArrayList<Vector2D> outputPositions = new ArrayList<>();
-        outputPositions.add(new Vector2D(1,0));
-        return outputPositions;
+    public String getName() {
+        return "BTN";
     }
 
     @Override
-    public String getName() {
-        return "BTN";
+    public LogicElementGeometry getNewGeometry() {
+        return new LogicElementGeometry() {
+            @Override
+            public List<Vector2D> getLocalInputPositions() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<Vector2D> getLocalOutputPositions() {
+                ArrayList<Vector2D> outputPositions = new ArrayList<>();
+                outputPositions.add(new Vector2D(1,0));
+                return outputPositions;
+            }
+        };
     }
 }

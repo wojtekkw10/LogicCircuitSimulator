@@ -108,15 +108,6 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             default -> Rotation.RIGHT;
         };
 
-        LogicElement logicElement = null;
-        if(name.equals("CLK")) logicElement = new LogicClock(intX, intY, rotation);
-        if(name.equals("ONE")) logicElement = new LogicOne(intX, intY, rotation);
-        if(name.equals("BFR")) logicElement = new BufferGate(intX, intY, rotation);
-        if(name.equals("NOT")) logicElement = new NotGate(intX, intY, rotation);
-        if(name.equals("OR")) logicElement = new OrGate(intX, intY, rotation);
-        if(name.equals("AND")) logicElement = new AndGate(intX, intY, rotation);
-        if(name.equals("XOR")) logicElement = new XorGate(intX, intY, rotation);
-
-        return logicElement;
+        return LogicElementFactory.getLogicElement(name, intX, intY, rotation);
     }
 }

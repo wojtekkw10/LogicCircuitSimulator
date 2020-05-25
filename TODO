@@ -31,17 +31,17 @@ DONE:
 - fix bug that prevents the user from editing the grid after loading a file
 - add toggle logic element
 - add button logic element
-
+- test serializer
+- refactor buttons in board to use onAction event
+- create a logicElement Factory (by name)
+- fix: logicElement breaks srp
 DOING:
 
 
 
 TO BE DONE:
-TODO: test serializer
-TODO: refactor buttons in board to use onAction event
-TODO: fix: logicElement breaks srp
+TODO: rotating while logicElement lifted
 TODO: bug - simulation randomly stops updating when clicking buttonLogicElement
-TODO: create a logicElement Factory (by name)
 
 TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z

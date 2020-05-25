@@ -14,12 +14,6 @@ public class ToggleOff extends LogicElement{
     }
 
     @Override
-    public List<Vector2D> getLocalInputPositions() {
-        ArrayList<Vector2D> inputPositions = new ArrayList<>();
-        return inputPositions;
-    }
-
-    @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         ArrayList<LogicState> outputStates = new ArrayList<>();
         outputStates.add(LogicState.LOW);
@@ -31,15 +25,27 @@ public class ToggleOff extends LogicElement{
         visitor.visit(this);
     }
 
-    @Override
-    public List<Vector2D> getLocalOutputPositions() {
-        ArrayList<Vector2D> outputPositions = new ArrayList<>();
-        outputPositions.add(new Vector2D(1,0));
-        return outputPositions;
-    }
 
     @Override
     public String getName() {
         return "TGL_OFF";
+    }
+
+    @Override
+    public LogicElementGeometry getNewGeometry() {
+        return new LogicElementGeometry() {
+            @Override
+            public List<Vector2D> getLocalInputPositions() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<Vector2D> getLocalOutputPositions() {
+                ArrayList<Vector2D> outputPositions = new ArrayList<>();
+                outputPositions.add(new Vector2D(1,0));
+                return outputPositions;
+            }
+        };
+
     }
 }

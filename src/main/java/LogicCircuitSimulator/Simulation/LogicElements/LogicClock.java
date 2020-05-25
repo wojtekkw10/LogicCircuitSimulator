@@ -18,20 +18,25 @@ public class LogicClock extends LogicElement{
     }
 
     @Override
-    public List<Vector2D> getLocalInputPositions() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<Vector2D> getLocalOutputPositions() {
-        ArrayList<Vector2D> outputPositions = new ArrayList<>();
-        outputPositions.add(new Vector2D(1,0));
-        return outputPositions;
-    }
-
-    @Override
     public String getName() {
         return "CLK";
+    }
+
+    @Override
+    public LogicElementGeometry getNewGeometry() {
+        return new LogicElementGeometry() {
+            @Override
+            public List<Vector2D> getLocalInputPositions() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<Vector2D> getLocalOutputPositions() {
+                ArrayList<Vector2D> outputPositions = new ArrayList<>();
+                outputPositions.add(new Vector2D(1,0));
+                return outputPositions;
+            }
+        };
     }
 
     @Override
@@ -52,7 +57,6 @@ public class LogicClock extends LogicElement{
         else{
             outputStates.add(state);
         }
-
 
         timer++;
         return outputStates;

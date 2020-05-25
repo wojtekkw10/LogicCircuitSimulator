@@ -79,7 +79,7 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         graphicsContext.setLineWidth(1);
         double scale = projection2D.getScale();
         Vector2D pos = le.getPosition();
-        double height = le.getElementHeight();
+        double height = le.getGeometry().getElementHeight();
         graphicsContext.setFont(new Font(Font.getFontNames().get(0), scale * 0.4));
 
         if(le.getRotation() == Rotation.RIGHT){
@@ -122,10 +122,10 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawGateLegs(LogicElement le, Vector2D inputLegDirection, Vector2D outputLegDirection) {
-        List<Vector2D> inputPositions = le.getInputPositions();
+        List<Vector2D> inputPositions = le.getGeometry().getInputPositions();
         drawLinesFrom(inputPositions, inputLegDirection);
 
-        List<Vector2D> outputPositions = le.getOutputPositions();
+        List<Vector2D> outputPositions = le.getGeometry().getOutputPositions();
         drawLinesFrom(outputPositions, outputLegDirection);
     }
 
