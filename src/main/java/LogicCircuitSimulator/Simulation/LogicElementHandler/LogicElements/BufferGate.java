@@ -1,13 +1,11 @@
-package LogicCircuitSimulator.Simulation.LogicElements;
+package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.OneInOneOut;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.OneInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Vector2D;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BufferGate extends LogicElement{

@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicState;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.LogicElements.NotGate;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.NotGate;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;

@@ -1,24 +1,22 @@
-package LogicCircuitSimulator.Simulation.LogicElements;
+package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.TwoInOneOut;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.TwoInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AndGate extends LogicElement{
-
-    public AndGate(int x, int y, Rotation rot) {
+public class OrGate extends LogicElement{
+    public OrGate(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
 
     @Override
     public String getName() {
-        return "AND";
+        return "OR";
     }
 
     @Override
@@ -29,7 +27,7 @@ public class AndGate extends LogicElement{
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         List<LogicState> outputState = new ArrayList<>();
-        if(states.get(0) == LogicState.HIGH && states.get(1) == LogicState.HIGH){
+        if(states.get(0) == LogicState.HIGH || states.get(1) == LogicState.HIGH){
             outputState.add(LogicState.HIGH);
         }
         else{

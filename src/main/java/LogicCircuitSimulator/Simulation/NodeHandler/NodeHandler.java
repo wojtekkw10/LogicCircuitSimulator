@@ -16,6 +16,8 @@ public interface NodeHandler {
 
     void setRightWire(Vector2D pos, WireState state);
     void setDownWire(Vector2D pos, WireState state);
+    void setUpWire(Vector2D pos, WireState state);
+    void setLeftWire(Vector2D pos, WireState state);
 
     WireState getRightWire(Vector2D pos);
     WireState getDownWire(Vector2D pos);

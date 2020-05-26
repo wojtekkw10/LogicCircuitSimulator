@@ -40,10 +40,11 @@ DONE:
 - removing on right click
 DOING:
 
+TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
+TODO: refactor Simulation
 
 TO BE DONE:
 
-TODO: zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść

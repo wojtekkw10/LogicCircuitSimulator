@@ -1,7 +1,7 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.App;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.animation.AnimationTimer;

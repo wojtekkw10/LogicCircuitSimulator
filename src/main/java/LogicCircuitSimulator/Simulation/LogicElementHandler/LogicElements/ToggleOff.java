@@ -1,18 +1,17 @@
-package LogicCircuitSimulator.Simulation.LogicElements;
+package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.ZeroInOneOut;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.ZeroInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogicZero extends LogicElement {
-    public LogicZero(int x, int y, Rotation rotation) {
-        super(x, y, rotation);
+public class ToggleOff extends LogicElement{
+    public ToggleOff(int x, int y, Rotation rot) {
+        super(x, y, rot);
     }
 
     @Override
@@ -23,18 +22,19 @@ public class LogicZero extends LogicElement {
     }
 
     @Override
+    public void accept(LogicElementVisitor visitor) {
+        visitor.visit(this);
+    }
+
+
+    @Override
     public String getName() {
-        return "ZERO";
+        return "TGL_OFF";
     }
 
     @Override
     public LogicElementGeometry getNewGeometry() {
         return new ZeroInOneOut();
 
-    }
-
-    @Override
-    public void accept(LogicElementVisitor visitor) {
-        visitor.visit(this);
     }
 }

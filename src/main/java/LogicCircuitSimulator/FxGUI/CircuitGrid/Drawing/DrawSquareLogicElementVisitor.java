@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;

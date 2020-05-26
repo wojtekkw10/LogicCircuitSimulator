@@ -1,10 +1,12 @@
 package LogicCircuitSimulator.Simulation;
 
-import LogicCircuitSimulator.Simulation.LogicElements.*;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.BufferGate;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.NotGate;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ import java.util.List;
 public class Simulation {
 
     private NodeHandler nodeHandler = new ArrayNodeHandler();
-    private UnboundGrid<LogicElement> logicElements = new UnboundHashMapGrid<>();
+    private LogicElementHandler logicElements = new SimpleLogicElementHandler();
 
     public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
-        GridIterator<LogicElement> logicElementIterator = logicElements.iterator();
+        Iterator<LogicElement> logicElementIterator = logicElements.iterator();
         while(logicElementIterator.hasNext()) {
             LogicElement element = logicElementIterator.next();
             List<Vector2D> inputPositions = element.getGeometry().getInputPositions();
@@ -49,7 +51,7 @@ public class Simulation {
     }
 
     public Iterator<LogicElement> logicElementIterator() {
-        return new LogicElementIterator();
+        return logicElements.iterator();
     }
 
     public void updateWire(Vector2D pos, Orientation orientation, WireState state) {
@@ -76,24 +78,10 @@ public class Simulation {
     }
 
     public void addLogicGate(LogicElement logicElement){
-        logicElements.set(logicElement.getPosition(), logicElement);
+        logicElements.set(logicElement);
     }
 
-    private void addNotLoop(Vector2D pos){
-        int x = (int)pos.getX();
-        int y = (int)pos.getY();
-        nodeHandler.setRightWire(new Vector2D(x, y), WireState.LOW);
-        nodeHandler.setDownWire(new Vector2D(x, y), WireState.LOW);
-        nodeHandler.setCrossing(new Vector2D(x, y), Crossing.TOUCHING);
-        nodeHandler.setRightWire(new Vector2D(x, y+1), WireState.LOW);
-        nodeHandler.setCrossing(new Vector2D(x, y+1), Crossing.TOUCHING);
-        nodeHandler.setRightWire(new Vector2D(x+1, y+1), WireState.LOW);
-        nodeHandler.setRightWire(new Vector2D(x+2, y+1), WireState.LOW);
-        nodeHandler.setRightWire(new Vector2D(x+2, y), WireState.LOW);
-        nodeHandler.setCrossing(new Vector2D(x+3, y), Crossing.TOUCHING);
-        nodeHandler.setDownWire(new Vector2D(x+3, y), WireState.LOW);
-        nodeHandler.setCrossing(new Vector2D(x+3, y+1), Crossing.TOUCHING);
-    }
+
 
     public void removeLogicElement(Vector2D pos){
         Iterator<LogicElement> logicElementsIterator = logicElementIterator();
@@ -130,26 +118,23 @@ public class Simulation {
         this.nodeHandler = nodeHandler;
     }
 
-    public void setLogicElements(UnboundGrid<LogicElement> logicElements) {
+    public void setLogicElementHandler(LogicElementHandler logicElements) {
         this.logicElements = logicElements;
     }
 
-    private class LogicElementIterator implements Iterator<LogicElement>{
-        GridIterator<LogicElement> iterator = logicElements.iterator();
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public LogicElement next() {
-            return iterator.next();
-        }
-
-        @Override
-        public void remove() {
-            logicElements.remove(iterator.currentPosition());
-        }
+    private void addNotLoop(Vector2D pos){
+        int x = (int)pos.getX();
+        int y = (int)pos.getY();
+        nodeHandler.setRightWire(new Vector2D(x, y), WireState.LOW);
+        nodeHandler.setDownWire(new Vector2D(x, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x, y), Crossing.TOUCHING);
+        nodeHandler.setRightWire(new Vector2D(x, y+1), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x, y+1), Crossing.TOUCHING);
+        nodeHandler.setRightWire(new Vector2D(x+1, y+1), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(x+2, y+1), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(x+2, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x+3, y), Crossing.TOUCHING);
+        nodeHandler.setDownWire(new Vector2D(x+3, y), WireState.LOW);
+        nodeHandler.setCrossing(new Vector2D(x+3, y+1), Crossing.TOUCHING);
     }
 }

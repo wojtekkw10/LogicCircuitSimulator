@@ -2,7 +2,7 @@ package LogicCircuitSimulator.FxGUI.Board;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
 import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDataStorage;
-import LogicCircuitSimulator.Simulation.LogicElements.*;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleSimulationSerializer;
 import LogicCircuitSimulator.Simulation.Simulation;

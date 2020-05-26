@@ -1,9 +1,9 @@
 package LogicCircuitSimulator.Simulation.Serialization;
 
-import LogicCircuitSimulator.Simulation.LogicElements.LogicClock;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.LogicElements.NotGate;
-import LogicCircuitSimulator.Simulation.LogicElements.XorGate;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicClock;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.NotGate;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.XorGate;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.Orientation;

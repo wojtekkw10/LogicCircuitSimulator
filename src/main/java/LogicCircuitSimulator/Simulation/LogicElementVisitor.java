@@ -1,6 +1,6 @@
 package LogicCircuitSimulator.Simulation;
 
-import LogicCircuitSimulator.Simulation.LogicElements.*;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 
 public interface LogicElementVisitor {
     void visit(AndGate andGate);

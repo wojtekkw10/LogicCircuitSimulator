@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.Simulation.LogicElements;
+package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 
 import LogicCircuitSimulator.Simulation.Rotation;
 

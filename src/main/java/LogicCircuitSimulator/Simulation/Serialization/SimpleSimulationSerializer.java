@@ -1,9 +1,10 @@
 package LogicCircuitSimulator.Simulation.Serialization;
 
-import LogicCircuitSimulator.Simulation.LogicElements.*;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
@@ -50,7 +51,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
     public Simulation deserialize(String simulation) {
         Simulation newSimulation = new Simulation();
         NodeHandler nodeHandler = new ArrayNodeHandler();
-        UnboundGrid<LogicElement> logicElements = new UnboundHashMapGrid<>();
+        LogicElementHandler logicElements = new SimpleLogicElementHandler();
 
         Scanner scanner = new Scanner(simulation);
 
@@ -64,11 +65,11 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             }
             if(label.equals("LE")){
                 LogicElement logicElement = deserializeLogicElement(lineScanner);
-                logicElements.set(logicElement.getPosition(), logicElement);
+                logicElements.set(logicElement);
             }
 
         }
-        newSimulation.setLogicElements(logicElements);
+        newSimulation.setLogicElementHandler(logicElements);
         newSimulation.setNodeHandler(nodeHandler);
         return newSimulation;
     }

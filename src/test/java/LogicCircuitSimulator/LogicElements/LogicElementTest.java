@@ -1,10 +1,10 @@
 package LogicCircuitSimulator.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicState;
-import LogicCircuitSimulator.Simulation.LogicElements.ComputedValue;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;

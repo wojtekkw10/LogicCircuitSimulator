@@ -45,6 +45,16 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
+    public void setUpWire(Vector2D pos, WireState state) {
+        nodeGrid.setUpWire(pos, state);
+    }
+
+    @Override
+    public void setLeftWire(Vector2D pos, WireState state) {
+        nodeGrid.setLeftWire(pos, state);
+    }
+
+    @Override
     public WireState getRightWire(Vector2D pos) {
         return nodeGrid.getRightWire(pos);
     }

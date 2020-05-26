@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.Simulation.LogicElements.Geometry;
+package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry;
 
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;

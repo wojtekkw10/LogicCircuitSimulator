@@ -1,6 +1,6 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Vector2D;
 
