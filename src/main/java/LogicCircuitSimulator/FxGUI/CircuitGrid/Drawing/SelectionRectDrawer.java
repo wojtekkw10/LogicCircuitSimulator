@@ -5,13 +5,15 @@ import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class SelectAreaDrawer {
+public class SelectionRectDrawer {
     public void draw(BoardDTO boardDTO){
         GraphicsContext graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
-        double width = boardDTO.getSelectRightBottom().getX() - boardDTO.getSelectLeftUpper().getX();
-        double height = boardDTO.getSelectRightBottom().getY() - boardDTO.getSelectLeftUpper().getY();
-        Vector2D leftUpper = boardDTO.getSelectLeftUpper();
-        Vector2D rightBottom = boardDTO.getSelectRightBottom();
+        Vector2D screenUpperLeft = boardDTO.getProjection2D().project(boardDTO.getSelectLeftUpper());
+        Vector2D screenRightBottom = boardDTO.getProjection2D().project(boardDTO.getSelectRightBottom());
+        double width = screenRightBottom.getX() - screenUpperLeft.getX();
+        double height = screenRightBottom.getY() - screenUpperLeft.getY();
+        Vector2D leftUpper = screenUpperLeft;
+        Vector2D rightBottom = screenRightBottom;
 
         graphicsContext.setStroke(Color.GREY);
         if(width < 0 && height < 0){
@@ -31,7 +33,6 @@ public class SelectAreaDrawer {
         }
 
         graphicsContext.setFill(new Color(0.2, 0.2, 0.2, 0.3));
-        graphicsContext.fillRect(boardDTO.getSelectLeftUpper().getX(), boardDTO.getSelectLeftUpper().getY(),
-                width, height);
+        graphicsContext.fillRect(leftUpper.getX(), leftUpper.getY(), width, height);
     }
 }

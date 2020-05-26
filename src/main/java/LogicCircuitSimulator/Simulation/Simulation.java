@@ -51,7 +51,7 @@ public class Simulation {
         addNotLoop(new Vector2D(10, 5));
 
         int pos = 4;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             logicElements.add(new BufferGate(pos, 1, Rotation.RIGHT));
             pos++;
             nodeHandler.setRightWire(new Vector2D(pos, 1), WireState.LOW);

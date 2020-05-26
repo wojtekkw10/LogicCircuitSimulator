@@ -5,8 +5,11 @@ import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseCrossingSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseWireSpecifier;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
+import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
@@ -14,6 +17,8 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoardEventHandler {
@@ -96,9 +101,48 @@ public class BoardEventHandler {
                 boardDTO.getExecutor().shutdownNow();
                 App.loadAndSetNewScene("/FXML/StartMenu.fxml");
             }
-            else if(event.getCode() == KeyCode.V){
-                boardDTO.setPastedLogicElements(boardDTO.getSelectedLogicElements());
-                boardDTO.setPastedNodes(boardDTO.getSelectedNodes());
+            else if(event.getCode() == KeyCode.V && event.isShortcutDown()){
+                List<LogicElement> newElements = new ArrayList<>();
+                for (int i = 0; i < boardDTO.getCopiedLogicElements().size(); i++) {
+                    LogicElement old = boardDTO.getCopiedLogicElements().get(i);
+                    newElements.add(LogicElementFactory.getLogicElement(old.getName(), (int)old.getX(), (int)old.getY(), old.getRotation()));
+                }
+
+                boardDTO.setPastedLogicElements(newElements);
+
+                List<Node> newNodes = new ArrayList<>();
+                for (int i = 0; i < boardDTO.getCopiedNodes().size(); i++) {
+                    Node old = boardDTO.getCopiedNodes().get(i);
+                    newNodes.add(new Node(old.getPosition(), old.getRightWire(), old.getDownWire(), old.isTouching()));
+                }
+                boardDTO.setPastedNodes(newNodes);
+                boardDTO.setShouldDrawSelectionRect(false);
+                boardDTO.setShouldDrawPastedSystem(true);
+            }
+            else if(event.getCode() == KeyCode.X && event.isShortcutDown()){
+                List<LogicElement> newElements = new ArrayList<>();
+                for (int i = 0; i < boardDTO.getSelectedLogicElements().size(); i++) {
+                    LogicElement old = boardDTO.getSelectedLogicElements().get(i);
+                    newElements.add(LogicElementFactory.getLogicElement(old.getName(), (int)old.getX(), (int)old.getY(), old.getRotation()));
+                }
+                boardDTO.setCopiedLogicElements(newElements);
+                boardDTO.setCopiedNodes(boardDTO.getSelectedNodes());
+                boardDTO.setShouldDrawSelectionRect(false);
+                boardDTO.setShouldDrawPastedSystem(false);
+
+                for (int i = 0; i < boardDTO.getSelectedNodes().size(); i++) {
+                    Vector2D pos = boardDTO.getSelectedNodes().get(i).getPosition();
+                    boardDTO.getSimulation().getNodeHandler().setDownWire(pos, WireState.NONE);
+                    boardDTO.getSimulation().getNodeHandler().setRightWire(pos, WireState.NONE);
+                }
+                for (int i = 0; i < boardDTO.getSelectedLogicElements().size(); i++) {
+                    Vector2D pos = boardDTO.getSelectedLogicElements().get(i).getPosition();
+                    boardDTO.getSimulation().getLogicElementHandler().remove(pos);
+                }
+            }
+            else if(event.getCode() == KeyCode.C && event.isShortcutDown()){
+                boardDTO.setCopiedLogicElements(boardDTO.getSelectedLogicElements());
+                boardDTO.setCopiedNodes(boardDTO.getSelectedNodes());
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
             event.consume();
@@ -166,13 +210,31 @@ public class BoardEventHandler {
             }
             else{
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {
-                    new MouseCrossingSpecifier(boardDTO.getSimulation()){
-                        @Override
-                        public void doAction() {
-                            if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
-                            else updateCrossing(Crossing.TOUCHING);
+                    if(boardDTO.shouldDrawPastedSystem()){
+                        boardDTO.setShouldDrawPastedSystem(false);
+
+                        //transfer from clipboard to simulation
+                        LogicElementHandler logicElements = boardDTO.getSimulation().getLogicElementHandler();
+                        for (int i = 0; i < boardDTO.getPastedLogicElements().size(); i++) {
+                            LogicElement element = boardDTO.getPastedLogicElements().get(i);
+                            logicElements.add(LogicElementFactory.getLogicElement(element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
                         }
-                    }.performTransformation(mousePos, projection2D);
+
+                        NodeHandler nodes = boardDTO.getSimulation().getNodeHandler();
+                        for (int i = 0; i < boardDTO.getPastedNodes().size(); i++) {
+                            nodes.setNode(boardDTO.getPastedNodes().get(i));
+                        }
+                    }
+                    else{
+                        new MouseCrossingSpecifier(boardDTO.getSimulation()){
+                            @Override
+                            public void doAction() {
+                                if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
+                                else updateCrossing(Crossing.TOUCHING);
+                            }
+                        }.performTransformation(mousePos, projection2D);
+                    }
+
 
                 }
                 else if(event.getButton() == MouseButton.SECONDARY && event.isStillSincePress()){
@@ -221,12 +283,17 @@ public class BoardEventHandler {
 
             if(event.getButton() == MouseButton.PRIMARY && event.isShiftDown()){
                 if(!boardDTO.isSelecting()){
+                    boardDTO.setSelectedLogicElements(new ArrayList<>());
+                    boardDTO.setSelectedNodes(new ArrayList<>());
                     boardDTO.setSelecting(true);
-                    boardDTO.setSelectLeftUpper(new Vector2D(event.getX(), event.getY()));
-                    boardDTO.setSelectRightBottom(new Vector2D(event.getX(), event.getY()));
+                    boardDTO.setShouldDrawSelectionRect(true);
+                    Vector2D leftUpper = projection2D.projectBack(new Vector2D(event.getX(), event.getY()));
+                    boardDTO.setSelectLeftUpper(leftUpper);
+                    boardDTO.setSelectRightBottom(leftUpper);
                 }
                 else{
-                    boardDTO.setSelectRightBottom(new Vector2D(event.getX(), event.getY()));
+                    Vector2D rightBottom = projection2D.projectBack(new Vector2D(event.getX(), event.getY()));
+                    boardDTO.setSelectRightBottom(rightBottom);
                 }
 
             }

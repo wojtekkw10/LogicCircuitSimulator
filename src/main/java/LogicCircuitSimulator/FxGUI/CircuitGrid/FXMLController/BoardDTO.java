@@ -34,12 +34,16 @@ public class BoardDTO {
     private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
     private boolean isSelecting = false;
+    private boolean shouldDrawSelectionRect = false;
+    private boolean shouldDrawPastedSystem = false;
     private Vector2D selectLeftUpper;
     private Vector2D selectRightBottom;
     private List<LogicElement> selectedLogicElements = new ArrayList<>();
     private List<Node> selectedNodes = new ArrayList<>();
     private List<LogicElement> pastedLogicElements = new ArrayList<>();
     private List<Node> pastedNodes = new ArrayList<>();
+    private List<LogicElement> copiedLogicElements = new ArrayList<>();
+    private List<Node> copiedNodes = new ArrayList<>();
 
     public List<LogicElement> getPastedLogicElements() {
         return pastedLogicElements;
@@ -47,6 +51,42 @@ public class BoardDTO {
 
     public void setPastedLogicElements(List<LogicElement> pastedLogicElements) {
         this.pastedLogicElements = pastedLogicElements;
+    }
+
+    public boolean shouldDrawSelectionRect() {
+        return shouldDrawSelectionRect;
+    }
+
+    public void setShouldDrawSelectionRect(boolean shouldDrawSelectionRect) {
+        this.shouldDrawSelectionRect = shouldDrawSelectionRect;
+    }
+
+    public List<LogicElement> getCopiedLogicElements() {
+        return copiedLogicElements;
+    }
+
+    public boolean isShouldDrawSelectionRect() {
+        return shouldDrawSelectionRect;
+    }
+
+    public boolean shouldDrawPastedSystem() {
+        return shouldDrawPastedSystem;
+    }
+
+    public void setShouldDrawPastedSystem(boolean shouldDrawPastedSystem) {
+        this.shouldDrawPastedSystem = shouldDrawPastedSystem;
+    }
+
+    public void setCopiedLogicElements(List<LogicElement> copiedLogicElements) {
+        this.copiedLogicElements = copiedLogicElements;
+    }
+
+    public List<Node> getCopiedNodes() {
+        return copiedNodes;
+    }
+
+    public void setCopiedNodes(List<Node> copiedNodes) {
+        this.copiedNodes = copiedNodes;
     }
 
     public List<Node> getPastedNodes() {

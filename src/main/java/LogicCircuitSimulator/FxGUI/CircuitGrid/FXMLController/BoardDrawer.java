@@ -60,11 +60,9 @@ public class BoardDrawer {
         drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
 
-
-
         //SELECTING RECT
-        if(boardDTO.isSelecting()){
-            new SelectAreaDrawer().draw(boardDTO);
+        if(boardDTO.shouldDrawSelectionRect()){
+            new SelectionRectDrawer().draw(boardDTO);
             Simulation2DSelector selector = new Simulation2DSelector(boardDTO);
 
             List<LogicElement> selectedLogicElements = selector.getSelectedLogicElements();
@@ -74,7 +72,9 @@ public class BoardDrawer {
             boardDTO.setSelectedNodes(selectedNodes);
         }
 
-        new PastedSystemDrawer(boardDTO).draw();
+        if(boardDTO.shouldDrawPastedSystem()){
+            new SystemDrawer(boardDTO).draw(boardDTO.getPastedLogicElements(), boardDTO.getPastedNodes());
+        }
 
 
 

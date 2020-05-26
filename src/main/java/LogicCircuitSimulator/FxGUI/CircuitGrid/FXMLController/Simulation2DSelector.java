@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Vector2D;
 
@@ -22,12 +23,11 @@ public class Simulation2DSelector {
             LogicElement element = logicElements.next();
             double x = element.getGeometry().getPosition().getX();
             double y = element.getGeometry().getPosition().getY();
-            Vector2D screenPos = boardDTO.getProjection2D().project(new Vector2D(x,y));
-            x = screenPos.getX();
-            y = screenPos.getY();
             if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
                     y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
-                selectedLogicElements.add(element);
+                selectedLogicElements.add(
+                        LogicElementFactory.getLogicElement(
+                                element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
             }
         }
         return selectedLogicElements;
@@ -39,9 +39,6 @@ public class Simulation2DSelector {
             Node node = nodes.next();
             double x = node.getPosition().getX();
             double y = node.getPosition().getY();
-            Vector2D screenPos = boardDTO.getProjection2D().project(new Vector2D(x,y));
-            x = screenPos.getX();
-            y = screenPos.getY();
             if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
                     y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
                 selectedNodes.add(node);
