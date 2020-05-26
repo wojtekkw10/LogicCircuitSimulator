@@ -17,7 +17,7 @@ public class Simulation2DSelector {
 
     public List<LogicElement> getSelectedLogicElements(){
         List<LogicElement> selectedLogicElements = new ArrayList<>();
-        Iterator<LogicElement> logicElements = boardDTO.getSimulation().logicElementIterator();
+        Iterator<LogicElement> logicElements = boardDTO.getSimulation().getLogicElementHandler().iterator();
         while(logicElements.hasNext()){
             LogicElement element = logicElements.next();
             double x = element.getGeometry().getPosition().getX();
@@ -34,7 +34,7 @@ public class Simulation2DSelector {
     }
     public List<Node> getSelectedNodes(){
         List<Node> selectedNodes = new ArrayList<>();
-        Iterator<Node> nodes = boardDTO.getSimulation().nodeIterator();
+        Iterator<Node> nodes = boardDTO.getSimulation().getNodeHandler().iterator();
         while(nodes.hasNext()){
             Node node = nodes.next();
             double x = node.getPosition().getX();

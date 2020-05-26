@@ -26,7 +26,7 @@ public abstract class MouseLogicElementSpecifier {
 
     public void getElementFromMousePosition(Vector2D mousePos, Projection2D projection){
         Vector2D cursorBoardPosition = getExactBoardPosition(mousePos, projection);
-        LogicElement logicElement = findLogicElement(cursorBoardPosition, simulation.logicElementIterator());
+        LogicElement logicElement = findLogicElement(cursorBoardPosition, simulation.getLogicElementHandler().iterator());
 
         if (logicElement != null) {
             currentLogicElementPos = logicElement.getPosition();
@@ -129,7 +129,7 @@ public abstract class MouseLogicElementSpecifier {
     }
 
     public void rotateLogicElementClockwise(){
-        Iterator<LogicElement> logicElements = simulation.logicElementIterator();
+        Iterator<LogicElement> logicElements = simulation.getLogicElementHandler().iterator();
         while(logicElements.hasNext()){
             LogicElement logicElement = logicElements.next();
             if(logicElement.getPosition().equals(currentLogicElementPos)){
@@ -146,7 +146,7 @@ public abstract class MouseLogicElementSpecifier {
     }
 
     public void removeLogicElement(){
-        simulation.removeLogicElement(currentLogicElementPos);
+        simulation.getLogicElementHandler().remove(currentLogicElementPos);
     }
 
     public Vector2D getPosition(){

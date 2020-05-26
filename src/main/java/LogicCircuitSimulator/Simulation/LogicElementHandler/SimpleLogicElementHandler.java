@@ -13,7 +13,7 @@ public class SimpleLogicElementHandler implements LogicElementHandler{
     private final UnboundGrid<LogicElement> logicElements = new UnboundHashMapGrid<>();
 
     @Override
-    public void set(LogicElement logicElement) {
+    public void add(LogicElement logicElement) {
         logicElements.set(logicElement.getPosition(), logicElement);
     }
 

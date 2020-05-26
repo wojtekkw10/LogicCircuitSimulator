@@ -56,7 +56,7 @@ public class BoardDrawer {
         resizeCanvasToAnchorPane();
         clearCanvas(Color.BLACK);
         new SimulationCanvasBackground(canvas, boardDTO).draw(projection2D);
-        drawLogicGates(simulation.logicElementIterator());
+        drawLogicGates(simulation.getLogicElementHandler().iterator());
         drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
 

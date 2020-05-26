@@ -48,13 +48,13 @@ public abstract class MouseCrossingSpecifier {
             nodePos = new Vector2D(x+1, y+1);
         }
 
-        currentCrossing = simulation.getCrossing(nodePos);
+        currentCrossing = simulation.getNodeHandler().getCrossing(nodePos);
         currentPosition = nodePos;
         doAction();
     }
 
     public void updateCrossing(Crossing crossing){
-        simulation.updateCrossing(currentPosition, crossing);
+        simulation.getNodeHandler().setCrossing(currentPosition, crossing);
     }
 
     public Crossing getCrossing(){

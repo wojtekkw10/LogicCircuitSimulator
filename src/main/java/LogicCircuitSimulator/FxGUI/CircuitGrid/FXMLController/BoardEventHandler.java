@@ -133,7 +133,7 @@ public class BoardEventHandler {
                     @Override
                     public void doAction() {
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
-                        boardDTO.getSimulation().addLogicGate(boardDTO.getLogicGateDragged());
+                        boardDTO.getSimulation().getLogicElementHandler().add(boardDTO.getLogicGateDragged());
                         isLogicGateLifted.set(false);
                     }
                 }.getElementPosFromElementAndMousePosition(mousePos, projection2D, boardDTO.getLogicGateDragged(), boardDTO.getRelativeMouseToLogicGatePos());
@@ -147,19 +147,19 @@ public class BoardEventHandler {
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOff = new ToggleOff((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().addLogicGate(toggleOff);
+                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOff);
                         }
                         else if(selectedElement.getName().equals("TGL_OFF")){
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOn = new ToggleOn((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().addLogicGate(toggleOn);
+                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
                         }
                         else if(selectedElement.getName().equals("BTN")){
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().addLogicGate(toggleOn);
+                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
                         }
                     }
                 }.getElementFromMousePosition(mousePos, projection2D);

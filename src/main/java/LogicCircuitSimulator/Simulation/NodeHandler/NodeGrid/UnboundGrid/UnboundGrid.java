@@ -16,7 +16,7 @@ public interface UnboundGrid<T>{
     /**
      * Sets an element in array
      * @param pos position of the element
-     * @param element element to be set
+     * @param element element to be add
      */
     void set(Vector2D pos, T element);
 

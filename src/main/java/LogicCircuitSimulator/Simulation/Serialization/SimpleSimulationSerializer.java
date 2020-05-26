@@ -16,7 +16,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
     @Override
     public  String serialize(Simulation simulation) {
         StringBuilder stringBuilder = new StringBuilder();
-        Iterator<Node> nodes = simulation.nodeIterator();
+        Iterator<Node> nodes = simulation.getNodeHandler().iterator();
         while(nodes.hasNext()){
             Node node = nodes.next();
             stringBuilder.append("WI ");
@@ -28,7 +28,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             stringBuilder.append("\n");
         }
 
-        Iterator<LogicElement> elements = simulation.logicElementIterator();
+        Iterator<LogicElement> elements = simulation.getLogicElementHandler().iterator();
         while(elements.hasNext()){
             LogicElement element = elements.next();
             stringBuilder.append("LE ");
@@ -65,7 +65,7 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             }
             if(label.equals("LE")){
                 LogicElement logicElement = deserializeLogicElement(lineScanner);
-                logicElements.set(logicElement);
+                logicElements.add(logicElement);
             }
 
         }
