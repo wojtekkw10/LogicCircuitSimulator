@@ -23,7 +23,6 @@ public class BoardController {
     void initialize(){
     }
 
-
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         Simulation simulation = simulationController.getSimulation();
         String serializedSimulation = new SimpleSimulationSerializer().serialize(simulation);

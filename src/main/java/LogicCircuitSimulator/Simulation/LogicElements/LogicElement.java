@@ -1,6 +1,7 @@
 package LogicCircuitSimulator.Simulation.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
@@ -52,4 +53,10 @@ public abstract class LogicElement {
         return geometry;
     }
 
+    public double getX(){
+        return getGeometry().getPosition().getX();
+    }
+    public double getY(){
+        return getGeometry().getPosition().getY();
+    }
 }

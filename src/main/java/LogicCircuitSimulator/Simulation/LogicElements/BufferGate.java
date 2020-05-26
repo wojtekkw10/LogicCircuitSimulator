@@ -1,6 +1,8 @@
 package LogicCircuitSimulator.Simulation.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.OneInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
@@ -30,20 +32,6 @@ public class BufferGate extends LogicElement{
 
     @Override
     public LogicElementGeometry getNewGeometry() {
-        return new LogicElementGeometry() {
-            @Override
-            public List<Vector2D> getLocalInputPositions() {
-                ArrayList<Vector2D> inputPositions = new ArrayList<>();
-                inputPositions.add(new Vector2D(0,0));
-                return inputPositions;
-            }
-
-            @Override
-            public List<Vector2D> getLocalOutputPositions() {
-                ArrayList<Vector2D> outputPositions = new ArrayList<>();
-                outputPositions.add(new Vector2D(1,0));
-                return outputPositions;
-            }
-        };
+        return new OneInOneOut();
     }
 }

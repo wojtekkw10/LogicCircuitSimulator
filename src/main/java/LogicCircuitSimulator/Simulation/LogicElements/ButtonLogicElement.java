@@ -1,6 +1,8 @@
 package LogicCircuitSimulator.Simulation.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.ZeroInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
@@ -36,18 +38,6 @@ public class ButtonLogicElement extends LogicElement{
 
     @Override
     public LogicElementGeometry getNewGeometry() {
-        return new LogicElementGeometry() {
-            @Override
-            public List<Vector2D> getLocalInputPositions() {
-                return new ArrayList<>();
-            }
-
-            @Override
-            public List<Vector2D> getLocalOutputPositions() {
-                ArrayList<Vector2D> outputPositions = new ArrayList<>();
-                outputPositions.add(new Vector2D(1,0));
-                return outputPositions;
-            }
-        };
+        return new ZeroInOneOut();
     }
 }

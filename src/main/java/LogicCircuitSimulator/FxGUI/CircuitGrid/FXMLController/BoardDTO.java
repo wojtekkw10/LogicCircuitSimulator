@@ -4,11 +4,14 @@ import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.SimpleMatrixProjection2D;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicOne;
+import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +33,69 @@ public class BoardDTO {
     private final AtomicBoolean isLogicGateLifted = new AtomicBoolean(false);
     private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
+    private boolean isSelecting = false;
+    private Vector2D selectLeftUpper;
+    private Vector2D selectRightBottom;
+    private List<LogicElement> selectedLogicElements = new ArrayList<>();
+    private List<Node> selectedNodes = new ArrayList<>();
+    private List<LogicElement> pastedLogicElements = new ArrayList<>();
+    private List<Node> pastedNodes = new ArrayList<>();
 
+    public List<LogicElement> getPastedLogicElements() {
+        return pastedLogicElements;
+    }
+
+    public void setPastedLogicElements(List<LogicElement> pastedLogicElements) {
+        this.pastedLogicElements = pastedLogicElements;
+    }
+
+    public List<Node> getPastedNodes() {
+        return pastedNodes;
+    }
+
+    public void setPastedNodes(List<Node> pastedNodes) {
+        this.pastedNodes = pastedNodes;
+    }
+
+    public List<LogicElement> getSelectedLogicElements() {
+        return selectedLogicElements;
+    }
+
+    public void setSelectedLogicElements(List<LogicElement> selectedLogicElements) {
+        this.selectedLogicElements = selectedLogicElements;
+    }
+
+    public List<Node> getSelectedNodes() {
+        return selectedNodes;
+    }
+
+    public void setSelectedNodes(List<Node> selectedNodes) {
+        this.selectedNodes = selectedNodes;
+    }
+
+    public Vector2D getSelectLeftUpper() {
+        return selectLeftUpper;
+    }
+
+    public void setSelectLeftUpper(Vector2D selectLeftUpper) {
+        this.selectLeftUpper = selectLeftUpper;
+    }
+
+    public Vector2D getSelectRightBottom() {
+        return selectRightBottom;
+    }
+
+    public void setSelectRightBottom(Vector2D selectRightBottom) {
+        this.selectRightBottom = selectRightBottom;
+    }
+
+    public boolean isSelecting() {
+        return isSelecting;
+    }
+
+    public void setSelecting(boolean selecting) {
+        isSelecting = selecting;
+    }
 
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 

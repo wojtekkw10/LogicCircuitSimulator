@@ -2,10 +2,8 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.DrawNodeVisitor;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.DrawSquareLogicElementVisitor;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.*;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.SimulationCanvasBackground;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
@@ -20,7 +18,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -60,6 +60,24 @@ public class BoardDrawer {
         drawLogicGates(simulation.logicElementIterator());
         drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
+
+
+
+        //SELECTING RECT
+        if(boardDTO.isSelecting()){
+            new SelectAreaDrawer().draw(boardDTO);
+            Simulation2DSelector selector = new Simulation2DSelector(boardDTO);
+
+            List<LogicElement> selectedLogicElements = selector.getSelectedLogicElements();
+            List<Node> selectedNodes = selector.getSelectedNodes();
+
+            boardDTO.setSelectedLogicElements(selectedLogicElements);
+            boardDTO.setSelectedNodes(selectedNodes);
+        }
+
+        new PastedSystemDrawer(boardDTO).draw();
+
+
 
         if(isLogicGateDragged.get()) {
             new MouseLogicElementSpecifier(simulation) {

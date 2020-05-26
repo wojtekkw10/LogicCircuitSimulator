@@ -76,14 +76,14 @@ class SimpleSimulationSerializerTest {
             logicElements.add(iterator.next());
         }
 
-        assertEquals("XOR", logicElements.get(0).getName());
-        assertEquals(new Vector2D(30, 50), logicElements.get(0).getPosition());
+        assertEquals("XOR", logicElements.get(1).getName());
+        assertEquals(new Vector2D(30, 50), logicElements.get(1).getPosition());
 
-        assertEquals("CLK", logicElements.get(1).getName());
-        assertEquals(new Vector2D(324, 1), logicElements.get(1).getPosition());
+        assertEquals("CLK", logicElements.get(2).getName());
+        assertEquals(new Vector2D(324, 1), logicElements.get(2).getPosition());
 
-        assertEquals("NOT", logicElements.get(2).getName());
-        assertEquals(new Vector2D(-45, -1), logicElements.get(2).getPosition());
+        assertEquals("NOT", logicElements.get(0).getName());
+        assertEquals(new Vector2D(-45, -1), logicElements.get(0).getPosition());
     }
 
 }

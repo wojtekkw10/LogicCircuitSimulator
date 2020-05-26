@@ -22,11 +22,6 @@ public class BoardEventHandler {
 
     private final double SCALING_FACTOR = 0.05;
 
-    public enum WireMode{
-        ADDING,
-        REMOVING
-    }
-
     public BoardEventHandler(BoardDTO boardDTO) {
         this.boardDTO = boardDTO;
 
@@ -101,6 +96,10 @@ public class BoardEventHandler {
                 boardDTO.getExecutor().shutdownNow();
                 App.loadAndSetNewScene("/FXML/StartMenu.fxml");
             }
+            else if(event.getCode() == KeyCode.V){
+                boardDTO.setPastedLogicElements(boardDTO.getSelectedLogicElements());
+                boardDTO.setPastedNodes(boardDTO.getSelectedNodes());
+            }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
             event.consume();
         };
@@ -130,7 +129,6 @@ public class BoardEventHandler {
         EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
             Vector2D mousePos = new Vector2D(event.getX(), event.getY());
             if(isLogicGateLifted.get() && event.getButton() == MouseButton.PRIMARY){
-
                 new MouseLogicElementSpecifier(boardDTO.getSimulation()){
                     @Override
                     public void doAction() {
@@ -185,6 +183,9 @@ public class BoardEventHandler {
                         }
                     }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
                 }
+                else if(event.isShiftDown()){
+                    boardDTO.setSelecting(false);
+                }
             }
         };
         canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, onMouseReleasedEventHandler);
@@ -218,7 +219,18 @@ public class BoardEventHandler {
                 }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), projection2D);
             }
 
-            if(event.getButton() == MouseButton.PRIMARY && !boardDTO.getIsLogicGateLifted().get()){
+            if(event.getButton() == MouseButton.PRIMARY && event.isShiftDown()){
+                if(!boardDTO.isSelecting()){
+                    boardDTO.setSelecting(true);
+                    boardDTO.setSelectLeftUpper(new Vector2D(event.getX(), event.getY()));
+                    boardDTO.setSelectRightBottom(new Vector2D(event.getX(), event.getY()));
+                }
+                else{
+                    boardDTO.setSelectRightBottom(new Vector2D(event.getX(), event.getY()));
+                }
+
+            }
+            else if(event.getButton() == MouseButton.PRIMARY && !boardDTO.getIsLogicGateLifted().get()){
                 new MouseWireSpecifier(boardDTO.getSimulation()){
                     @Override
                     public void doAction() {

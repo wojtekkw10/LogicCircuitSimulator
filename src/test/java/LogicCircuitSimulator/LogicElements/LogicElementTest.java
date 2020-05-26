@@ -2,7 +2,7 @@ package LogicCircuitSimulator.LogicElements;
 
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.LogicElements.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElements.Geometry.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.Rotation;
