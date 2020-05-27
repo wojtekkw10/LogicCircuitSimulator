@@ -39,16 +39,15 @@ DONE:
 - bug - simulation randomly stops updating when clicking buttonLogicElement (probably fixed - honestly I'm not sure)
 - removing on right click
 - refactor Simulation
-- zaznaczanie wielu elementów i przesuwnie ich, kopiowanie oraz usuwanie
+- area selection
+- refactor selecting and copy/paste and fix bugs (maybe I should save them as a DTO or something with deep copy methods
+
 DOING:
 
-TODO: refactor selecting and copy/paste and fix bugs (maybe I should save them as a DTO or something with deep copy methods
 
 TO BE DONE:
 
 TODO; refactor event handling
-
-
 
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
@@ -59,10 +58,11 @@ ToDO: maybe refactor simulation so that it's only the algorithm. Have direct acc
 TODO: drawing should be done on a copy of the simulation
 TODO: automatically make touching when two wires around a node
 TODO: bug - tasks are running when ESCAPE
-TODO: remove empty nodes
+TODO: remove empty nodes in simulation
+TODO: improve multithreading
+MAYBE:
 TODO: add detectRise and detectFall logic gates
 TODO: gate that is ON on rising signal //I don't know how to do it OR figure out how these latches are possible in minecraft
-MAYBE:
 TODO: generic Vector2D
 TODO: allow for removing elements from NodeGrid (if the app takes too much memory)
 TODO: actually use 2d array to store elements, but maintain two representations
