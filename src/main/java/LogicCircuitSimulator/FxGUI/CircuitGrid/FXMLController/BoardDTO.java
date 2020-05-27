@@ -38,19 +38,33 @@ public class BoardDTO {
     private boolean shouldDrawPastedSystem = false;
     private Vector2D selectLeftUpper;
     private Vector2D selectRightBottom;
-    private List<LogicElement> selectedLogicElements = new ArrayList<>();
-    private List<Node> selectedNodes = new ArrayList<>();
-    private List<LogicElement> pastedLogicElements = new ArrayList<>();
-    private List<Node> pastedNodes = new ArrayList<>();
-    private List<LogicElement> copiedLogicElements = new ArrayList<>();
-    private List<Node> copiedNodes = new ArrayList<>();
 
-    public List<LogicElement> getPastedLogicElements() {
-        return pastedLogicElements;
+    private SelectionDTO selected = new SelectionDTO();
+    private SelectionDTO copied = new SelectionDTO();
+    private SelectionDTO pasted = new SelectionDTO();
+
+    public SelectionDTO getSelected() {
+        return selected;
     }
 
-    public void setPastedLogicElements(List<LogicElement> pastedLogicElements) {
-        this.pastedLogicElements = pastedLogicElements;
+    public void setSelected(SelectionDTO selected) {
+        this.selected = selected;
+    }
+
+    public SelectionDTO getCopied() {
+        return copied;
+    }
+
+    public void setCopied(SelectionDTO copied) {
+        this.copied = copied;
+    }
+
+    public SelectionDTO getPasted() {
+        return pasted;
+    }
+
+    public void setPasted(SelectionDTO pasted) {
+        this.pasted = pasted;
     }
 
     public boolean shouldDrawSelectionRect() {
@@ -59,10 +73,6 @@ public class BoardDTO {
 
     public void setShouldDrawSelectionRect(boolean shouldDrawSelectionRect) {
         this.shouldDrawSelectionRect = shouldDrawSelectionRect;
-    }
-
-    public List<LogicElement> getCopiedLogicElements() {
-        return copiedLogicElements;
     }
 
     public boolean isShouldDrawSelectionRect() {
@@ -77,41 +87,6 @@ public class BoardDTO {
         this.shouldDrawPastedSystem = shouldDrawPastedSystem;
     }
 
-    public void setCopiedLogicElements(List<LogicElement> copiedLogicElements) {
-        this.copiedLogicElements = copiedLogicElements;
-    }
-
-    public List<Node> getCopiedNodes() {
-        return copiedNodes;
-    }
-
-    public void setCopiedNodes(List<Node> copiedNodes) {
-        this.copiedNodes = copiedNodes;
-    }
-
-    public List<Node> getPastedNodes() {
-        return pastedNodes;
-    }
-
-    public void setPastedNodes(List<Node> pastedNodes) {
-        this.pastedNodes = pastedNodes;
-    }
-
-    public List<LogicElement> getSelectedLogicElements() {
-        return selectedLogicElements;
-    }
-
-    public void setSelectedLogicElements(List<LogicElement> selectedLogicElements) {
-        this.selectedLogicElements = selectedLogicElements;
-    }
-
-    public List<Node> getSelectedNodes() {
-        return selectedNodes;
-    }
-
-    public void setSelectedNodes(List<Node> selectedNodes) {
-        this.selectedNodes = selectedNodes;
-    }
 
     public Vector2D getSelectLeftUpper() {
         return selectLeftUpper;

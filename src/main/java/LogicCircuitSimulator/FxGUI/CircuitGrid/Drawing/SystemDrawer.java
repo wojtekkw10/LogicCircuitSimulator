@@ -1,16 +1,21 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SystemDrawer {
@@ -20,9 +25,12 @@ public class SystemDrawer {
         this.boardDTO = boardDTO;
     }
 
-    public void draw(List<LogicElement> logicElements, List<Node> nodes){
+    public void draw(SelectionDTO pastedObjects){
         GraphicsContext graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
         Projection2D projection2D = boardDTO.getProjection2D();
+        //EXTRACTING OBJECTS
+        List<LogicElement> logicElements = pastedObjects.getLogicElementsAsList();
+        List<Node> nodes = pastedObjects.getNodesAsList();
 
         //DRAWING PASTED ELEMENTS AT THE MOUSE
         //FINDING POINT (0,0)
