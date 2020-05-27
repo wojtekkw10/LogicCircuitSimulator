@@ -112,8 +112,11 @@ public class BoardEventHandler {
         };
 
         for (int i = 0; i < keyArray.length; i++) {
-            if(keycode == keyArray[i]) boardDTO.setLogicGateDragged(logicElementArray[i]);
-            isLogicGateDragged.set(true);
+            if(keycode == keyArray[i]) {
+                boardDTO.setLogicGateDragged(logicElementArray[i]);
+                isLogicGateDragged.set(true);
+            }
+
         }
     }
 }

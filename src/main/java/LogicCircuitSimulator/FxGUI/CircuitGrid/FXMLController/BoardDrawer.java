@@ -59,6 +59,7 @@ public class BoardDrawer {
         drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
 
+
         //SELECTING RECT
         if(boardDTO.shouldDrawSelectionRect()){
             new SelectionRectDrawer().draw(boardDTO);
