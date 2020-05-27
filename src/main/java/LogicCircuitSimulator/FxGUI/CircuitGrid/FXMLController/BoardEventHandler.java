@@ -97,8 +97,14 @@ public class BoardEventHandler {
                 }
             }
             else if(event.getCode() == KeyCode.ESCAPE){
-                boardDTO.getExecutor().shutdownNow();
-                App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+                if(boardDTO.isShouldDrawSelectionRect()){
+                    boardDTO.setShouldDrawSelectionRect(false);
+                }
+                else{
+                    boardDTO.getExecutor().shutdownNow();
+                    App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+                }
+
             }
             else if(event.getCode() == KeyCode.V && event.isShortcutDown()){
                 boardDTO.setPasted(new SelectionDTO(boardDTO.getCopied()));
@@ -110,6 +116,19 @@ public class BoardEventHandler {
                 boardDTO.setShouldDrawPastedSystem(false);
                 boardDTO.setShouldDrawSelectionRect(false);
 
+                List<LogicElement> selectedLogicElements = boardDTO.getSelected().getLogicElementsAsList();
+                List<Node> selectedNodes = boardDTO.getSelected().getNodesAsList();
+                for (int i = 0; i < selectedNodes.size(); i++) {
+                    Vector2D pos = selectedNodes.get(i).getPosition();
+                    boardDTO.getSimulation().getNodeHandler().setDownWire(pos, WireState.NONE);
+                    boardDTO.getSimulation().getNodeHandler().setRightWire(pos, WireState.NONE);
+                }
+                for (int i = 0; i < selectedLogicElements.size(); i++) {
+                    Vector2D pos = selectedLogicElements.get(i).getPosition();
+                    boardDTO.getSimulation().getLogicElementHandler().remove(pos);
+                }
+            }
+            else if(event.getCode() == KeyCode.BACK_SPACE){
                 List<LogicElement> selectedLogicElements = boardDTO.getSelected().getLogicElementsAsList();
                 List<Node> selectedNodes = boardDTO.getSelected().getNodesAsList();
                 for (int i = 0; i < selectedNodes.size(); i++) {

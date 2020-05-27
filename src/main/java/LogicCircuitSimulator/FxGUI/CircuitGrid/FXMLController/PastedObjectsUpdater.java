@@ -32,6 +32,10 @@ public class PastedObjectsUpdater {
             if(logicElements.get(i).getX() < lowestX) lowestX = logicElements.get(i).getX();
             if(logicElements.get(i).getY() < lowestY) lowestY = logicElements.get(i).getY();
         }
+        for (int i = 0; i < nodes.size(); i++) {
+            if(nodes.get(i).getPosition().getX() < lowestX) lowestX = nodes.get(i).getPosition().getX();
+            if(nodes.get(i).getPosition().getY() < lowestY) lowestY = nodes.get(i).getPosition().getY();
+        }
 
         //LOGIC ELEMENTS
         Vector2D startPoint = new Vector2D(lowestX, lowestY);
