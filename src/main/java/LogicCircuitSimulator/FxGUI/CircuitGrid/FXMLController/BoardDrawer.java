@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -60,15 +59,6 @@ public class BoardDrawer {
         drawNodes(simulation.getNodeHandler());
         drawSpeedStats(now);
 
-        System.out.println("--");
-        System.out.println(boardDTO.getSelected().getNodesAsList());
-        System.out.println(boardDTO.getCopied().getNodesAsList());
-        if(boardDTO.getCopied().getLogicElementsAsList().size() > 0)
-            System.out.println(boardDTO.getCopied().getLogicElementsAsList().get(0).getGeometry().getPosition());
-        System.out.println(boardDTO.getPasted().getNodesAsList());
-        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
-            System.out.println(boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
-
         //SELECTING RECT
         if(boardDTO.shouldDrawSelectionRect()){
             new SelectionRectDrawer().draw(boardDTO);
@@ -78,14 +68,10 @@ public class BoardDrawer {
             boardDTO.setSelected(selected);
         }
 
-        System.out.println("ZMIANA POS NA PASTED");
-        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
-            System.out.println("1. "+boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
-        if(boardDTO.shouldDrawPastedSystem()){
-            new SystemDrawer(boardDTO).draw(boardDTO.getPasted());
+        if(boardDTO.shouldDrawPastedObjects()){
+            new PastedObjectsUpdater(boardDTO).update(boardDTO.getPasted());
+            new PastedObjectsDrawer(boardDTO).draw(boardDTO.getPasted());
         }
-        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
-            System.out.println("2. "+boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
 
         if(isLogicGateDragged.get()) {
             new MouseLogicElementSpecifier(simulation) {

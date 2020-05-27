@@ -79,7 +79,7 @@ public class BoardDTO {
         return shouldDrawSelectionRect;
     }
 
-    public boolean shouldDrawPastedSystem() {
+    public boolean shouldDrawPastedObjects() {
         return shouldDrawPastedSystem;
     }
 

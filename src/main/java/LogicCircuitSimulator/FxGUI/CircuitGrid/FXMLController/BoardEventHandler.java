@@ -17,7 +17,6 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -194,7 +193,7 @@ public class BoardEventHandler {
             }
             else{
                 if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {
-                    if(boardDTO.shouldDrawPastedSystem()){
+                    if(boardDTO.shouldDrawPastedObjects()){
                         boardDTO.setShouldDrawPastedSystem(false);
 
                         //transfer from clipboard to simulation
