@@ -29,7 +29,7 @@ public class SelectionDTO {
         Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
 
         while(nodeIterator.hasNext()){
-            this.nodeHandler.setNode(new Node(nodeIterator.next()));
+            this.nodeHandler.setNode(nodeIterator.next());
         }
         while(logicElementIterator.hasNext()){
             this.logicElementHandler.add(LogicElementFactory.instance(logicElementIterator.next()));
@@ -57,7 +57,7 @@ public class SelectionDTO {
         List<LogicElement> logicElements = new ArrayList<>();
         Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
         while(logicElementIterator.hasNext()){
-            logicElements.add(logicElementIterator.next());
+            logicElements.add(LogicElementFactory.instance(logicElementIterator.next()));
         }
         return logicElements;
     }
@@ -66,7 +66,7 @@ public class SelectionDTO {
         List<Node> nodes = new ArrayList<>();
         Iterator<Node> nodeIterator = nodeHandler.iterator();
         while(nodeIterator.hasNext()){
-            nodes.add(nodeIterator.next());
+            nodes.add(new Node(nodeIterator.next()));
         }
         return nodes;
     }

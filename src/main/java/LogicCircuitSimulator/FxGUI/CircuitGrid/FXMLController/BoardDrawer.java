@@ -63,7 +63,11 @@ public class BoardDrawer {
         System.out.println("--");
         System.out.println(boardDTO.getSelected().getNodesAsList());
         System.out.println(boardDTO.getCopied().getNodesAsList());
+        if(boardDTO.getCopied().getLogicElementsAsList().size() > 0)
+            System.out.println(boardDTO.getCopied().getLogicElementsAsList().get(0).getGeometry().getPosition());
         System.out.println(boardDTO.getPasted().getNodesAsList());
+        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
+            System.out.println(boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
 
         //SELECTING RECT
         if(boardDTO.shouldDrawSelectionRect()){
@@ -74,11 +78,14 @@ public class BoardDrawer {
             boardDTO.setSelected(selected);
         }
 
+        System.out.println("ZMIANA POS NA PASTED");
+        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
+            System.out.println("1. "+boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
         if(boardDTO.shouldDrawPastedSystem()){
             new SystemDrawer(boardDTO).draw(boardDTO.getPasted());
         }
-
-
+        if(boardDTO.getPasted().getLogicElementsAsList().size() > 0)
+            System.out.println("2. "+boardDTO.getPasted().getLogicElementsAsList().get(0).getGeometry().getPosition());
 
         if(isLogicGateDragged.get()) {
             new MouseLogicElementSpecifier(simulation) {
