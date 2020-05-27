@@ -3,7 +3,7 @@ package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 import LogicCircuitSimulator.Simulation.Rotation;
 
 public class LogicElementFactory {
-    public static LogicElement getLogicElement(String type, int x, int y, Rotation rotation){
+    public static LogicElement instance(String type, int x, int y, Rotation rotation){
         if(type.equals("CLK")) return new LogicClock(x,y,rotation);
         if(type.equals("AND")) return new AndGate(x,y,rotation);
         if(type.equals("BFR")) return new BufferGate(x,y,rotation);
@@ -15,5 +15,12 @@ public class LogicElementFactory {
         if(type.equals("TGL_FF")) return new ToggleOff(x,y,rotation);
         if(type.equals("XOR")) return new XorGate(x,y,rotation);
         else return null;
+    }
+    public static LogicElement instance(LogicElement logicElement){
+        return LogicElementFactory.instance(
+                logicElement.getName(),
+                (int)logicElement.getX(),
+                (int)logicElement.getY(),
+                logicElement.getRotation());
     }
 }

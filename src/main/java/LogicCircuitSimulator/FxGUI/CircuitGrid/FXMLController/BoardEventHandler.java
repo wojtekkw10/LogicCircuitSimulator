@@ -105,7 +105,7 @@ public class BoardEventHandler {
                 List<LogicElement> newElements = new ArrayList<>();
                 for (int i = 0; i < boardDTO.getCopiedLogicElements().size(); i++) {
                     LogicElement old = boardDTO.getCopiedLogicElements().get(i);
-                    newElements.add(LogicElementFactory.getLogicElement(old.getName(), (int)old.getX(), (int)old.getY(), old.getRotation()));
+                    newElements.add(LogicElementFactory.instance(old));
                 }
 
                 boardDTO.setPastedLogicElements(newElements);
@@ -113,7 +113,7 @@ public class BoardEventHandler {
                 List<Node> newNodes = new ArrayList<>();
                 for (int i = 0; i < boardDTO.getCopiedNodes().size(); i++) {
                     Node old = boardDTO.getCopiedNodes().get(i);
-                    newNodes.add(new Node(old.getPosition(), old.getRightWire(), old.getDownWire(), old.isTouching()));
+                    newNodes.add(new Node(old));
                 }
                 boardDTO.setPastedNodes(newNodes);
                 boardDTO.setShouldDrawSelectionRect(false);
@@ -123,12 +123,13 @@ public class BoardEventHandler {
                 List<LogicElement> newElements = new ArrayList<>();
                 for (int i = 0; i < boardDTO.getSelectedLogicElements().size(); i++) {
                     LogicElement old = boardDTO.getSelectedLogicElements().get(i);
-                    newElements.add(LogicElementFactory.getLogicElement(old.getName(), (int)old.getX(), (int)old.getY(), old.getRotation()));
+                    newElements.add(LogicElementFactory.instance(old));
                 }
                 boardDTO.setCopiedLogicElements(newElements);
                 boardDTO.setCopiedNodes(boardDTO.getSelectedNodes());
-                boardDTO.setShouldDrawSelectionRect(false);
                 boardDTO.setShouldDrawPastedSystem(false);
+                boardDTO.setShouldDrawSelectionRect(false);
+
 
                 for (int i = 0; i < boardDTO.getSelectedNodes().size(); i++) {
                     Vector2D pos = boardDTO.getSelectedNodes().get(i).getPosition();
@@ -143,6 +144,8 @@ public class BoardEventHandler {
             else if(event.getCode() == KeyCode.C && event.isShortcutDown()){
                 boardDTO.setCopiedLogicElements(boardDTO.getSelectedLogicElements());
                 boardDTO.setCopiedNodes(boardDTO.getSelectedNodes());
+                boardDTO.setShouldDrawSelectionRect(false);
+
             }
             createLogicElementAtMouseOnKeyEvent(event.getCode());
             event.consume();
@@ -217,7 +220,7 @@ public class BoardEventHandler {
                         LogicElementHandler logicElements = boardDTO.getSimulation().getLogicElementHandler();
                         for (int i = 0; i < boardDTO.getPastedLogicElements().size(); i++) {
                             LogicElement element = boardDTO.getPastedLogicElements().get(i);
-                            logicElements.add(LogicElementFactory.getLogicElement(element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
+                            logicElements.add(LogicElementFactory.instance(element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
                         }
 
                         NodeHandler nodes = boardDTO.getSimulation().getNodeHandler();

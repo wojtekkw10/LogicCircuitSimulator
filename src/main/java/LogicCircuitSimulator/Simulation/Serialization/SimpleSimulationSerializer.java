@@ -109,6 +109,6 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
             default -> Rotation.RIGHT;
         };
 
-        return LogicElementFactory.getLogicElement(name, intX, intY, rotation);
+        return LogicElementFactory.instance(name, intX, intY, rotation);
     }
 }

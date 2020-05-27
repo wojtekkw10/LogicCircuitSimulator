@@ -46,7 +46,7 @@ public class Simulation {
         nodeHandler.propagateGenerators(generators);
     }
 
-    public void initTestSimulation(){
+/*    public void initTestSimulation(){
         addNotLoop(new Vector2D(10, 3));
         addNotLoop(new Vector2D(10, 5));
 
@@ -57,7 +57,7 @@ public class Simulation {
             nodeHandler.setRightWire(new Vector2D(pos, 1), WireState.LOW);
             pos++;
         }
-    }
+    }*/
 
     public NodeHandler getNodeHandler() {
         return nodeHandler;

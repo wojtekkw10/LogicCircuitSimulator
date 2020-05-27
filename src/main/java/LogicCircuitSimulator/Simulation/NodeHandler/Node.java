@@ -46,6 +46,13 @@ public class Node {
         this.isTouching = crossing;
     }
 
+    public Node(Node node){
+        this.isTouching = node.isTouching;
+        this.down = node.getDownWire();
+        this.right = node.getRightWire();
+        this.position = node.getPosition();
+    }
+
     /**
      * @return signal state of the wire to the right
      */

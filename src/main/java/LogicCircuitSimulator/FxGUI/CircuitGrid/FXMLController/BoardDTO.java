@@ -22,7 +22,7 @@ public class BoardDTO {
     private final double MIN_ZOOM = 5;
 
     private final int TARGET_FPS = 100;
-    private int TARGET_UPS = 60;
+    private int TARGET_UPS = 10;
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
     private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
@@ -174,7 +174,7 @@ public class BoardDTO {
 
     public BoardDTO(Canvas canvas) {
         this.canvas = canvas;
-        this.simulation.initTestSimulation();
+        //this.simulation.initTestSimulation();
     }
 
     public Canvas getCanvas() {

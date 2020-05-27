@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogicClock extends LogicElement{
-    private final int SIGNAL_LENGTH = 10;
+    private final int SIGNAL_LENGTH = 5;
+    private final int GAP_LENGTH = 15;
     int timer = 0;
     private LogicState state = LogicState.LOW;
 
@@ -31,16 +32,14 @@ public class LogicClock extends LogicElement{
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {
         List<LogicState> outputStates = new ArrayList<>();
-        if(timer == SIGNAL_LENGTH){
-            if(state == LogicState.HIGH){
-                state = LogicState.LOW;
-                outputStates.add(state);
-
-            }
-            else if(state == LogicState.LOW){
-                state = LogicState.HIGH;
-                outputStates.add(state);
-            }
+        if(state==LogicState.HIGH && timer == SIGNAL_LENGTH){
+            state = LogicState.LOW;
+            outputStates.add(state);
+            timer = 0;
+        }
+        else if(state == LogicState.LOW && timer == GAP_LENGTH){
+            state = LogicState.HIGH;
+            outputStates.add(state);
             timer = 0;
         }
         else{

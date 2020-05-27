@@ -3,7 +3,6 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
-import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +25,7 @@ public class Simulation2DSelector {
             if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
                     y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
                 selectedLogicElements.add(
-                        LogicElementFactory.getLogicElement(
+                        LogicElementFactory.instance(
                                 element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
             }
         }
