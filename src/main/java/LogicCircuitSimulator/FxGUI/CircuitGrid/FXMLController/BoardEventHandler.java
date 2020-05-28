@@ -31,7 +31,6 @@ public class BoardEventHandler {
 
     private void initialize(){
         Canvas canvas = boardDTO.getCanvas();
-        Projection2D projection2D = boardDTO.getProjection2D();
 
         //ON KEY RELEASED
         EventHandler<KeyEvent> onKeyReleasedEventHandler = event -> {
@@ -46,7 +45,7 @@ public class BoardEventHandler {
                     boardDTO.setUpsChanged(true);
                 }
                 else {
-                    boardDTO.setTARGET_UPS(100);
+                    boardDTO.setTARGET_UPS(5);
                     boardDTO.setUpsLimited(true);
                     boardDTO.setUpsChanged(true);
                 }
@@ -58,8 +57,6 @@ public class BoardEventHandler {
                 }
 
             }
-            createLogicElementAtMouseOnKeyEvent(event.getCode());
-            event.consume();
         };
         canvas.addEventFilter(KeyEvent.KEY_RELEASED, onKeyReleasedEventHandler);
 
@@ -80,36 +77,5 @@ public class BoardEventHandler {
             boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
         };
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, onMouseMovedEventHandler);
-
-    }
-
-    private void createLogicElementAtMouseOnKeyEvent(KeyCode keycode){
-        AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateLifted();
-        boardDTO.setRelativeMouseToLogicGatePos(new Vector2D(0.5,0));
-
-        int x = 0;
-        int y = 0;
-
-        KeyCode[] keyArray = {KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3,
-                KeyCode.DIGIT4, KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9};
-        LogicElement[] logicElementArray = {
-                new LogicClock(x,y, Rotation.RIGHT),
-                new BufferGate(x,y, Rotation.RIGHT),
-                new LogicOne(x,y, Rotation.RIGHT),
-                new NotGate(x,y, Rotation.RIGHT),
-                new OrGate(x,y, Rotation.RIGHT),
-                new AndGate(x,y, Rotation.RIGHT),
-                new XorGate(x,y, Rotation.RIGHT),
-                new ToggleOff(x,y, Rotation.RIGHT),
-                new ButtonLogicElement(x,y, Rotation.RIGHT)
-        };
-
-        for (int i = 0; i < keyArray.length; i++) {
-            if(keycode == keyArray[i]) {
-                boardDTO.setLogicGateDragged(logicElementArray[i]);
-                isLogicGateDragged.set(true);
-            }
-
-        }
     }
 }

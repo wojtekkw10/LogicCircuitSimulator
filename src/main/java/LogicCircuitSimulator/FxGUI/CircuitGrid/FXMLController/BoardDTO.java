@@ -41,6 +41,18 @@ public class BoardDTO {
     private SelectionDTO copied = new SelectionDTO();
     private SelectionDTO pasted = new SelectionDTO();
 
+    private final SyncMode syncMode = SyncMode.SYNCHRONIZED;
+    private LCSSimulation simulation = new SimpleLCSSimulation();
+
+    private boolean shouldDrawSpeedStats = true;
+    private boolean isUpsLimited = true;
+    private boolean upsChanged = false;
+
+    enum SyncMode{
+        SYNCHRONIZED,
+        NOT_SYNCHRONIZED
+    }
+
     public SelectionDTO getSelected() {
         return selected;
     }
@@ -85,7 +97,6 @@ public class BoardDTO {
         this.shouldDrawPastedSystem = shouldDrawPastedSystem;
     }
 
-
     public Vector2D getSelectLeftUpper() {
         return selectLeftUpper;
     }
@@ -112,12 +123,7 @@ public class BoardDTO {
 
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
-    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-    private LCSSimulation simulation = new SimpleLCSSimulation();
 
-    private boolean shouldDrawSpeedStats = true;
-    private boolean isUpsLimited = true;
-    private boolean upsChanged = false;
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
@@ -125,10 +131,7 @@ public class BoardDTO {
         this.simulation = simulation;
     }
 
-    enum SyncMode{
-        SYNCHRONIZED,
-        NOT_SYNCHRONIZED
-    }
+
     public Vector2D getRelativeMouseToLogicGatePos() {
         return relativeMouseToLogicGatePos;
     }

@@ -50,10 +50,21 @@ public class SimulationCanvasController {
                     executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/boardDTO.getTARGET_UPS()*1e6), TimeUnit.MICROSECONDS);
                     boardDTO.setUpsChanged(false);
                 }
-                if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
-                    simulationTask.run();
-                }
                 boardDrawer.draw(now);
+
+                if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
+                    if(boardDTO.getTARGET_UPS() < 1000){
+                        for (int i = 0; i < boardDTO.getTARGET_UPS(); i++) {
+                            simulationTask.run();
+                        }
+                    }
+                    else{
+                        while(System.nanoTime() < now + (1e9/60)){
+                            simulationTask.run();
+                        }
+                    }
+                }
+
             }
         }.start();
     }
