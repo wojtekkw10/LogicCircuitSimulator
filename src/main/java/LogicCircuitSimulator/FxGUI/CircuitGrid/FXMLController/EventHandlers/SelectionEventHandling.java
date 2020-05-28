@@ -1,6 +1,5 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.EventHandlers;
 
-import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
@@ -67,6 +66,7 @@ public class SelectionEventHandling {
                     Vector2D pos = selectedLogicElements.get(i).getPosition();
                     boardDTO.getSimulation().getLogicElementHandler().remove(pos);
                 }
+                boardDTO.setShouldDrawSelectionRect(false);
             }
             else if(event.getCode() == KeyCode.C && event.isShortcutDown()){
                 boardDTO.setCopied(new SelectionDTO(boardDTO.getSelected()));

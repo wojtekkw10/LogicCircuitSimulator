@@ -1,20 +1,21 @@
 package LogicCircuitSimulator.Simulation.Serialization;
 
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Simulation.Simulation;
+import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class SimpleSimulationSerializer implements SimulationSerializer{
+public class SimpleLCSSimulationSerializer implements LCSSimulationSerializer {
     @Override
-    public  String serialize(Simulation simulation) {
+    public  String serialize(LCSSimulation simulation) {
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<Node> nodes = simulation.getNodeHandler().iterator();
         while(nodes.hasNext()){
@@ -48,8 +49,8 @@ public class SimpleSimulationSerializer implements SimulationSerializer{
     }
 
     @Override
-    public Simulation deserialize(String simulation) {
-        Simulation newSimulation = new Simulation();
+    public LCSSimulation deserialize(String simulation) {
+        LCSSimulation newSimulation = new SimpleLCSSimulation();
         NodeHandler nodeHandler = new ArrayNodeHandler();
         LogicElementHandler logicElements = new SimpleLogicElementHandler();
 

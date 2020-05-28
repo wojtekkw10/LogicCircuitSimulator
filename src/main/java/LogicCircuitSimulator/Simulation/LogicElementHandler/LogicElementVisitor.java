@@ -1,4 +1,4 @@
-package LogicCircuitSimulator.Simulation;
+package LogicCircuitSimulator.Simulation.LogicElementHandler;
 
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 

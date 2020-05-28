@@ -2,16 +2,14 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.SimpleMatrixProjection2D;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicOne;
-import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Simulation.Simulation;
+import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -115,7 +113,7 @@ public class BoardDTO {
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
     private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-    private Simulation simulation = new Simulation();
+    private LCSSimulation simulation = new SimpleLCSSimulation();
 
     private boolean shouldDrawSpeedStats = true;
     private boolean isUpsLimited = true;
@@ -123,7 +121,7 @@ public class BoardDTO {
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    public void setSimulation(Simulation simulation) {
+    public void setSimulation(LCSSimulation simulation) {
         this.simulation = simulation;
     }
 
@@ -212,7 +210,7 @@ public class BoardDTO {
         return syncMode;
     }
 
-    public Simulation getSimulation() {
+    public LCSSimulation getSimulation() {
         return simulation;
     }
 

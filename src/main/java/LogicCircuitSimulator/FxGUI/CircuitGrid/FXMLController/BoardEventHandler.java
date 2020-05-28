@@ -3,22 +3,15 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.EventHandlers.*;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseCrossingSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseWireSpecifier;
-import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
-import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.NodeHandler.Node;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoardEventHandler {

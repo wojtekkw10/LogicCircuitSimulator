@@ -1,10 +1,10 @@
 package LogicCircuitSimulator.LogicElements;
 
-import LogicCircuitSimulator.Simulation.LogicElementVisitor;
-import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
-import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicElementTest {

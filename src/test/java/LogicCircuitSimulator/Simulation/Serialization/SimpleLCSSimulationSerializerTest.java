@@ -1,14 +1,16 @@
 package LogicCircuitSimulator.Simulation.Serialization;
 
+import LogicCircuitSimulator.Simulation.LCSSimulation;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicClock;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.NotGate;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.XorGate;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
-import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Simulation.Simulation;
+import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
 
@@ -16,17 +18,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SimpleSimulationSerializerTest {
+class SimpleLCSSimulationSerializerTest {
     @Test
     void serializeWireTest(){
-        Simulation simulation = new Simulation();
-        simulation.updateWire(new Vector2D(20,30), Orientation.VERTICALLY, WireState.LOW);
-        simulation.updateWire(new Vector2D(40,45), Orientation.HORIZONTALLY, WireState.HIGH);
-        simulation.updateCrossing(new Vector2D(40,45), Crossing.NOT_TOUCHING);
+        LCSSimulation simulation = new SimpleLCSSimulation();
+        NodeHandler nodeHandler = simulation.getNodeHandler();
+        nodeHandler.setDownWire(new Vector2D(20,30), WireState.LOW);
+        nodeHandler.setRightWire(new Vector2D(40,45), WireState.HIGH);
+        nodeHandler.setCrossing(new Vector2D(40,45), Crossing.NOT_TOUCHING);
 
-        SimulationSerializer simulationSerializer = new SimpleSimulationSerializer();
+        LCSSimulationSerializer simulationSerializer = new SimpleLCSSimulationSerializer();
 
         String serialized = simulationSerializer.serialize(simulation);
 
@@ -38,24 +42,26 @@ class SimpleSimulationSerializerTest {
     void deserializeWireTest(){
         String serialized = "WI 40 45 HIGH NONE NOT_TOUCHING \n" +
                 "WI 20 30 NONE LOW TOUCHING ";
-        Simulation simulation = new SimpleSimulationSerializer().deserialize(serialized);
+        LCSSimulation simulation = new SimpleLCSSimulationSerializer().deserialize(serialized);
+        NodeHandler nodeHandler = simulation.getNodeHandler();
 
-        assertEquals(Crossing.NOT_TOUCHING, simulation.getCrossing(new Vector2D(40, 45)));
-        assertEquals(Crossing.TOUCHING, simulation.getCrossing(new Vector2D(20, 30)));
+        assertEquals(Crossing.NOT_TOUCHING, nodeHandler.getCrossing(new Vector2D(40, 45)));
+        assertEquals(Crossing.TOUCHING, nodeHandler.getCrossing(new Vector2D(20, 30)));
 
-        assertEquals(WireState.NONE, simulation.getDownWire(new Vector2D(40,45)));
-        assertEquals(WireState.HIGH, simulation.getRightWire(new Vector2D(40,45)));
-        assertEquals(WireState.NONE, simulation.getRightWire(new Vector2D(20,30)));
-        assertEquals(WireState.LOW, simulation.getDownWire(new Vector2D(20,30)));
+        assertEquals(WireState.NONE, nodeHandler.getDownWire(new Vector2D(40,45)));
+        assertEquals(WireState.HIGH, nodeHandler.getRightWire(new Vector2D(40,45)));
+        assertEquals(WireState.NONE, nodeHandler.getRightWire(new Vector2D(20,30)));
+        assertEquals(WireState.LOW, nodeHandler.getDownWire(new Vector2D(20,30)));
     }
 
     @Test
     void serializeLogicElementTest(){
-        Simulation simulation = new Simulation();
-        simulation.addLogicGate(new XorGate(30, 50, Rotation.UP));
-        simulation.addLogicGate(new LogicClock(324, 1, Rotation.LEFT));
-        simulation.addLogicGate(new NotGate(-45, -1, Rotation.DOWN));
-        String serialized = new SimpleSimulationSerializer().serialize(simulation);
+        LCSSimulation simulation = new SimpleLCSSimulation();
+        LogicElementHandler logicElementHandler = simulation.getLogicElementHandler();
+        logicElementHandler.add(new XorGate(30, 50, Rotation.UP));
+        logicElementHandler.add(new LogicClock(324, 1, Rotation.LEFT));
+        logicElementHandler.add(new NotGate(-45, -1, Rotation.DOWN));
+        String serialized = new SimpleLCSSimulationSerializer().serialize(simulation);
 
         assertTrue(serialized.contains("LE XOR 30 50 UP"));
         assertTrue(serialized.contains("LE CLK 324 1 LEFT"));
@@ -68,9 +74,9 @@ class SimpleSimulationSerializerTest {
                 "LE CLK 324 1 LEFT\n" +
                 "LE NOT -45 -1 DOWN";
 
-        Simulation simulation = new SimpleSimulationSerializer().deserialize(serialized);
+        LCSSimulation simulation = new SimpleLCSSimulationSerializer().deserialize(serialized);
 
-        Iterator<LogicElement> iterator = simulation.logicElementIterator();
+        Iterator<LogicElement> iterator = simulation.getLogicElementHandler().iterator();
         List<LogicElement> logicElements = new ArrayList<>();
         while(iterator.hasNext()){
             logicElements.add(iterator.next());

@@ -1,21 +1,21 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.Simulation.Orientation;
-import LogicCircuitSimulator.Simulation.Simulation;
-import LogicCircuitSimulator.Vector2D;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
+import LogicCircuitSimulator.Simulation.Orientation;
+import LogicCircuitSimulator.Vector2D;
 
 public abstract class MouseWireSpecifier {
     int x;
     int y;
 
-    Simulation simulation;
+    LCSSimulation simulation;
     WireState currentWireState;
     Vector2D currentNodePos;
     Orientation currentOrientation;
 
-    public MouseWireSpecifier(Simulation simulation){
+    public MouseWireSpecifier(LCSSimulation simulation){
         this.simulation = simulation;
     }
 

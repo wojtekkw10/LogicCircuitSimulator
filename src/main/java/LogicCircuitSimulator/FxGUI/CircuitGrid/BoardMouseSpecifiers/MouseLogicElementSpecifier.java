@@ -1,16 +1,16 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;
 
 public abstract class MouseLogicElementSpecifier {
 
-    private final Simulation simulation;
+    private final LCSSimulation simulation;
     private Vector2D currentLogicElementPos;
     private LogicElement currentLogicElement;
 
@@ -18,7 +18,7 @@ public abstract class MouseLogicElementSpecifier {
 
     private Vector2D relativeMousePos;
 
-    public MouseLogicElementSpecifier(Simulation simulation){
+    public MouseLogicElementSpecifier(LCSSimulation simulation){
         this.simulation = simulation;
     }
 

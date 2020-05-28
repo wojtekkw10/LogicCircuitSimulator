@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements;
 
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.LogicElementGeometry;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.ZeroInOneOut;
-import LogicCircuitSimulator.Simulation.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 

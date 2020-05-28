@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.LogicElements;
 
-import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicZero;
+import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LogicZeroTest {
 

@@ -1,8 +1,8 @@
 package LogicCircuitSimulator.NodeHandler;
 
 import LogicCircuitSimulator.Simulation.LogicState;
-import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
 

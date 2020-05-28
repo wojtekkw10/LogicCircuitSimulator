@@ -2,12 +2,12 @@ package LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.Orientation;
-import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
+import LogicCircuitSimulator.Simulation.Orientation;
+import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Iterator;

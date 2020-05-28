@@ -3,10 +3,10 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.NodeHandler.*;
-import LogicCircuitSimulator.Simulation.NodeVisitor;
+import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeVisitor;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.List;

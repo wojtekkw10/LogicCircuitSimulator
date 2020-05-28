@@ -2,9 +2,9 @@ package LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid;
 
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
+import LogicCircuitSimulator.Simulation.Orientation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;

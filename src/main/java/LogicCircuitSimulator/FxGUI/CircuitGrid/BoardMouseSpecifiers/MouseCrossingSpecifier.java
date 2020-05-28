@@ -1,17 +1,17 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.Simulation;
 import LogicCircuitSimulator.Vector2D;
 
 public abstract class MouseCrossingSpecifier {
 
-    private final Simulation simulation;
+    private final LCSSimulation simulation;
     private Vector2D currentPosition;
     private Crossing currentCrossing;
 
-    public MouseCrossingSpecifier(Simulation simulation){
+    public MouseCrossingSpecifier(LCSSimulation simulation){
         this.simulation = simulation;
     }
 

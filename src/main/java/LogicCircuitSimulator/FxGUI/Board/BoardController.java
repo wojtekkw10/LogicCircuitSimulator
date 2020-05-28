@@ -2,10 +2,10 @@ package LogicCircuitSimulator.FxGUI.Board;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
 import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDataStorage;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
-import LogicCircuitSimulator.Simulation.Serialization.SimpleSimulationSerializer;
-import LogicCircuitSimulator.Simulation.Simulation;
+import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
@@ -24,8 +24,8 @@ public class BoardController {
     }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        Simulation simulation = simulationController.getSimulation();
-        String serializedSimulation = new SimpleSimulationSerializer().serialize(simulation);
+        LCSSimulation simulation = simulationController.getSimulation();
+        String serializedSimulation = new SimpleLCSSimulationSerializer().serialize(simulation);
         new FileSystemExternalDataStorage().save(null, serializedSimulation);
     }
 
@@ -33,7 +33,7 @@ public class BoardController {
         String serializedSimulation = new FileSystemExternalDataStorage().load(null);
 
         if(serializedSimulation != null){
-            Simulation simulation =  new SimpleSimulationSerializer().deserialize(serializedSimulation);
+            LCSSimulation simulation =  new SimpleLCSSimulationSerializer().deserialize(serializedSimulation);
             simulationController.setSimulation(simulation);
         }
     }

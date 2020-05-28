@@ -1,10 +1,11 @@
 package LogicCircuitSimulator.UnboundGrid;
 
-import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.GridIterator;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
-import org.junit.jupiter.api.*;
+import LogicCircuitSimulator.Vector2D;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

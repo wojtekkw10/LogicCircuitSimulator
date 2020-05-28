@@ -1,6 +1,5 @@
 package LogicCircuitSimulator.Simulation.NodeHandler;
 
-import LogicCircuitSimulator.Simulation.NodeVisitor;
 import LogicCircuitSimulator.Vector2D;
 
 import javax.annotation.concurrent.Immutable;

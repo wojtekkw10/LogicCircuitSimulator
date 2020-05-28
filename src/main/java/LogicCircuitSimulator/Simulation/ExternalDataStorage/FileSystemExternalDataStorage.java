@@ -1,7 +1,5 @@
 package LogicCircuitSimulator.Simulation.ExternalDataStorage;
 
-import LogicCircuitSimulator.Simulation.Serialization.SimpleSimulationSerializer;
-import LogicCircuitSimulator.Simulation.Simulation;
 import javafx.stage.FileChooser;
 
 import java.io.File;

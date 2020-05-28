@@ -1,17 +1,13 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
-import LogicCircuitSimulator.*;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers.MouseLogicElementSpecifier;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing.*;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
-import LogicCircuitSimulator.Simulation.LogicElementVisitor;
+import LogicCircuitSimulator.Simulation.LCSSimulation;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.NodeHandler.Node;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
-import LogicCircuitSimulator.Simulation.NodeVisitor;
-import LogicCircuitSimulator.Simulation.Simulation;
+import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
@@ -42,7 +38,7 @@ public class BoardDrawer {
     public void draw(long now){
         Canvas canvas = boardDTO.getCanvas();
         Projection2D projection2D = boardDTO.getProjection2D();
-        Simulation simulation = boardDTO.getSimulation();
+        LCSSimulation simulation = boardDTO.getSimulation();
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateLifted();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();

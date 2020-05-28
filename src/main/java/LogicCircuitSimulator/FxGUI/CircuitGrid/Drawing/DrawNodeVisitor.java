@@ -2,10 +2,10 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
-import LogicCircuitSimulator.Simulation.NodeVisitor;
-import LogicCircuitSimulator.Vector2D;
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeVisitor;
 import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
+import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

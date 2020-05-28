@@ -1,16 +1,16 @@
 package LogicCircuitSimulator.LogicElements;
 
-import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
-import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.XorGate;
+import LogicCircuitSimulator.Simulation.LogicState;
+import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class XorGateTest {
     LogicElement gate = new XorGate(10, 20, Rotation.RIGHT);
