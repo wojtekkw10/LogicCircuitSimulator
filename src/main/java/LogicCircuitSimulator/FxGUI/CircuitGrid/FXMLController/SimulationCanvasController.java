@@ -50,10 +50,24 @@ public class SimulationCanvasController {
                     executor.scheduleAtFixedRate(simulationTask, 0, (long) (1.0/boardDTO.getTARGET_UPS()*1e6), TimeUnit.MICROSECONDS);
                     boardDTO.setUpsChanged(false);
                 }
-                if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
-                    simulationTask.run();
-                }
                 boardDrawer.draw(now);
+
+                if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
+                    if(boardDTO.getTARGET_UPS() < 100){
+                        for (int i = 0; i < boardDTO.getTARGET_UPS(); i++) {
+                            simulationTask.run();
+                        }
+                    }
+                    else{
+                        while(System.nanoTime() < now + (1e9/60)){
+                            simulationTask.run();
+                        }
+                    }
+
+
+                }
+                //waitUntilNextFrame(now);
+
             }
         }.start();
     }
@@ -74,6 +88,15 @@ public class SimulationCanvasController {
 
     public void setSimulation(LCSSimulation simulation) {
         boardDTO.setSimulation(simulation);
+    }
+
+    private void waitUntilNextFrame(long now){
+        int TARGET_FPS = boardDTO.getTARGET_FPS();
+        try {
+            Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
 

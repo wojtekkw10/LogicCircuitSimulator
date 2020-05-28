@@ -31,6 +31,10 @@ public class BoardDTO {
     private final AtomicBoolean isLogicGateLifted = new AtomicBoolean(false);
     private LogicElement logicGateDragged = new LogicOne(0,0, Rotation.RIGHT);
 
+    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
+    private LCSSimulation simulation = new SimpleLCSSimulation();
+    private LCSSimulation simulationForDrawing = new SimpleLCSSimulation();
+
     private boolean isSelecting = false;
     private boolean shouldDrawSelectionRect = false;
     private boolean shouldDrawPastedSystem = false;
@@ -85,7 +89,6 @@ public class BoardDTO {
         this.shouldDrawPastedSystem = shouldDrawPastedSystem;
     }
 
-
     public Vector2D getSelectLeftUpper() {
         return selectLeftUpper;
     }
@@ -112,8 +115,13 @@ public class BoardDTO {
 
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
-    private final SyncMode syncMode = SyncMode.NOT_SYNCHRONIZED;
-    private LCSSimulation simulation = new SimpleLCSSimulation();
+    public LCSSimulation getSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(LCSSimulation simulation) {
+        this.simulation = simulation;
+    }
 
     private boolean shouldDrawSpeedStats = true;
     private boolean isUpsLimited = true;
@@ -121,8 +129,8 @@ public class BoardDTO {
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    public void setSimulation(LCSSimulation simulation) {
-        this.simulation = simulation;
+    public void setSimulationForDrawing(LCSSimulation simulationForDrawing) {
+        this.simulationForDrawing = simulationForDrawing;
     }
 
     enum SyncMode{
@@ -210,8 +218,8 @@ public class BoardDTO {
         return syncMode;
     }
 
-    public LCSSimulation getSimulation() {
-        return simulation;
+    public LCSSimulation getSimulationForDrawing() {
+        return simulationForDrawing;
     }
 
     public boolean shouldDrawSpeedStats() {

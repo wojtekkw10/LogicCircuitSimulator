@@ -3,9 +3,11 @@ package LogicCircuitSimulator.Simulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.ArrayNodeHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.Generator;
+import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Vector2D;
 
@@ -17,7 +19,32 @@ public class SimpleLCSSimulation implements LCSSimulation{
     private NodeHandler nodeHandler = new ArrayNodeHandler();
     private LogicElementHandler logicElements = new SimpleLogicElementHandler();
 
-    public void runOnce() {
+    public synchronized SimpleLCSSimulation instanceOf(LCSSimulation simulation){
+        synchronized (simulation){
+            SimpleLCSSimulation simpleLCSSimulation = new SimpleLCSSimulation();
+            LogicElementHandler oldLogicElementHandler = simulation.getLogicElementHandler();
+            NodeHandler oldNodeHandler = simulation.getNodeHandler();
+
+            LogicElementHandler newLogicElementHandler = simpleLCSSimulation.getLogicElementHandler();
+            NodeHandler newNodeHandler = simpleLCSSimulation.getNodeHandler();
+
+            Iterator<LogicElement> logicElementIterator = oldLogicElementHandler.iterator();
+            Iterator<Node> nodeIterator = oldNodeHandler.iterator();
+
+            while(logicElementIterator.hasNext())
+                newLogicElementHandler.add(LogicElementFactory.instance(logicElementIterator.next()));
+            while(nodeIterator.hasNext())
+                newNodeHandler.setNode(new Node(nodeIterator.next()));
+
+
+            return simpleLCSSimulation;
+        }
+
+
+
+    }
+
+    public synchronized void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
         Iterator<LogicElement> logicElementIterator = logicElements.iterator();
@@ -43,6 +70,7 @@ public class SimpleLCSSimulation implements LCSSimulation{
         }
         //Propagate the high state throughout the wires
         nodeHandler.propagateGenerators(generators);
+
     }
 
     public NodeHandler getNodeHandler() {

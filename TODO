@@ -42,6 +42,9 @@ DONE:
 - area selection
 - refactor selecting and copy/paste and fix bugs (maybe I should save them as a DTO or something with deep copy methods
 - refactor event handling
+- Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
+- drawing should be done on a copy of the simulation
+
 DOING:
 
 
@@ -49,15 +52,13 @@ TO BE DONE:
 TODO: ctrl-z, ctrl-shift-z
 TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść
-TODO: windowSwitcher in all controllers or as a Singleton
-TODO: Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
-TODO: drawing should be done on a copy of the simulation
 TODO: automatically make touching when two wires around a node/ remove empty nodes in simulation
-TODO: bug - tasks are running when ESCAPE
-TODO: improve multithreading
-TODO: play and pause simulation buttons
-TODO: simulation kinda breaks when going at full speed
+TODO: play and pause simulation buttons - or speed slider
+
 MAYBE:
+TODO: simulation kinda breaks when going at full speed
+TODO: improve multithreading
+TODO: windowSwitcher in all controllers or as a Singleton
 TODO: add detectRise and detectFall logic gates - not necessary
 TODO: gate that is ON on rising signal //I don't know how to do it OR figure out how these latches are possible in minecraft
 TODO: generic Vector2D

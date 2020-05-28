@@ -42,7 +42,7 @@ public class LogicElementEventHandler {
                     }
                 }
                 else{
-                    new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                    new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                         @Override
                         public void doAction() {
                             rotateLogicElementClockwise();
@@ -53,10 +53,10 @@ public class LogicElementEventHandler {
             }
         };
         boardDTO.getCanvas().addEventFilter(KeyEvent.KEY_RELEASED, onKeyReleasedEventHandler);
-
+        //34/77
         EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
             if(event.getButton() == MouseButton.PRIMARY){
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         boardDTO.setLogicGateDragged(getLogicElement());
@@ -74,16 +74,16 @@ public class LogicElementEventHandler {
         EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
             Vector2D mousePos = new Vector2D(event.getX(), event.getY());
             if(boardDTO.getIsLogicGateLifted().get() && event.getButton() == MouseButton.PRIMARY){
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
-                        boardDTO.getSimulation().getLogicElementHandler().add(boardDTO.getLogicGateDragged());
+                        boardDTO.getSimulationForDrawing().getLogicElementHandler().add(boardDTO.getLogicGateDragged());
                         boardDTO.getIsLogicGateLifted().set(false);
                     }
                 }.getElementPosFromElementAndMousePosition(mousePos,  boardDTO.getProjection2D(), boardDTO.getLogicGateDragged(), boardDTO.getRelativeMouseToLogicGatePos());
 
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         LogicElement selectedElement = getLogicElement();
@@ -92,25 +92,25 @@ public class LogicElementEventHandler {
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOff = new ToggleOff((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOff);
+                            boardDTO.getSimulationForDrawing().getLogicElementHandler().add(toggleOff);
                         }
                         else if(selectedElement.getName().equals("TGL_OFF")){
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOn = new ToggleOn((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
+                            boardDTO.getSimulationForDrawing().getLogicElementHandler().add(toggleOn);
                         }
                         else if(selectedElement.getName().equals("BTN")){
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
-                            boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
+                            boardDTO.getSimulationForDrawing().getLogicElementHandler().add(toggleOn);
                         }
                     }
                 }.getElementFromMousePosition(mousePos, boardDTO.getProjection2D());
             }
             else if(event.getButton() == MouseButton.SECONDARY && event.isStillSincePress()){
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         removeLogicElement();
@@ -125,7 +125,7 @@ public class LogicElementEventHandler {
             boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
 
             if(event.getButton() == MouseButton.SECONDARY){
-                new MouseLogicElementSpecifier(boardDTO.getSimulation()){
+                new MouseLogicElementSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         removeLogicElement();

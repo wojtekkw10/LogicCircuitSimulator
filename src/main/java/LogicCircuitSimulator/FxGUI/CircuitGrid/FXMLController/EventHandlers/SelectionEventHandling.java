@@ -46,12 +46,12 @@ public class SelectionEventHandling {
                 List<Node> selectedNodes = boardDTO.getSelected().getNodesAsList();
                 for (int i = 0; i < selectedNodes.size(); i++) {
                     Vector2D pos = selectedNodes.get(i).getPosition();
-                    boardDTO.getSimulation().getNodeHandler().setDownWire(pos, WireState.NONE);
-                    boardDTO.getSimulation().getNodeHandler().setRightWire(pos, WireState.NONE);
+                    boardDTO.getSimulationForDrawing().getNodeHandler().setDownWire(pos, WireState.NONE);
+                    boardDTO.getSimulationForDrawing().getNodeHandler().setRightWire(pos, WireState.NONE);
                 }
                 for (int i = 0; i < selectedLogicElements.size(); i++) {
                     Vector2D pos = selectedLogicElements.get(i).getPosition();
-                    boardDTO.getSimulation().getLogicElementHandler().remove(pos);
+                    boardDTO.getSimulationForDrawing().getLogicElementHandler().remove(pos);
                 }
             }
             else if(event.getCode() == KeyCode.BACK_SPACE){
@@ -59,12 +59,12 @@ public class SelectionEventHandling {
                 List<Node> selectedNodes = boardDTO.getSelected().getNodesAsList();
                 for (int i = 0; i < selectedNodes.size(); i++) {
                     Vector2D pos = selectedNodes.get(i).getPosition();
-                    boardDTO.getSimulation().getNodeHandler().setDownWire(pos, WireState.NONE);
-                    boardDTO.getSimulation().getNodeHandler().setRightWire(pos, WireState.NONE);
+                    boardDTO.getSimulationForDrawing().getNodeHandler().setDownWire(pos, WireState.NONE);
+                    boardDTO.getSimulationForDrawing().getNodeHandler().setRightWire(pos, WireState.NONE);
                 }
                 for (int i = 0; i < selectedLogicElements.size(); i++) {
                     Vector2D pos = selectedLogicElements.get(i).getPosition();
-                    boardDTO.getSimulation().getLogicElementHandler().remove(pos);
+                    boardDTO.getSimulationForDrawing().getLogicElementHandler().remove(pos);
                 }
                 boardDTO.setShouldDrawSelectionRect(false);
             }
@@ -83,13 +83,13 @@ public class SelectionEventHandling {
 
                     //transfer from clipboard to simulation
                     List<LogicElement> pastedLogicElements = boardDTO.getPasted().getLogicElementsAsList();
-                    LogicElementHandler logicElements = boardDTO.getSimulation().getLogicElementHandler();
+                    LogicElementHandler logicElements = boardDTO.getSimulationForDrawing().getLogicElementHandler();
                     for (LogicElement element : pastedLogicElements) {
                         logicElements.add(LogicElementFactory.instance(element));
                     }
 
                     List<Node> pastedNodes = boardDTO.getPasted().getNodesAsList();
-                    NodeHandler nodes = boardDTO.getSimulation().getNodeHandler();
+                    NodeHandler nodes = boardDTO.getSimulationForDrawing().getNodeHandler();
                     for (Node pastedNode : pastedNodes) {
                         nodes.setNode(new Node(pastedNode));
                     }

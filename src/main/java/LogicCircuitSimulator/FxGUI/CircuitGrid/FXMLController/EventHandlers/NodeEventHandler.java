@@ -24,7 +24,7 @@ public class NodeEventHandler {
 
             if (event.getButton() == MouseButton.PRIMARY && event.isStillSincePress()) {
                 if(!boardDTO.shouldDrawPastedObjects()){
-                    new MouseCrossingSpecifier(boardDTO.getSimulation()){
+                    new MouseCrossingSpecifier(boardDTO.getSimulationForDrawing()){
                         @Override
                         public void doAction() {
                             if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
@@ -40,7 +40,7 @@ public class NodeEventHandler {
             boardDTO.setLastMousePosition(new Vector2D(event.getX(), event.getY()));
 
             if(event.getButton() == MouseButton.SECONDARY){
-                new MouseWireSpecifier(boardDTO.getSimulation()){
+                new MouseWireSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         this.updateWireState(WireState.NONE);
@@ -50,7 +50,7 @@ public class NodeEventHandler {
 
             if(event.getButton() == MouseButton.PRIMARY && !boardDTO.getIsLogicGateLifted().get()
             && !event.isShiftDown()){
-                new MouseWireSpecifier(boardDTO.getSimulation()){
+                new MouseWireSpecifier(boardDTO.getSimulationForDrawing()){
                     @Override
                     public void doAction() {
                         this.updateWireState(WireState.LOW);

@@ -7,6 +7,7 @@ import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -36,9 +37,11 @@ public class BoardDrawer {
     }
 
     public void draw(long now){
+        boardDTO.setSimulationForDrawing(new SimpleLCSSimulation().instanceOf(boardDTO.getSimulation()));
+        System.out.println(boardDTO.getSimulationForDrawing().getNodeHandler().getDownWire(new Vector2D(34,77)));
         Canvas canvas = boardDTO.getCanvas();
         Projection2D projection2D = boardDTO.getProjection2D();
-        LCSSimulation simulation = boardDTO.getSimulation();
+        LCSSimulation simulation = boardDTO.getSimulationForDrawing();
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateLifted();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();
@@ -83,8 +86,6 @@ public class BoardDrawer {
         }
 
         framesSinceLastFrame.getAndIncrement();
-
-        waitUntilNextFrame(now);
     }
 
     //Private functions
@@ -162,12 +163,5 @@ public class BoardDrawer {
 
     }
 
-    private void waitUntilNextFrame(long now){
-        int TARGET_FPS = boardDTO.getTARGET_FPS();
-        try {
-            Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

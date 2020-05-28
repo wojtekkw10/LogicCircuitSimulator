@@ -46,7 +46,7 @@ public class BoardEventHandler {
                     boardDTO.setUpsChanged(true);
                 }
                 else {
-                    boardDTO.setTARGET_UPS(100);
+                    boardDTO.setTARGET_UPS(10);
                     boardDTO.setUpsLimited(true);
                     boardDTO.setUpsChanged(true);
                 }
