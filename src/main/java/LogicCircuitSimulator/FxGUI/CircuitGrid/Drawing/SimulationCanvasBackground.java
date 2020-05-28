@@ -40,7 +40,7 @@ public class SimulationCanvasBackground {
 
         double backgroundDisappearingFactor = 1.5;
 
-        if(scale > boardDTO.getMIN_ZOOM() *backgroundDisappearingFactor){
+        if(scale > boardDTO.getMIN_ZOOM() * backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
                 for (int j = -gridShiftY; j < amountVertically - gridShiftY; j++) {
                     Vector2D pointPos = projection.project(new Vector2D(i,j));

@@ -82,7 +82,7 @@ public class BoardDrawer {
                 }
             }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged, boardDTO.getRelativeMouseToLogicGatePos());
 
-            LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
+            LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO);
             logicGateDragged.accept(drawLogicElement);
         }
 
@@ -109,7 +109,7 @@ public class BoardDrawer {
     private void drawLogicGates(Iterator<LogicElement> logicElements){
         Projection2D projection2D = boardDTO.getProjection2D();
 
-        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
+        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO);
         while(logicElements.hasNext()){
             logicElements.next().accept(drawLogicElement);
         }

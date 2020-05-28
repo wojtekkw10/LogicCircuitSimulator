@@ -25,7 +25,7 @@ public class PastedObjectsDrawer {
         List<LogicElement> logicElements = pastedObjects.getLogicElementsAsList();
         List<Node> nodes = pastedObjects.getNodesAsList();
 
-        LogicElementVisitor drawingVisitor = new DrawSquareLogicElementVisitor(graphicsContext, projection2D);
+        LogicElementVisitor drawingVisitor = new DrawSquareLogicElementVisitor(boardDTO);
         for (int i = 0; i < logicElements.size(); i++) {
             logicElements.get(i).accept(drawingVisitor);
         }

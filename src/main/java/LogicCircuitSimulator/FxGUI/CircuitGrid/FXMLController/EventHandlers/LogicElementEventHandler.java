@@ -59,7 +59,6 @@ public class LogicElementEventHandler {
                 new MouseLogicElementSpecifier(boardDTO.getSimulation()){
                     @Override
                     public void doAction() {
-                        System.out.println("HAHA");
                         boardDTO.setLogicGateDragged(getLogicElement());
                         boardDTO.getLogicGateDragged().setPosition(getPosition());
                         boardDTO.getIsLogicGateLifted().set(true);

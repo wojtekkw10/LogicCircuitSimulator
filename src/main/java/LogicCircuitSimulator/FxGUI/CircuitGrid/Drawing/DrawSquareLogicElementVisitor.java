@@ -1,5 +1,6 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.LogicElementVisitor;
@@ -14,10 +15,12 @@ import java.util.List;
 public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     private final Projection2D projection2D;
     private final GraphicsContext graphicsContext;
+    private final BoardDTO boardDTO;
 
-    public DrawSquareLogicElementVisitor(GraphicsContext graphicsContext, Projection2D projection2D){
-        this.graphicsContext = graphicsContext;
-        this.projection2D = projection2D;
+    public DrawSquareLogicElementVisitor(BoardDTO boardDTO){
+        this.graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
+        this.projection2D = boardDTO.getProjection2D();
+        this.boardDTO = boardDTO;
     }
 
     @Override
@@ -138,12 +141,16 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
-        gc.save();
-        gc.translate(x, y);
-        gc.rotate(degrees);
-        gc.translate(-x, -y);
-        gc.fillText(text, x, y);
-        gc.restore();
+        double labelDisappearingFactor = 1.5;
+        if(boardDTO.getProjection2D().getScale() > boardDTO.getMIN_ZOOM() * labelDisappearingFactor){
+            gc.save();
+            gc.translate(x, y);
+            gc.rotate(degrees);
+            gc.translate(-x, -y);
+            gc.fillText(text, x, y);
+            gc.restore();
+        }
+
     }
 
     private void drawLinesFrom(List<Vector2D> points, Vector2D direction){
