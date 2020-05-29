@@ -5,6 +5,7 @@ import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Vector2D;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.IntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +43,7 @@ public class SimulationCanvasController {
 
         new AnimationTimer() {
             final BoardDrawer boardDrawer = new BoardDrawer(boardDTO, mainSimulationAnchorPane);
+            double accruedIterations = 0;
             @Override
             public void handle(long now) {
                 if(boardDTO.isUpsChanged() && syncMode == BoardDTO.SyncMode.NOT_SYNCHRONIZED){
@@ -53,10 +55,19 @@ public class SimulationCanvasController {
                 boardDrawer.draw(now);
 
                 if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
-                    if(boardDTO.getTARGET_UPS() < 1000){
-                        for (int i = 0; i < boardDTO.getTARGET_UPS(); i++) {
+                    if(boardDTO.getTARGET_UPS() < 200000){
+                        for (int i = 0; i < boardDTO.getTARGET_UPS()/60; i++) {
                             simulationTask.run();
                         }
+                        accruedIterations += boardDTO.getTARGET_UPS()/60.0 - (int)(boardDTO.getTARGET_UPS()/60) ;
+
+                        if(accruedIterations > 1){
+                            for (int i = 0; i < (int)accruedIterations; i++) {
+                                simulationTask.run();
+                            }
+                            accruedIterations = accruedIterations - (int)accruedIterations;
+                        }
+
                     }
                     else{
                         while(System.nanoTime() < now + (1e9/60)){
@@ -85,6 +96,9 @@ public class SimulationCanvasController {
 
     public void setSimulation(LCSSimulation simulation) {
         boardDTO.setSimulation(simulation);
+    }
+    public IntegerProperty getTargetUpsProperty(){
+        return this.boardDTO.getUPSProperty();
     }
 }
 

@@ -81,3 +81,33 @@
     -fx-pref-width: 66px;
     -fx-max-width: 100px;
 }
+
+/* Styling the slider track */
+.ups_slider > .track {
+    -fx-background-color: #FFF;
+}
+
+/* Styling the slider thumb */
+.ups_slider > .thumb {
+    -fx-background-color: #FFF;
+}
+
+/* Styling the filled track */
+.ups_slider > .colored-track {
+    -fx-background-color: #fa7e1c;
+}
+
+/* Styling the animated thumb */
+.ups_slider > .animated-thumb {
+    -fx-background-color: #ce6a1c;
+}
+
+.ups_slider_regular .track{
+    -fx-pref-height: 1px;
+}
+
+/* Styling the slider value text inside animated thumb */
+.ups_slider .slider-value {
+    -fx-fill: white;
+    -fx-stroke: white;
+}

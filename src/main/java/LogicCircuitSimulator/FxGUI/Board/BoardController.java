@@ -6,10 +6,17 @@ import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXTextField;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.NumberStringConverter;
 
 public class BoardController {
 
@@ -18,9 +25,12 @@ public class BoardController {
 
     @FXML
     public AnchorPane boardAnchorPane;
+    public JFXSlider upsSlider;
 
     @FXML
     void initialize(){
+        IntegerProperty ups = simulationController.getTargetUpsProperty();
+        ups.bindBidirectional(upsSlider.valueProperty());
     }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {

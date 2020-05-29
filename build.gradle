@@ -23,9 +23,23 @@ repositories {
     jcenter()
 }
 
+/*run {
+jvmArgs = {
+    "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix", 
+        "--add-exports=javafx.controls/com.sun.javafx.scene.control=com.jfoenix", 
+        "--add-exports=javafx.base/com.sun.javafx.binding=com.jfoenix",
+    "--add-exports=javafx.graphics/com.sun.javafx.stage=com.jfoenix",
+    "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix"
+}
+*//*     jvmArgs = [ 
+
+]*//*
+ }*/
+
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.2-jre'
+    implementation 'com.jfoenix:jfoenix:9.0.8'
 
     // Use JUnit test framework
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
@@ -39,6 +53,8 @@ dependencies {
         exclude group: 'org.ejml', module: 'ejml-dsparse'
         exclude group: 'org.ejml', module: 'ejml-csparse'
     }
+
+
 }
 
 java {

@@ -8,6 +8,8 @@ import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicO
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 
 import java.util.concurrent.Executors;
@@ -20,7 +22,7 @@ public class BoardDTO {
     private final double MIN_ZOOM = 5;
 
     private final int TARGET_FPS = 100;
-    private int TARGET_UPS = 10;
+    private IntegerProperty TARGET_UPS = new SimpleIntegerProperty(25);
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
     private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
@@ -178,11 +180,10 @@ public class BoardDTO {
     }
 
     public void setTARGET_UPS(int TARGET_UPS) {
-        this.TARGET_UPS = TARGET_UPS;
-    }
+        this.TARGET_UPS.setValue(TARGET_UPS);  }
 
     public int getTARGET_UPS() {
-        return TARGET_UPS;
+        return TARGET_UPS.getValue();
     }
 
     public AtomicBoolean getIsLogicGateLifted() {
@@ -239,5 +240,9 @@ public class BoardDTO {
 
     public void setUpsChanged(boolean upsChanged) {
         this.upsChanged = upsChanged;
+    }
+
+    public IntegerProperty getUPSProperty(){
+        return TARGET_UPS;
     }
 }
