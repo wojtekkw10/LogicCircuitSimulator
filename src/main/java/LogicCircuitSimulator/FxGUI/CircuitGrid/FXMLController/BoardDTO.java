@@ -21,10 +21,8 @@ public class BoardDTO {
     private final double MAX_ZOOM = 50;
     private final double MIN_ZOOM = 5;
 
-    private final int TARGET_FPS = 100;
     private IntegerProperty TARGET_UPS = new SimpleIntegerProperty(25);
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
-    private final AtomicInteger framesSinceLastFrame = new AtomicInteger();
 
     private final Canvas canvas;
     private final Projection2D projection2D = new SimpleMatrixProjection2D(new Vector2D(0,0), 20);
@@ -43,7 +41,6 @@ public class BoardDTO {
     private SelectionDTO copied = new SelectionDTO();
     private SelectionDTO pasted = new SelectionDTO();
 
-    private final SyncMode syncMode = SyncMode.SYNCHRONIZED;
     private LCSSimulation simulation = new SimpleLCSSimulation();
 
     private boolean shouldDrawSpeedStats = true;
@@ -125,14 +122,11 @@ public class BoardDTO {
 
     private Vector2D relativeMouseToLogicGatePos = new Vector2D(0,0);
 
-
-
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public void setSimulation(LCSSimulation simulation) {
         this.simulation = simulation;
     }
-
 
     public Vector2D getRelativeMouseToLogicGatePos() {
         return relativeMouseToLogicGatePos;
@@ -146,13 +140,8 @@ public class BoardDTO {
         return executor;
     }
 
-    public void setExecutor(ScheduledExecutorService executor) {
-        this.executor = executor;
-    }
-
     public BoardDTO(Canvas canvas) {
         this.canvas = canvas;
-        //this.simulation.initTestSimulation();
     }
 
     public Canvas getCanvas() {
@@ -173,10 +162,6 @@ public class BoardDTO {
 
     public void setLastMousePosition(Vector2D lastMousePosition) {
         this.lastMousePosition = lastMousePosition;
-    }
-
-    public int getTARGET_FPS() {
-        return TARGET_FPS;
     }
 
     public void setTARGET_UPS(int TARGET_UPS) {
@@ -204,14 +189,6 @@ public class BoardDTO {
 
     public AtomicInteger getUpdatesSinceLastFrame() {
         return updatesSinceLastFrame;
-    }
-
-    public AtomicInteger getFramesSinceLastFrame() {
-        return framesSinceLastFrame;
-    }
-
-    public SyncMode getSyncMode() {
-        return syncMode;
     }
 
     public LCSSimulation getSimulation() {

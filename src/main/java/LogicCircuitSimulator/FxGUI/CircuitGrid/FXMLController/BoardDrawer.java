@@ -28,6 +28,9 @@ public class BoardDrawer {
     private int currentFPS = 0;
     private int currentUPS = 0;
 
+    private final int TARGET_FPS = 100;
+    private final AtomicInteger framesSinceLastFrame = new AtomicInteger(0);
+
 
     public BoardDrawer(BoardDTO boardDTO, AnchorPane anchorPane) {
         this.boardDTO = boardDTO;
@@ -42,7 +45,6 @@ public class BoardDrawer {
         AtomicBoolean isLogicGateDragged = boardDTO.getIsLogicGateLifted();
         LogicElement logicGateDragged = boardDTO.getLogicGateDragged();
         Vector2D lastMousePosition = boardDTO.getLastMousePosition();
-        AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
 
         graphicsContext.setLineWidth(1);
 
@@ -137,7 +139,6 @@ public class BoardDrawer {
     }
 
     private void drawSpeedStats(long now){
-        AtomicInteger framesSinceLastFrame = boardDTO.getFramesSinceLastFrame();
         AtomicInteger updatesSinceLastFrame = boardDTO.getUpdatesSinceLastFrame();
 
         if(now > lastNow.get() + 1e9){
@@ -163,7 +164,6 @@ public class BoardDrawer {
     }
 
     private void waitUntilNextFrame(long now){
-        int TARGET_FPS = boardDTO.getTARGET_FPS();
         try {
             Thread.sleep((long) Math.max(0, ((1e9 / TARGET_FPS) - (System.nanoTime() - now))/1000000));
         } catch (InterruptedException e) {

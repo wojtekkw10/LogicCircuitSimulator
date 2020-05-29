@@ -20,7 +20,7 @@ public class SimulationCanvasController {
     public AnchorPane mainSimulationAnchorPane;
 
     private BoardDTO boardDTO;
-
+    private final BoardDTO.SyncMode syncMode = BoardDTO.SyncMode.SYNCHRONIZED;
     private ScheduledExecutorService executor;
 
     private final Runnable simulationTask = () -> {
@@ -33,7 +33,6 @@ public class SimulationCanvasController {
         App.primaryStage.setOnCloseRequest(e -> this.shutdown());
         boardDTO = new BoardDTO(mainSimulationCanvas);
         executor = boardDTO.getExecutor();
-        BoardDTO.SyncMode syncMode = boardDTO.getSyncMode();
         new BoardEventHandler(boardDTO);
 
         if(syncMode == BoardDTO.SyncMode.NOT_SYNCHRONIZED){
