@@ -80,7 +80,7 @@
                                     <Insets left="10.0" top="5.0" />
                                  </padding>
                               </Label>
-                              <JFXSlider fx:id="upsSlider" blockIncrement="1000.0" majorTickUnit="1000.0" max="200000.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" styleClass="ups_slider" stylesheets="@../stylesheets/MainStylesheet.css" value="1000.0">
+                              <JFXSlider fx:id="upsSlider" blockIncrement="1000.0" focusTraversable="false" majorTickUnit="1000.0" max="200000.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" styleClass="ups_slider" stylesheets="@../stylesheets/MainStylesheet.css" value="1000.0">
                                  <padding>
                                     <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>

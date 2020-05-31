@@ -12,10 +12,14 @@ import javafx.scene.paint.Color;
 public class DrawNodeVisitor implements NodeVisitor {
     private final Projection2D projection2D;
     private final GraphicsContext graphicsContext;
+    private final Color activeColor;
+    private final Color inactiveColor;
 
-    public DrawNodeVisitor(GraphicsContext graphicsContext, Projection2D projection2D){
+    public DrawNodeVisitor(GraphicsContext graphicsContext, Projection2D projection2D, Color activeColor, Color inactiveColor){
         this.graphicsContext = graphicsContext;
         this.projection2D = projection2D;
+        this.activeColor = activeColor;
+        this.inactiveColor = inactiveColor;
     }
 
     @Override
@@ -25,20 +29,20 @@ public class DrawNodeVisitor implements NodeVisitor {
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(pos);
             Vector2D projectedEnd = projection2D.project(new Vector2D(pos.getX()+1, pos.getY()));
-            if(node.getRightWire() == WireState.LOW) graphicsContext.setStroke(Color.GREY);
-            else graphicsContext.setStroke(Color.AQUA);
+            if(node.getRightWire() == WireState.LOW) graphicsContext.setStroke(inactiveColor);
+            else graphicsContext.setStroke(activeColor);
             graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
         }
         if(node.getDownWire() != WireState.NONE){
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(pos);
             Vector2D projectedEnd = projection2D.project(new Vector2D(pos.getX(), pos.getY()+1));
-            if(node.getDownWire() == WireState.LOW) graphicsContext.setStroke(Color.GREY);
-            else graphicsContext.setStroke(Color.AQUA);
+            if(node.getDownWire() == WireState.LOW) graphicsContext.setStroke(inactiveColor);
+            else graphicsContext.setStroke(activeColor);
             graphicsContext.strokeLine(projectedStart.getX(), projectedStart.getY(), projectedEnd.getX(), projectedEnd.getY());
         }
         if(node.isTouching() == Crossing.TOUCHING){
-            graphicsContext.setFill(Color.AQUA);
+            graphicsContext.setFill(activeColor);
             Vector2D pos = node.getPosition();
             Vector2D projectedStart = projection2D.project(new Vector2D(pos.getX()-0.1, pos.getY()-0.1));
             Vector2D projectedEnd = projection2D.project(new Vector2D(pos.getX()+0.1, pos.getY()+0.1));

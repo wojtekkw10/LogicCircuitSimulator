@@ -16,11 +16,15 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     private final Projection2D projection2D;
     private final GraphicsContext graphicsContext;
     private final BoardDTO boardDTO;
+    private final Color activeColor;
+    private final Color inactiveColor;
 
-    public DrawSquareLogicElementVisitor(BoardDTO boardDTO){
+    public DrawSquareLogicElementVisitor(BoardDTO boardDTO, Color activeColor, Color inactiveColor){
         this.graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
         this.projection2D = boardDTO.getProjection2D();
         this.boardDTO = boardDTO;
+        this.activeColor = activeColor;
+        this.inactiveColor = inactiveColor;
     }
 
     @Override
@@ -135,9 +139,9 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     private void drawGateInside(Vector2D topLeft, Vector2D bottomRight) {
         graphicsContext.setFill(Color.BLACK);
         graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-        graphicsContext.setStroke(Color.GREY);
+        graphicsContext.setStroke(inactiveColor);
         graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-        graphicsContext.setFill(Color.AQUA);
+        graphicsContext.setFill(activeColor);
     }
 
     private void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {

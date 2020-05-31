@@ -8,6 +8,7 @@ import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicE
 import LogicCircuitSimulator.Simulation.NodeHandler.Node;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeVisitor;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -25,11 +26,11 @@ public class PastedObjectsDrawer {
         List<LogicElement> logicElements = pastedObjects.getLogicElementsAsList();
         List<Node> nodes = pastedObjects.getNodesAsList();
 
-        LogicElementVisitor drawingVisitor = new DrawSquareLogicElementVisitor(boardDTO);
+        LogicElementVisitor drawingVisitor = new DrawSquareLogicElementVisitor(boardDTO, Color.AQUA, Color.GREY);
         for (int i = 0; i < logicElements.size(); i++) {
             logicElements.get(i).accept(drawingVisitor);
         }
-        NodeVisitor drawingNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D);
+        NodeVisitor drawingNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D, Color.AQUA, Color.GREY);
         for (int i = 0; i < nodes.size(); i++) {
             nodes.get(i).accept(drawingNodeVisitor);
         }

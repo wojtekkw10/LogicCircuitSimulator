@@ -65,6 +65,15 @@ public class BoardDrawer {
 
             SelectionDTO selected = selector.getSelectedObjects();
             boardDTO.setSelected(selected);
+
+            DrawNodeVisitor drawNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D, Color.WHITE, Color.WHITE);
+            DrawSquareLogicElementVisitor drawSquareLogicElementVisitor = new DrawSquareLogicElementVisitor(boardDTO, Color.WHITE, Color.WHITE);
+            for (int i = 0; i < selected.getLogicElementsAsList().size(); i++) {
+                selected.getLogicElementsAsList().get(i).accept(drawSquareLogicElementVisitor);
+            }
+            for (int i = 0; i < selected.getNodesAsList().size(); i++) {
+                selected.getNodesAsList().get(i).accept(drawNodeVisitor);
+            }
         }
 
         if(boardDTO.shouldDrawPastedObjects()){
@@ -80,7 +89,7 @@ public class BoardDrawer {
                 }
             }.getElementPosFromElementAndMousePosition(lastMousePosition, projection2D, logicGateDragged, boardDTO.getRelativeMouseToLogicGatePos());
 
-            LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO);
+            LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO, Color.AQUA, Color.GREY);
             logicGateDragged.accept(drawLogicElement);
         }
 
@@ -105,9 +114,7 @@ public class BoardDrawer {
     }
 
     private void drawLogicGates(Iterator<LogicElement> logicElements){
-        Projection2D projection2D = boardDTO.getProjection2D();
-
-        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO);
+        LogicElementVisitor drawLogicElement = new DrawSquareLogicElementVisitor(boardDTO, Color.AQUA, Color.GREY);
         while(logicElements.hasNext()){
             logicElements.next().accept(drawLogicElement);
         }
@@ -117,7 +124,7 @@ public class BoardDrawer {
         Projection2D projection2D = boardDTO.getProjection2D();
         Iterator<Node> nodes = nodeHandler.iterator();
 
-        NodeVisitor drawNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D);
+        NodeVisitor drawNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D, Color.AQUA, Color.GREY);
         while(nodes.hasNext()){
             Node node = nodes.next();
             int numberOfSurroundingWires = getNumberOfSurroundingWires(node, nodeHandler);

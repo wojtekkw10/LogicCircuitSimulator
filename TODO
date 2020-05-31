@@ -44,19 +44,22 @@ DONE:
 - refactor event handling
 - Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
 - play and pause simulation buttons - ups slider
-- refactor event handlers to limit boarddto
-DOING:
+- refactor event handlers to limit boardDTO
 
+DOING:
+TODO: highlight selected objects
 
 TO BE DONE:
 TODO: ctrl-z, ctrl-shift-z
-TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
-TODO: dodaj graficzne opisy wejść i wyjść
-TODO: windowSwitcher in all controllers or as a Singleton
-TODO: automatically make touching when two wires around a node/ remove empty nodes in simulation
+TODO: exponential slider value
+
 
 
 MAYBE:
+TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
+TODO: dodaj graficzne opisy wejść i wyjść
+TODO: automatically make touching when two wires around a node/ remove empty nodes in simulation
+TODO: windowSwitcher in all controllers or as a Singleton
 TODO: improve multithreading
 TODO: drawing should be done on a copy of the simulation
 TODO: simulation kinda breaks when going at full speed
