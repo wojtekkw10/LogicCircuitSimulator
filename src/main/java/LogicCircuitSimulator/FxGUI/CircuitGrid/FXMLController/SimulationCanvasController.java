@@ -54,7 +54,7 @@ public class SimulationCanvasController {
                 boardDrawer.draw(now);
 
                 if(syncMode == BoardDTO.SyncMode.SYNCHRONIZED){
-                    if(boardDTO.getTARGET_UPS() < 200000){
+                    if(boardDTO.getTARGET_UPS() < 1000000){
                         for (int i = 0; i < boardDTO.getTARGET_UPS()/60; i++) {
                             simulationTask.run();
                         }

@@ -45,13 +45,15 @@ DONE:
 - Create an interface for Simulation and it should be the only accessible thing in the package, somehow hide as much in the SimulationPackage (module system)
 - play and pause simulation buttons - ups slider
 - refactor event handlers to limit boardDTO
+- highlight selected objects
 
 DOING:
-TODO: highlight selected objects
+
+TODO: exponential slider value
 
 TO BE DONE:
 TODO: ctrl-z, ctrl-shift-z
-TODO: exponential slider value
+
 
 
 

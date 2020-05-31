@@ -12,8 +12,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.NumberStringConverter;
@@ -25,12 +29,34 @@ public class BoardController {
 
     @FXML
     public AnchorPane boardAnchorPane;
-    public JFXSlider upsSlider;
+    public Slider upsSlider;
+    public Label upsLabel;
 
     @FXML
     void initialize(){
         IntegerProperty ups = simulationController.getTargetUpsProperty();
-        ups.bindBidirectional(upsSlider.valueProperty());
+        //ups.bindBidirectional(upsSlider.valueProperty());
+        upsSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int newUps = (int)Math.pow(1.15,  newValue.doubleValue());
+
+
+                if(newUps > 1_000_000){
+                    upsLabel.textProperty().setValue("MAX");
+                }
+                else{
+                    String labelText = String.format("%d", newUps);
+                    upsLabel.textProperty().setValue(labelText);
+                }
+
+
+
+
+
+                ups.setValue(newUps);
+            }
+        });
     }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
