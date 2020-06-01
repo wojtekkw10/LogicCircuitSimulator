@@ -15,9 +15,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.NumberStringConverter;
@@ -41,7 +44,6 @@ public class BoardController {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 int newUps = (int)Math.pow(1.15,  newValue.doubleValue());
 
-
                 if(newUps > 1_000_000){
                     upsLabel.textProperty().setValue("MAX");
                 }
@@ -49,12 +51,9 @@ public class BoardController {
                     String labelText = String.format("%d", newUps);
                     upsLabel.textProperty().setValue(labelText);
                 }
-
-
-
-
-
                 ups.setValue(newUps);
+                boardAnchorPane.fireEvent(new KeyEvent(boardAnchorPane, boardAnchorPane, KeyEvent.KEY_PRESSED,
+                        "", "", KeyCode.TAB, false, false, false, false));
             }
         });
     }

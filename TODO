@@ -46,18 +46,16 @@ DONE:
 - play and pause simulation buttons - ups slider
 - refactor event handlers to limit boardDTO
 - highlight selected objects
+- exponential slider value
 
 DOING:
 
-TODO: exponential slider value
-
 TO BE DONE:
-TODO: ctrl-z, ctrl-shift-z
-
-
-
+TODO: ctrl-s
+TODO: replace selectionDTO with the Simulation object
 
 MAYBE:
+TODO: ctrl-z, ctrl-shift-z - way too hard
 TODO: blokowanie dodawania przewodów i bramek na istniejących już bramkach i przewodach
 TODO: dodaj graficzne opisy wejść i wyjść
 TODO: automatically make touching when two wires around a node/ remove empty nodes in simulation

@@ -1,12 +1,12 @@
 package LogicCircuitSimulator.Simulation;
 
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
+import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.ArrayNodeHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.Generator;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
+import LogicCircuitSimulator.Simulation.NodeHandler.*;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
@@ -15,12 +15,32 @@ import java.util.List;
 
 public class SimpleLCSSimulation implements LCSSimulation{
     private NodeHandler nodeHandler = new ArrayNodeHandler();
-    private LogicElementHandler logicElements = new SimpleLogicElementHandler();
+    private LogicElementHandler logicElementHandler = new SimpleLogicElementHandler();
+    List<NodeHandler> history = new ArrayList<>();
+
+    public SimpleLCSSimulation(){
+    }
+
+    public SimpleLCSSimulation(LCSSimulation simulation){
+        NodeHandler nodeHandler = simulation.getNodeHandler();
+        LogicElementHandler logicElementHandler = simulation.getLogicElementHandler();
+
+        Iterator<Node> nodeIterator = nodeHandler.iterator();
+        Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
+
+        while(nodeIterator.hasNext()){
+            this.nodeHandler.setNode(nodeIterator.next());
+        }
+        while(logicElementIterator.hasNext()){
+            this.logicElementHandler.add(LogicElementFactory.instance(logicElementIterator.next()));
+        }
+
+    }
 
     public void runOnce() {
         List<Generator> generators = new ArrayList<>();
 
-        Iterator<LogicElement> logicElementIterator = logicElements.iterator();
+        Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
         while(logicElementIterator.hasNext()) {
             LogicElement element = logicElementIterator.next();
             List<Vector2D> inputPositions = element.getGeometry().getInputPositions();
@@ -49,12 +69,12 @@ public class SimpleLCSSimulation implements LCSSimulation{
         return nodeHandler;
     }
     public LogicElementHandler getLogicElementHandler(){
-        return logicElements;
+        return logicElementHandler;
     }
     public void setNodeHandler(NodeHandler nodeHandler) {
         this.nodeHandler = nodeHandler;
     }
     public void setLogicElementHandler(LogicElementHandler logicElements) {
-        this.logicElements = logicElements;
+        this.logicElementHandler = logicElements;
     }
 }

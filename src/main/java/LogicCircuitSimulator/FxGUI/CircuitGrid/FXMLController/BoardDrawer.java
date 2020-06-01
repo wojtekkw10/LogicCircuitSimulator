@@ -130,7 +130,6 @@ public class BoardDrawer {
             int numberOfSurroundingWires = getNumberOfSurroundingWires(node, nodeHandler);
             if(numberOfSurroundingWires < 3)
                 node = new Node(node.getPosition(), node.getRightWire(), node.getDownWire(), Crossing.NOT_TOUCHING);
-
             node.accept(drawNodeVisitor);
         }
     }

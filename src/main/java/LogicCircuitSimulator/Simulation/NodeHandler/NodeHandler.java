@@ -55,6 +55,4 @@ public interface NodeHandler {
      * @param generators list of generators
      */
     void propagateGenerators(List<Generator> generators);
-
-
 }

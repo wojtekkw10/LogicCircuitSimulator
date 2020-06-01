@@ -57,6 +57,7 @@ public class SimulationCanvasController {
                     if(boardDTO.getTARGET_UPS() < 1000000){
                         for (int i = 0; i < boardDTO.getTARGET_UPS()/60; i++) {
                             simulationTask.run();
+                            if(System.nanoTime() > now + (1e9/60)) break;
                         }
                         accruedIterations += boardDTO.getTARGET_UPS()/60.0 - (int)(boardDTO.getTARGET_UPS()/60) ;
 

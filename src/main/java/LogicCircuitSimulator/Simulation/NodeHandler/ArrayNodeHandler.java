@@ -1,11 +1,13 @@
 package LogicCircuitSimulator.Simulation.NodeHandler;
 
+import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNode;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNodeGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.NodeGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Simulation.Orientation;
+import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.*;
@@ -14,6 +16,18 @@ import java.util.*;
  * Stores and processes wire data in the grid
  */
 public final class ArrayNodeHandler implements NodeHandler {
+
+    public ArrayNodeHandler(){
+
+    }
+
+    public ArrayNodeHandler(NodeHandler nodeHandler){
+        Iterator<Node> iterator = nodeHandler.iterator();
+        while(iterator.hasNext()){
+            this.nodeGrid.setNode(iterator.next());
+        }
+    }
+
     /**
      * Stores node data
      */

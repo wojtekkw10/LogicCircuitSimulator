@@ -80,7 +80,7 @@
                                     <Insets left="10.0" top="5.0" />
                                  </padding>
                               </Label>
-                              <Slider fx:id="upsSlider" max="99.0" min="-1.0" prefHeight="30.0" styleClass="ups_slider_regular" stylesheets="@../stylesheets/MainStylesheet.css">
+                              <Slider fx:id="upsSlider" focusTraversable="false" max="99.0" min="-1.0" prefHeight="30.0" styleClass="ups_slider_regular" stylesheets="@../stylesheets/MainStylesheet.css">
                                  <HBox.margin>
                                     <Insets left="6.0" right="4.0" top="5.0" />
                                  </HBox.margin>
