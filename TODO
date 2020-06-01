@@ -47,12 +47,15 @@ DONE:
 - refactor event handlers to limit boardDTO
 - highlight selected objects
 - exponential slider value
+- ctrl-s
 
 DOING:
 
-TO BE DONE:
-TODO: ctrl-s
 TODO: replace selectionDTO with the Simulation object
+
+TO BE DONE:
+TODO: import as 3SAT
+TODO: minimization algorithm
 
 MAYBE:
 TODO: ctrl-z, ctrl-shift-z - way too hard

@@ -23,7 +23,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.util.converter.NumberStringConverter;
+
+import java.io.File;
+
+import static LogicCircuitSimulator.App.primaryStage;
 
 public class BoardController {
 
@@ -61,7 +66,9 @@ public class BoardController {
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         LCSSimulation simulation = simulationController.getSimulation();
         String serializedSimulation = new SimpleLCSSimulationSerializer().serialize(simulation);
-        new FileSystemExternalDataStorage().save(null, serializedSimulation);
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showSaveDialog(primaryStage);
+        new FileSystemExternalDataStorage().save(selectedFile, serializedSimulation);
     }
 
     public void onLoadButtonClicked(MouseEvent mouseEvent) {

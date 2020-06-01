@@ -1,6 +1,8 @@
 package LogicCircuitSimulator.Simulation.ExternalDataStorage;
 
+import java.io.File;
+
 public interface ExternalDataStorage {
-    void save(String name, String data);
+    void save(File file, String data);
     String load(String name);
 }

@@ -167,6 +167,11 @@ public class BoardDrawer {
             graphicsContext.fillText(stats, anchorPane.getWidth() - 20 - statsWidth * PIXELS_PER_CHAR,  20);
         }
 
+        if(boardDTO.isShouldNotifySavedFile() > 0){
+            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.fillText("LCS has been saved", 20, 20);
+            boardDTO.setShouldNotifySavedFile(boardDTO.isShouldNotifySavedFile() - 1);
+        }
     }
 
     private void waitUntilNextFrame(long now){

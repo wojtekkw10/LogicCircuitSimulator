@@ -12,6 +12,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -47,9 +48,29 @@ public class BoardDTO {
     private boolean isUpsLimited = true;
     private boolean upsChanged = false;
 
+    private int shouldNotifySavedFile = 0;
+
+    private File savingFile;
+
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
+    }
+
+    public File getSavingFile() {
+        return savingFile;
+    }
+
+    public void setSavingFile(File savingFile) {
+        this.savingFile = savingFile;
+    }
+
+    public int isShouldNotifySavedFile() {
+        return shouldNotifySavedFile;
+    }
+
+    public void setShouldNotifySavedFile(int shouldNotifySavedFile) {
+        this.shouldNotifySavedFile = shouldNotifySavedFile;
     }
 
     public SelectionDTO getSelected() {

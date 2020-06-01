@@ -12,12 +12,9 @@ import static LogicCircuitSimulator.App.primaryStage;
 
 public class FileSystemExternalDataStorage implements ExternalDataStorage{
     @Override
-    public void save(String name, String data) {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showSaveDialog(primaryStage);
-
-        if(selectedFile != null){
-            try(FileWriter fr = new FileWriter(selectedFile)){
+    public void save(File file, String data) {
+        if(file != null){
+            try(FileWriter fr = new FileWriter(file)){
                 fr.write(data);
             } catch (IOException e) {
                 e.printStackTrace();
