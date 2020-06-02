@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 public class SelectionRectDrawer {
     public void draw(BoardDTO boardDTO){
         GraphicsContext graphicsContext = boardDTO.getCanvas().getGraphicsContext2D();
-        Vector2D screenUpperLeft = boardDTO.getProjection2D().project(boardDTO.getSelectLeftUpper());
-        Vector2D screenRightBottom = boardDTO.getProjection2D().project(boardDTO.getSelectRightBottom());
+        Vector2D screenUpperLeft = boardDTO.getProjection2D().project(boardDTO.getSelectUpperLeft());
+        Vector2D screenRightBottom = boardDTO.getProjection2D().project(boardDTO.getSelectBottomRight());
         double width = screenRightBottom.getX() - screenUpperLeft.getX();
         double height = screenRightBottom.getY() - screenUpperLeft.getY();
         Vector2D leftUpper = screenUpperLeft;

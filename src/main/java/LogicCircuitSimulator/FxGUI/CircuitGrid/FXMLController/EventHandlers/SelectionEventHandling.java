@@ -111,20 +111,44 @@ public class SelectionEventHandling {
                     boardDTO.setSelecting(true);
                     boardDTO.setShouldDrawSelectionRect(true);
                     Vector2D leftUpper = boardDTO.getProjection2D().projectBack(new Vector2D(event.getX(), event.getY()));
-                    boardDTO.setSelectLeftUpper(leftUpper);
-                    boardDTO.setSelectRightBottom(leftUpper);
+                    boardDTO.setSelectFirstPoint(leftUpper);
+                    boardDTO.setSelectSecondPoint(leftUpper);
                 }
                 else{
-                    Vector2D rightBottom = boardDTO.getProjection2D().projectBack(new Vector2D(event.getX(), event.getY()));
+                    Vector2D secondPoint = boardDTO.getProjection2D().projectBack(new Vector2D(event.getX(), event.getY()));
+                    Vector2D firstPoint = boardDTO.getSelectFirstPoint();
+
+                    Vector2D upperLeft;
+                    Vector2D bottomRight;
+
+                    if(firstPoint.getX() < secondPoint.getX() && firstPoint.getY() < secondPoint.getY()){
+                        upperLeft = firstPoint;
+                        bottomRight = secondPoint;
+                    }
+                    else if(firstPoint.getX() > secondPoint.getX() && firstPoint.getY() < secondPoint.getY()){
+                        upperLeft = new Vector2D(secondPoint.getX(), firstPoint.getY());
+                        bottomRight = new Vector2D(firstPoint.getX(), secondPoint.getY());
+                    }
+                    else if(firstPoint.getX() < secondPoint.getX() && firstPoint.getY() > secondPoint.getY()){
+                        upperLeft = new Vector2D(firstPoint.getX(), secondPoint.getY());
+                        bottomRight = new Vector2D(secondPoint.getX(), firstPoint.getY());
+                    }
+                    else{
+                        upperLeft = new Vector2D(secondPoint);
+                        bottomRight = new Vector2D(firstPoint);
+                    }
 
 
-                    if(!boardDTO.getSelectRightBottom().equals(rightBottom)){
-                        boardDTO.setSelectRightBottom(rightBottom);
+                    if(!boardDTO.getSelectBottomRight().equals(bottomRight) || !boardDTO.getSelectUpperLeft().equals(upperLeft)){
+                        boardDTO.setSelectBottomRight(bottomRight);
+                        boardDTO.setSelectUpperLeft(upperLeft);
                         Simulation2DSelector selector = new Simulation2DSelector(boardDTO);
                         SelectionDTO selected = selector.getSelectedObjects();
                         boardDTO.setSelected(selected);
                     }
-                    boardDTO.setSelectRightBottom(rightBottom);
+
+                    boardDTO.setSelectBottomRight(bottomRight);
+                    boardDTO.setSelectUpperLeft(upperLeft);
                 }
             }
         };

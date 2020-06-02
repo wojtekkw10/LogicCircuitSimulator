@@ -26,8 +26,8 @@ public class Simulation2DSelector {
             LogicElement element = logicElements.next();
             double x = element.getGeometry().getPosition().getX();
             double y = element.getGeometry().getPosition().getY();
-            if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
-                    y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
+            if(x > boardDTO.getSelectFirstPoint().getX() && x < boardDTO.getSelectSecondPoint().getX() &&
+                    y > boardDTO.getSelectFirstPoint().getY() && y < boardDTO.getSelectSecondPoint().getY()){
                 selectedLogicElements.add(
                         LogicElementFactory.instance(
                                 element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
@@ -42,8 +42,8 @@ public class Simulation2DSelector {
             Node node = nodes.next();
             double x = node.getPosition().getX();
             double y = node.getPosition().getY();
-            if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
-                    y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
+            if(x > boardDTO.getSelectFirstPoint().getX() && x < boardDTO.getSelectSecondPoint().getX() &&
+                    y > boardDTO.getSelectFirstPoint().getY() && y < boardDTO.getSelectSecondPoint().getY()){
                 selectedNodes.add(node);
             }
         }
@@ -59,8 +59,8 @@ public class Simulation2DSelector {
             Node node = nodes.next();
             double x = node.getPosition().getX();
             double y = node.getPosition().getY();
-            if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
-                    y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
+            if(x > boardDTO.getSelectUpperLeft().getX() && x < boardDTO.getSelectBottomRight().getX() &&
+                    y > boardDTO.getSelectUpperLeft().getY() && y < boardDTO.getSelectBottomRight().getY()){
                nodeHandler.setNode(node);
             }
         }
@@ -70,8 +70,8 @@ public class Simulation2DSelector {
             LogicElement element = logicElements.next();
             double x = element.getGeometry().getPosition().getX();
             double y = element.getGeometry().getPosition().getY();
-            if(x > boardDTO.getSelectLeftUpper().getX() && x < boardDTO.getSelectRightBottom().getX() &&
-                    y > boardDTO.getSelectLeftUpper().getY() && y < boardDTO.getSelectRightBottom().getY()){
+            if(x > boardDTO.getSelectUpperLeft().getX() && x < boardDTO.getSelectBottomRight().getX() &&
+                    y > boardDTO.getSelectUpperLeft().getY() && y < boardDTO.getSelectBottomRight().getY()){
                 logicElementHandler.add(LogicElementFactory.instance(element));
             }
         }

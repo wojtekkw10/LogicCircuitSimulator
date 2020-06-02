@@ -35,8 +35,10 @@ public class BoardDTO {
     private boolean isSelecting = false;
     private boolean shouldDrawSelectionRect = false;
     private boolean shouldDrawPastedSystem = false;
-    private Vector2D selectLeftUpper;
-    private Vector2D selectRightBottom;
+    private Vector2D selectFirstPoint;
+    private Vector2D selectSecondPoint;
+    private Vector2D selectUpperLeft = new Vector2D(0,0);
+    private Vector2D selectBottomRight = new Vector2D(0,0);
 
     private SelectionDTO selected = new SelectionDTO();
     private SelectionDTO copied = new SelectionDTO();
@@ -55,6 +57,22 @@ public class BoardDTO {
     enum SyncMode{
         SYNCHRONIZED,
         NOT_SYNCHRONIZED
+    }
+
+    public Vector2D getSelectUpperLeft() {
+        return selectUpperLeft;
+    }
+
+    public void setSelectUpperLeft(Vector2D selectUpperLeft) {
+        this.selectUpperLeft = selectUpperLeft;
+    }
+
+    public Vector2D getSelectBottomRight() {
+        return selectBottomRight;
+    }
+
+    public void setSelectBottomRight(Vector2D selectBottomRight) {
+        this.selectBottomRight = selectBottomRight;
     }
 
     public File getSavingFile() {
@@ -117,20 +135,20 @@ public class BoardDTO {
         this.shouldDrawPastedSystem = shouldDrawPastedSystem;
     }
 
-    public Vector2D getSelectLeftUpper() {
-        return selectLeftUpper;
+    public Vector2D getSelectFirstPoint() {
+        return selectFirstPoint;
     }
 
-    public void setSelectLeftUpper(Vector2D selectLeftUpper) {
-        this.selectLeftUpper = selectLeftUpper;
+    public void setSelectFirstPoint(Vector2D selectFirstPoint) {
+        this.selectFirstPoint = selectFirstPoint;
     }
 
-    public Vector2D getSelectRightBottom() {
-        return selectRightBottom;
+    public Vector2D getSelectSecondPoint() {
+        return selectSecondPoint;
     }
 
-    public void setSelectRightBottom(Vector2D selectRightBottom) {
-        this.selectRightBottom = selectRightBottom;
+    public void setSelectSecondPoint(Vector2D selectSecondPoint) {
+        this.selectSecondPoint = selectSecondPoint;
     }
 
     public boolean isSelecting() {
