@@ -2,6 +2,7 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.EventHandlers;
 
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.Simulation2DSelector;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
@@ -115,6 +116,14 @@ public class SelectionEventHandling {
                 }
                 else{
                     Vector2D rightBottom = boardDTO.getProjection2D().projectBack(new Vector2D(event.getX(), event.getY()));
+
+
+                    if(!boardDTO.getSelectRightBottom().equals(rightBottom)){
+                        boardDTO.setSelectRightBottom(rightBottom);
+                        Simulation2DSelector selector = new Simulation2DSelector(boardDTO);
+                        SelectionDTO selected = selector.getSelectedObjects();
+                        boardDTO.setSelected(selected);
+                    }
                     boardDTO.setSelectRightBottom(rightBottom);
                 }
             }

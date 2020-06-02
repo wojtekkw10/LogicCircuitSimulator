@@ -129,24 +129,27 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawGateLegs(LogicElement le, Vector2D inputLegDirection, Vector2D outputLegDirection) {
-        List<Vector2D> inputPositions = le.getGeometry().getInputPositions();
-        drawLinesFrom(inputPositions, inputLegDirection);
+        double labelDisappearingFactor = 2;
+        if(boardDTO.getProjection2D().getScale() > boardDTO.getMIN_ZOOM() * labelDisappearingFactor){
+            List<Vector2D> inputPositions = le.getGeometry().getInputPositions();
+            drawLinesFrom(inputPositions, inputLegDirection);
 
-        List<Vector2D> outputPositions = le.getGeometry().getOutputPositions();
-        drawLinesFrom(outputPositions, outputLegDirection);
+            List<Vector2D> outputPositions = le.getGeometry().getOutputPositions();
+            drawLinesFrom(outputPositions, outputLegDirection);
+        }
+
     }
 
     private void drawGateInside(Vector2D topLeft, Vector2D bottomRight) {
-        graphicsContext.setFill(Color.BLACK);
-        graphicsContext.fillRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
         graphicsContext.setStroke(inactiveColor);
         graphicsContext.strokeRect(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY());
-        graphicsContext.setFill(activeColor);
+
     }
 
     private void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
         double labelDisappearingFactor = 1.5;
         if(boardDTO.getProjection2D().getScale() > boardDTO.getMIN_ZOOM() * labelDisappearingFactor){
+            graphicsContext.setFill(activeColor);
             gc.save();
             gc.translate(x, y);
             gc.rotate(degrees);

@@ -32,6 +32,11 @@ public class ArrayNodeGrid implements NodeGrid {
     }
 
     @Override
+    public void removeNode(Vector2D pos) {
+        nodes.remove(pos);
+    }
+
+    @Override
     public WireState getLeftWire(Vector2D pos) {
         return getNode(new Vector2D(pos.getX()-1, pos.getY())).getRightWire();
     }

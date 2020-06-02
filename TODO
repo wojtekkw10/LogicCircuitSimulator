@@ -50,8 +50,8 @@ DONE:
 - ctrl-s
 
 DOING:
-
-TODO: replace selectionDTO with the Simulation object
+- optimizing selection
+- fix selection bugs
 
 TO BE DONE:
 TODO: import as 3SAT

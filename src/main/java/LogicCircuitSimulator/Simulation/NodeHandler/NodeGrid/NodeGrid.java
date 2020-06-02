@@ -12,6 +12,7 @@ import java.util.Iterator;
 public interface NodeGrid {
     Node getNode(Vector2D pos);
     void setNode(Node node);
+    void removeNode(Vector2D pos);
 
     WireState getLeftWire(Vector2D pos);
     WireState getUpWire(Vector2D pos);

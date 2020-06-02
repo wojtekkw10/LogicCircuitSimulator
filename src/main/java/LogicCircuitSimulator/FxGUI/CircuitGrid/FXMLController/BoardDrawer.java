@@ -61,10 +61,9 @@ public class BoardDrawer {
         //SELECTING RECT
         if(boardDTO.shouldDrawSelectionRect()){
             new SelectionRectDrawer().draw(boardDTO);
-            Simulation2DSelector selector = new Simulation2DSelector(boardDTO);
 
-            SelectionDTO selected = selector.getSelectedObjects();
-            boardDTO.setSelected(selected);
+
+            SelectionDTO selected = boardDTO.getSelected();
 
             DrawNodeVisitor drawNodeVisitor = new DrawNodeVisitor(graphicsContext, projection2D, Color.WHITE, Color.WHITE);
             DrawSquareLogicElementVisitor drawSquareLogicElementVisitor = new DrawSquareLogicElementVisitor(boardDTO, Color.WHITE, Color.WHITE);

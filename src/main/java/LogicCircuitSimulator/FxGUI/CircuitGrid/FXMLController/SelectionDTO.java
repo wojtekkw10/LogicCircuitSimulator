@@ -16,12 +16,20 @@ public class SelectionDTO {
     private NodeHandler nodeHandler = new ArrayNodeHandler();
     private LogicElementHandler logicElementHandler = new SimpleLogicElementHandler();
 
+    private boolean nodesWereChanged = false;
+    private boolean logicElementsWereChanged = false;
+    private List<Node> nodes = new ArrayList<>();
+    private List<LogicElement> logicElements = new ArrayList<>();
+
     public SelectionDTO(){
+        nodesWereChanged = true;
         nodeHandler = new ArrayNodeHandler();
         logicElementHandler = new SimpleLogicElementHandler();
     }
 
     public SelectionDTO(SelectionDTO selectionDTO){
+        nodesWereChanged = true;
+        logicElementsWereChanged = true;
         NodeHandler nodeHandler = selectionDTO.getNodeHandler();
         LogicElementHandler logicElementHandler = selectionDTO.getLogicElementHandler();
 
@@ -38,35 +46,48 @@ public class SelectionDTO {
     }
 
     public NodeHandler getNodeHandler() {
+        nodesWereChanged = true;
         return nodeHandler;
     }
 
     public void setNodeHandler(NodeHandler nodeHandler) {
+        nodesWereChanged = true;
         this.nodeHandler = nodeHandler;
     }
 
     public LogicElementHandler getLogicElementHandler() {
+        logicElementsWereChanged = true;
         return logicElementHandler;
     }
 
     public void setLogicElementHandler(LogicElementHandler logicElementHandler) {
+        logicElementsWereChanged = true;
         this.logicElementHandler = logicElementHandler;
     }
 
     public List<LogicElement> getLogicElementsAsList(){
-        List<LogicElement> logicElements = new ArrayList<>();
-        Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
-        while(logicElementIterator.hasNext()){
-            logicElements.add(LogicElementFactory.instance(logicElementIterator.next()));
+        if(logicElementsWereChanged){
+            logicElements = new ArrayList<>();
+            Iterator<LogicElement> logicElementIterator = logicElementHandler.iterator();
+            while(logicElementIterator.hasNext()){
+                logicElements.add(LogicElementFactory.instance(logicElementIterator.next()));
+            }
+            logicElementsWereChanged = false;
         }
+
+
+
         return logicElements;
     }
 
     public List<Node> getNodesAsList(){
-        List<Node> nodes = new ArrayList<>();
-        Iterator<Node> nodeIterator = nodeHandler.iterator();
-        while(nodeIterator.hasNext()){
-            nodes.add(new Node(nodeIterator.next()));
+        if(nodesWereChanged){
+            nodes = new ArrayList<>();
+            Iterator<Node> nodeIterator = nodeHandler.iterator();
+            while(nodeIterator.hasNext()){
+                nodes.add(new Node(nodeIterator.next()));
+            }
+            nodesWereChanged = false;
         }
         return nodes;
     }

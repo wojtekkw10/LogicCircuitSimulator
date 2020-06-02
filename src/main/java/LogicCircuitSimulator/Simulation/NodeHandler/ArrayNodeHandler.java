@@ -51,21 +51,37 @@ public final class ArrayNodeHandler implements NodeHandler {
     @Override
     public void setRightWire(Vector2D pos, WireState state) {
         nodeGrid.setRightWire(pos, state);
+
+        if(isDefaultNode(nodeGrid.getNode(pos))){
+            nodeGrid.removeNode(pos);
+        }
     }
 
     @Override
     public void setDownWire(Vector2D pos, WireState state) {
         nodeGrid.setDownWire(pos, state);
+
+        if(isDefaultNode(nodeGrid.getNode(pos))){
+            nodeGrid.removeNode(pos);
+        }
     }
 
     @Override
     public void setUpWire(Vector2D pos, WireState state) {
         nodeGrid.setUpWire(pos, state);
+
+        if(isDefaultNode(nodeGrid.getNode(new Vector2D(pos.getX(), pos.getY()-1)))){
+            nodeGrid.removeNode(new Vector2D(pos.getX(), pos.getY()-1));
+        }
     }
 
     @Override
     public void setLeftWire(Vector2D pos, WireState state) {
         nodeGrid.setLeftWire(pos, state);
+
+        if(isDefaultNode(nodeGrid.getNode(new Vector2D(pos.getX() - 1, pos.getY())))){
+            nodeGrid.removeNode(new Vector2D(pos.getX() - 1, pos.getY()));
+        }
     }
 
     @Override
@@ -96,6 +112,10 @@ public final class ArrayNodeHandler implements NodeHandler {
     @Override
     public void setCrossing(Vector2D pos, Crossing crossing) {
         nodeGrid.setCrossing(pos, crossing);
+
+        if(isDefaultNode(nodeGrid.getNode(pos))){
+            nodeGrid.removeNode(pos);
+        }
     }
 
     @Override
@@ -133,6 +153,13 @@ public final class ArrayNodeHandler implements NodeHandler {
                 candidatesForSearch.add(new Vector2D(x, y-1));
             }
         }
+    }
+
+    private boolean isDefaultNode(Node node){
+        if(node.getRightWire() != WireState.NONE) return false;
+        if(node.getDownWire() != WireState.NONE) return false;
+        if(node.isTouching() != Crossing.TOUCHING) return false;
+        return true;
     }
 
     private void resetWiresToLow(){
