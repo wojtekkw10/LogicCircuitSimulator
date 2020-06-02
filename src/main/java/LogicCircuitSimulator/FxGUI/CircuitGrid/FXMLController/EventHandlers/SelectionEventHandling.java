@@ -138,7 +138,6 @@ public class SelectionEventHandling {
                         bottomRight = new Vector2D(firstPoint);
                     }
 
-
                     if(!boardDTO.getSelectBottomRight().equals(bottomRight) || !boardDTO.getSelectUpperLeft().equals(upperLeft)){
                         boardDTO.setSelectBottomRight(bottomRight);
                         boardDTO.setSelectUpperLeft(upperLeft);
