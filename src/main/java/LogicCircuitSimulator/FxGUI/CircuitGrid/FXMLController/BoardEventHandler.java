@@ -47,22 +47,13 @@ public class BoardEventHandler {
                 if(boardDTO.shouldDrawSpeedStats()) boardDTO.setShouldDrawSpeedStats(false);
                 else boardDTO.setShouldDrawSpeedStats(true);
             }
-            else if(event.getCode() == KeyCode.K) {
-                if (boardDTO.isUpsLimited()) {
-                    boardDTO.setTARGET_UPS(1_000_000);
-                    boardDTO.setUpsLimited(false);
-                    boardDTO.setUpsChanged(true);
-                }
-                else {
-                    boardDTO.setTARGET_UPS(5);
-                    boardDTO.setUpsLimited(true);
-                    boardDTO.setUpsChanged(true);
-                }
-            }
-            else if(event.getCode() == KeyCode.ESCAPE){
+            if(event.getCode() == KeyCode.ESCAPE){
                 if(!boardDTO.isShouldDrawSelectionRect()){
                     boardDTO.getExecutor().shutdownNow();
                     App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+                }
+                else{
+                    boardDTO.setShouldDrawSelectionRect(false);
                 }
             }
             else if(event.getCode() == KeyCode.S && event.isShortcutDown()){

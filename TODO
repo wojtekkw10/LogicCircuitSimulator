@@ -48,13 +48,14 @@ DONE:
 - highlight selected objects
 - exponential slider value
 - ctrl-s
-
-DOING:
 - optimizing selection
 - fix selection bugs
 
+DOING:
+TODO: import as Canonical
+
 TO BE DONE:
-TODO: import as 3SAT
+
 TODO: minimization algorithm
 
 MAYBE:

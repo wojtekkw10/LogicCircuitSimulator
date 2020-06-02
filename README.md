@@ -7,9 +7,9 @@ Logic Circuit Simulator is a desktop application that allows for creating comple
 2. Unpack it in a desired directory
 3. If you're on windows, go to ``simulator-win/bin`` directory
 4. If you're on linux, go to ``simulator-lin/bin`` directory
-5. Run the simulator.bat file
+5. Run the ``simulator`` file
 
-Note: This will get you the lastest release version. If you want the latest development version you need to:
+Note: This will get you the latest release version. If you want the latest development version you need to:
 1. Be on linux
 2. Install openjdk-14 e.g. with 
     ```bash
@@ -23,26 +23,27 @@ Note: This will get you the lastest release version. If you want the latest deve
 
 # Controls
 ## Gates
-To add a gate:\
-Num 1: clock \
-Num 2: buffer gate\
-Num 3: logic constant one\
-Num 4: NOT gate\
-Num 5: OR gate\
-Num 6: AND gate\
-Num 7: XOR gate\
-Right-click - remove a gate\
+Right-click - remove <br>
 R: rotate
 ## Wires
-Left-click and drag - place a wire \
-Left-click on a wire and drag: remove a wire 
+Left-click and drag - place a wire <br>
+Right-click and drag: remove a wire 
 
 ## Other
-K: toggle UPS (Updates Per Second) limit\
-P: toggle FPS/UPS stats
+Shift: select <br>
+P: toggle FPS/UPS stats <br>
+Ctrl-x - Cut <br>
+Ctrl-c - Copy <br>
+Ctrl-v - Paste <br>
+Ctrl-s - Save
 
 # Changelog
-20.05.2020 - Version 0.0.1
+### 02.06.2020 - Version 0.0.2
+- Added the toolbox on the left
+- Added saving and loading from file
+- Added UPS slider
+- Added Copy/Paste 
+### 20.05.2020 - Version 0.0.1
 - Adding and removing wires
 - Adding, moving, rotating and removing logic gates 
 - Available gates: clock, one, buffer, not, or, not, xor

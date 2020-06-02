@@ -28,12 +28,7 @@ public class SelectionEventHandling {
 
     private void initialize(){
         EventHandler<KeyEvent> onKeyReleasedEventHandler = event -> {
-            if(event.getCode() == KeyCode.ESCAPE){
-                if(boardDTO.isShouldDrawSelectionRect()){
-                    boardDTO.setShouldDrawSelectionRect(false);
-                }
-            }
-            else if(event.getCode() == KeyCode.V && event.isShortcutDown()){
+            if(event.getCode() == KeyCode.V && event.isShortcutDown()){
                 boardDTO.setPasted(new SelectionDTO(boardDTO.getCopied()));
                 boardDTO.setShouldDrawSelectionRect(false);
                 boardDTO.setShouldDrawPastedSystem(true);
