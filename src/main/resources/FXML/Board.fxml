@@ -65,6 +65,18 @@
                               <Insets left="25.0" />
                            </padding>
                            <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="248.0">
+                           <children>
+                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#onInButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="IN" />
+                              <Button focusTraversable="false" layoutX="35.0" layoutY="10.0" mnemonicParsing="false" onAction="#onOutButtonAction" prefHeight="38.0" prefWidth="66.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="OUT" />
+                           </children>
+                           <padding>
+                              <Insets left="25.0" />
+                           </padding>
+                           <VBox.margin>
                               <Insets bottom="40.0" />
                            </VBox.margin>
                         </HBox>

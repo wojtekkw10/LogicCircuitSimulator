@@ -82,6 +82,16 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
         drawGate(buttonLogicElement, "BTN");
     }
 
+    @Override
+    public void visit(InputGate inputGate) {
+        drawGate(inputGate, "IN");
+    }
+
+    @Override
+    public void visit(OutputGate outputGate) {
+        drawGate(outputGate, "OUT");
+    }
+
     void drawGate(LogicElement le, String text){
         graphicsContext.setLineWidth(1);
         double scale = projection2D.getScale();

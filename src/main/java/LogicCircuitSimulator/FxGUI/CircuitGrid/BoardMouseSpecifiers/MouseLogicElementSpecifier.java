@@ -85,8 +85,8 @@ public abstract class MouseLogicElementSpecifier {
     private LogicElement findLogicElement(Vector2D cursorBoardPos, Iterator<LogicElement> logicElements){
         while(logicElements.hasNext()){
             LogicElement logicElement = logicElements.next();
-            int widthOnBoard = getWidthOnBoard(logicElement);
-            int heightOnBoard = getHeightOnBoard(logicElement);
+            int widthOnBoard = Math.max(1, getWidthOnBoard(logicElement));
+            int heightOnBoard = Math.max(1, getHeightOnBoard(logicElement));
 
             if(logicElement.getRotation() == Rotation.DOWN
                     //horizontal axis

@@ -116,4 +116,12 @@ public class BoardController {
     public void onOneButtonAction(ActionEvent actionEvent) {
         simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
     }
+
+    public void onInButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new InputGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onOutButtonAction(ActionEvent actionEvent) {
+        simulationController.setLogicGateDragged(new OutputGate(0,0, Rotation.RIGHT));
+    }
 }
