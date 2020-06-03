@@ -17,6 +17,8 @@ public class StartMenuController {
     public void onStartButton(ActionEvent actionEvent) {
         App.loadAndSetNewScene("/FXML/Board.fxml");
         App.primaryStage.setResizable(true);
+        App.primaryStage.setHeight(700);
+        App.primaryStage.setWidth(1200);
 
     }
 

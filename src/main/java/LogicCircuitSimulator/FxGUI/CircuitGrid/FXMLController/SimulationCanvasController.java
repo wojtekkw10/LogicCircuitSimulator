@@ -100,6 +100,11 @@ public class SimulationCanvasController {
     public IntegerProperty getTargetUpsProperty(){
         return this.boardDTO.getUPSProperty();
     }
+
+    public void setPasted(SelectionDTO selectionDTO){
+        boardDTO.setPasted(selectionDTO);
+        boardDTO.setShouldDrawPastedSystem(true);
+    }
 }
 
 

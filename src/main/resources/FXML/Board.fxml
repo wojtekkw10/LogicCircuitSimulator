@@ -107,6 +107,14 @@
                               </Label>
                            </children>
                         </HBox>
+                        <Button focusTraversable="false" layoutX="35.0" layoutY="469.0" maxWidth="200.0" mnemonicParsing="false" onAction="#onFromBooleanExpressionAction" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="FROM BOOLEAN EXPRESSION">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                         <Button focusTraversable="false" maxWidth="200.0" mnemonicParsing="false" onMouseClicked="#onSaveButtonClicked" prefHeight="50.0" styleClass="button_on_dark" stylesheets="@../stylesheets/MainStylesheet.css" text="SAVE">
                            <VBox.margin>
                               <Insets bottom="10.0" top="20.0" />

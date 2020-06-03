@@ -1,13 +1,14 @@
 package LogicCircuitSimulator.FxGUI.Board;
 
+import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionParser;
+import LogicCircuitSimulator.BooleanExpressionParser.SimpleBooleanExpressionParser;
+import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
 import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDataStorage;
 import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
-import com.jfoenix.controls.JFXSlider;
-import com.jfoenix.controls.JFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.IntegerProperty;
@@ -123,5 +124,11 @@ public class BoardController {
 
     public void onOutButtonAction(ActionEvent actionEvent) {
         simulationController.setLogicGateDragged(new OutputGate(0,0, Rotation.RIGHT));
+    }
+
+    public void onFromBooleanExpressionAction(ActionEvent actionEvent) {
+        BooleanExpressionParser parser = new SimpleBooleanExpressionParser();
+        SelectionDTO parsed = parser.parse("((TRUE AND FALSE) AND FALSE) AND TRUE");
+        simulationController.setPasted(parsed);
     }
 }

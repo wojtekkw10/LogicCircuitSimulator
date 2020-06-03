@@ -16,6 +16,9 @@ plugins {
 
     //Apply the jlink plugin to add support for creating custom runtime images
     id "org.beryx.jlink" version "2.19.0"
+
+    //Apply the ANTLR java parser generator plugin
+    id 'antlr'
 }
 
 repositories {
@@ -23,23 +26,12 @@ repositories {
     jcenter()
 }
 
-/*run {
-jvmArgs = {
-    "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix", 
-        "--add-exports=javafx.controls/com.sun.javafx.scene.control=com.jfoenix", 
-        "--add-exports=javafx.base/com.sun.javafx.binding=com.jfoenix",
-    "--add-exports=javafx.graphics/com.sun.javafx.stage=com.jfoenix",
-    "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix"
-}
-*//*     jvmArgs = [ 
-
-]*//*
- }*/
-
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.2-jre'
-    implementation 'com.jfoenix:jfoenix:9.0.8'
+
+    // Java parser generator
+    antlr "org.antlr:antlr4:4.7.2"
 
     // Use JUnit test framework
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
@@ -55,6 +47,11 @@ dependencies {
     }
 
 
+}
+
+generateGrammarSource {
+    outputDirectory = file("src/main/java/LogicCircuitSimulator/BooleanExpressionParser/GrammarParser")
+    arguments += ["-visitor", "-long-messages"]
 }
 
 java {
