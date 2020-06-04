@@ -45,8 +45,6 @@ public class ExpressionSimplifierVisitor extends BooleanExprBaseVisitor<String> 
             if(!areParensNested(ctx.orExpression())){
                 if(isTerminal(ctx.orExpression())){
                     expr  = visitOrExpression(ctx.orExpression());
-                    System.out.println(isTerminal(ctx.orExpression()));
-                    System.out.println(ctx.orExpression().getText());
                 }
                 else{
                     expr = "(" + visitOrExpression(ctx.orExpression()) + ")";

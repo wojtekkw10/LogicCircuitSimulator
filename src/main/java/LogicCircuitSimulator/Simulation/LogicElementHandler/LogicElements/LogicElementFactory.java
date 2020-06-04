@@ -14,6 +14,8 @@ public class LogicElementFactory {
         if(type.equals("TGL_ON")) return new ToggleOn(x,y,rotation);
         if(type.equals("TGL_FF")) return new ToggleOff(x,y,rotation);
         if(type.equals("XOR")) return new XorGate(x,y,rotation);
+        if(type.equals("IN")) return new InputGate(x,y,rotation);
+        if(type.equals("OUT")) return new OutputGate(x,y,rotation);
         else return null;
     }
     public static LogicElement instance(LogicElement logicElement){

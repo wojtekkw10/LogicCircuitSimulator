@@ -5,6 +5,15 @@ public class ExpressionNode {
     private ExpressionNode secondNode;
     private String terminalText;
     private Operand operand;
+    private int depth;
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
 
     public ExpressionNode getFirstNode() {
         return firstNode;
@@ -36,5 +45,16 @@ public class ExpressionNode {
 
     public void setOperand(Operand operand) {
         this.operand = operand;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpressionNode{" +
+                "firstNode=" + firstNode +
+                ", secondNode=" + secondNode +
+                ", terminalText='" + terminalText + '\'' +
+                ", operand=" + operand +
+                ", depth=" + depth +
+                '}';
     }
 }

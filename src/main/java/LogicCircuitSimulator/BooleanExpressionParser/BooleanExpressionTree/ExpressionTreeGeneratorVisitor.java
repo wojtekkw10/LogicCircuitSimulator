@@ -53,10 +53,7 @@ public class ExpressionTreeGeneratorVisitor extends BooleanExprBaseVisitor<Expre
             return node;
         }
         else if(ctx.LEFT_PAREN() != null){
-            ExpressionNode node = new ExpressionNode();
-            ExpressionNode firstNode = visitOrExpression(ctx.orExpression());
-            node.setFirstNode(firstNode);
-            return node;
+            return visitOrExpression(ctx.orExpression());
         }
         else{
             ExpressionNode node  = new ExpressionNode();

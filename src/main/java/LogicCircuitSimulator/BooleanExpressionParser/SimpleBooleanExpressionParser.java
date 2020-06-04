@@ -1,5 +1,10 @@
 package LogicCircuitSimulator.BooleanExpressionParser;
 
+import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.ExpressionNode;
+import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.ExpressionTreeGenerator;
+import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.SimpleExpressionTreeGenerator;
+import LogicCircuitSimulator.BooleanExpressionParser.CircuitGenerator.CircuitGenerator;
+import LogicCircuitSimulator.BooleanExpressionParser.CircuitGenerator.SimpleCircuitGenerator;
 import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.ExpressionSimplifier;
 import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.SimpleExpressionSimplifier;
 
@@ -20,12 +25,7 @@ public class SimpleBooleanExpressionParser implements BooleanExpressionParser{
         System.out.println(depth);
         System.out.println(expr);
 
-        //generator.visit(tree);
-
-        NodeHandler nodeHandler = new ArrayNodeHandler();
-        nodeHandler.setRightWire(new Vector2D(0,0), WireState.LOW);
-        SelectionDTO selectionDTO = new SelectionDTO();
-        selectionDTO.setNodeHandler(nodeHandler);
-        return selectionDTO;
+        CircuitGenerator circuitGenerator = new SimpleCircuitGenerator();
+        return circuitGenerator.generate(expr);
     }
 }
