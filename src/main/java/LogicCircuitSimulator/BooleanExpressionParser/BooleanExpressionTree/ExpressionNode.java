@@ -6,6 +6,13 @@ public class ExpressionNode {
     private String terminalText;
     private Operand operand;
     private int depth;
+    private boolean isGhost;
+
+
+
+    public ExpressionNode(){
+
+    }
 
     public int getDepth() {
         return depth;
@@ -49,12 +56,21 @@ public class ExpressionNode {
 
     @Override
     public String toString() {
-        return "ExpressionNode{" +
-                "firstNode=" + firstNode +
-                ", secondNode=" + secondNode +
-                ", terminalText='" + terminalText + '\'' +
-                ", operand=" + operand +
-                ", depth=" + depth +
+        return "EN{" +
+                "1: " + firstNode +
+                ", 2: " + secondNode +
+                ", txt: '" + terminalText + '\'' +
+                ", op=" + operand +
+                ", dp=" + depth +
+                ", gh=" + isGhost +
                 '}';
+    }
+
+    public boolean isGhost() {
+        return isGhost;
+    }
+
+    public void setGhost(boolean ghost) {
+        isGhost = ghost;
     }
 }

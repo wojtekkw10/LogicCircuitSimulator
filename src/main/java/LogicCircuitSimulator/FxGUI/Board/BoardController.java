@@ -9,14 +9,10 @@ import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringExpression;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -25,9 +21,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.util.converter.NumberStringConverter;
 
 import java.io.File;
+import java.util.Vector;
 
 import static LogicCircuitSimulator.App.primaryStage;
 
@@ -128,7 +124,9 @@ public class BoardController {
 
     public void onFromBooleanExpressionAction(ActionEvent actionEvent) {
         BooleanExpressionParser parser = new SimpleBooleanExpressionParser();
-        SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a)");
+        SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
+        //SelectionDTO parsed = parser.parse("(((a AND b) AND c) AND d)");
         simulationController.setPasted(parsed);
+
     }
 }
