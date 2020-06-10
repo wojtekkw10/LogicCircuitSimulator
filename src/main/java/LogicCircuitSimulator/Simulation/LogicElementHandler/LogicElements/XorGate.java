@@ -13,6 +13,7 @@ public class XorGate extends LogicElement{
     public XorGate(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public XorGate(){}
 
     @Override
     public String getName() {

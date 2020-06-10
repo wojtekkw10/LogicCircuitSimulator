@@ -12,6 +12,7 @@ public class BufferGate extends LogicElement{
     public BufferGate(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public BufferGate(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

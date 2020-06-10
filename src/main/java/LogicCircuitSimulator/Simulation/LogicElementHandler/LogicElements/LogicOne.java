@@ -14,6 +14,7 @@ public class LogicOne extends LogicElement {
     public LogicOne(int x, int y, Rotation rotation) {
         super(x, y, rotation);
     }
+    public LogicOne(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

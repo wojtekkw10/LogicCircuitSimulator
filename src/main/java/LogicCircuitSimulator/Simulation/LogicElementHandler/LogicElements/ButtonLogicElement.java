@@ -15,6 +15,7 @@ public class ButtonLogicElement extends LogicElement{
     public ButtonLogicElement(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public ButtonLogicElement(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

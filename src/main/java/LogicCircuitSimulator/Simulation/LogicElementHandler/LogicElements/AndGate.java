@@ -14,6 +14,7 @@ public class AndGate extends LogicElement{
     public AndGate(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public AndGate(){}
 
     @Override
     public String getName() {

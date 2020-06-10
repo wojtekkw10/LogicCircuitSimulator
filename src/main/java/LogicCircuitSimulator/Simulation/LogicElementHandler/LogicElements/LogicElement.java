@@ -46,6 +46,12 @@ public abstract class LogicElement {
         this.geometry.setRotation(rot);
     }
 
+    public LogicElement(){
+        this.geometry = getNewGeometry();
+        this.geometry.setPosition(new Vector2D(0,0));
+        this.geometry.setRotation(Rotation.RIGHT);
+    }
+
     public void setRotation(Rotation rotation) {
         this.geometry.setRotation(rotation);
     }

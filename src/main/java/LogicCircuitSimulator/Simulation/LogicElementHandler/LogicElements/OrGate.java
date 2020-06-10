@@ -13,6 +13,7 @@ public class OrGate extends LogicElement{
     public OrGate(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public OrGate(){}
 
     @Override
     public String getName() {

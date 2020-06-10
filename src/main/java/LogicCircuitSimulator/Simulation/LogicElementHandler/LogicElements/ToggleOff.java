@@ -5,6 +5,7 @@ import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geomet
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.ZeroInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
+import javafx.scene.control.Toggle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class ToggleOff extends LogicElement{
     public ToggleOff(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public ToggleOff(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

@@ -13,6 +13,7 @@ public class LogicZero extends LogicElement {
     public LogicZero(int x, int y, Rotation rotation) {
         super(x, y, rotation);
     }
+    public LogicZero(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

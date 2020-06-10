@@ -13,6 +13,7 @@ public class NotGate extends LogicElement{
     public NotGate(int x, int y, Rotation rotation) {
         super(x, y, rotation);
     }
+    public NotGate(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

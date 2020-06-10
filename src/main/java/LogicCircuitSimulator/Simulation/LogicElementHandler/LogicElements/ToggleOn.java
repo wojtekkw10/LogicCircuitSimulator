@@ -13,6 +13,7 @@ public class ToggleOn extends LogicElement{
     public ToggleOn(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public ToggleOn(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

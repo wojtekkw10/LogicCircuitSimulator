@@ -13,6 +13,7 @@ public class InputGate extends LogicElement{
     public InputGate(int x, int y, Rotation rotation) {
         super(x, y, rotation);
     }
+    public InputGate(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

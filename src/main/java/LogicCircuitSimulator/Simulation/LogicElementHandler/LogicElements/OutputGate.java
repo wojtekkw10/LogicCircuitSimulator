@@ -14,6 +14,7 @@ public class OutputGate extends LogicElement{
     public OutputGate(int x, int y, Rotation rotation) {
         super(x, y, rotation);
     }
+    public OutputGate(){}
 
     @Override
     public List<LogicState> computeLocalValues(List<LogicState> states) {

@@ -18,6 +18,7 @@ public class LogicClock extends LogicElement{
     public LogicClock(int x, int y, Rotation rot) {
         super(x, y, rot);
     }
+    public LogicClock(){}
 
     @Override
     public String getName() {
