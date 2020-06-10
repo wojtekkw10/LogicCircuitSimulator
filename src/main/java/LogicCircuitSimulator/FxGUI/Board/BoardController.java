@@ -124,8 +124,8 @@ public class BoardController {
 
     public void onFromBooleanExpressionAction(ActionEvent actionEvent) {
         BooleanExpressionParser parser = new SimpleBooleanExpressionParser();
-        //SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
-        SelectionDTO parsed = parser.parse("(((a AND b) AND c) AND d)");
+        SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
+        //SelectionDTO parsed = parser.parse("(((a AND b) AND c) AND d)");
         simulationController.setPasted(parsed);
 
     }

@@ -97,64 +97,31 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
 
         System.out.println(circuitColumns.size());
         double sumX = 0;
+        circuitColumns.get(0).setX(0);
         for (int i = 0; i < circuitColumns.size()-1; i++) {
+
             List<Double> outputPosYs = circuitColumns.get(i).getOutputPositionYs();
+            double outputX = circuitColumns.get(i).getX();
             List<Double> inputPosYs = circuitColumns.get(i+1).getInputPositionYs();
 
-            int space = calculateNeededSpace(outputPosYs, inputPosYs);
 
-            circuitColumns.get(i).setX(sumX);
+            int space = calculateNeededSpace(outputPosYs, inputPosYs);
             sumX += space;
+            circuitColumns.get(i+1).setX(sumX);
+            double inputX = circuitColumns.get(i+1).getX();
+
+            List<Boolean> crooked = getCrookedLines(outputPosYs, inputPosYs);
+            double shift = 1;
+            for (int j = 0; j < outputPosYs.size(); j++) {
+                connect(nodeHandler, new Vector2D(outputX+1, outputPosYs.get(j)), new Vector2D(inputX, inputPosYs.get(j)), shift);
+                System.out.println("CONNECTING: "+new Vector2D(outputX+1, outputPosYs.get(j)) + " "+new Vector2D(inputX, inputPosYs.get(j)));
+                if(crooked.get(j)) shift++;
+            }
+
+
+
 
             System.out.println("NEEDED SPACE: "+space);
-        }
-
-
-        List<List<List<Vector2D>>> pointsToConnect = new ArrayList<>();
-        for (int i = 1; i < circuitColumns.size(); i++) {
-            List<Double> outPositions = circuitColumns.get(i-1).getOutputPositionYs();
-            List<Double> inPositions = circuitColumns.get(i).getInputPositionYs();
-
-            System.out.println(outPositions);
-            System.out.println(inPositions);
-            System.out.println("_-");
-
-            List<List<Vector2D>> columnsPoints = new ArrayList<>();
-            for (int j = 0; j < outPositions.size(); j++) {
-                double outY = outPositions.get(j);
-                double inY = inPositions.get(j);
-
-                double outX = circuitColumns.get(i-1).getX() + 1;
-                //int outX = getLogicElementColumnX(i - 1, columnXs) + 1;
-                double inX = circuitColumns.get(i).getX();
-                //int inX = getLogicElementColumnX(i, columnXs);
-
-                List<Vector2D> twoPoints = new ArrayList<>();
-                twoPoints.add(new Vector2D(outX, outY));
-                twoPoints.add(new Vector2D(inX, inY));
-                columnsPoints.add(twoPoints);
-            }
-            pointsToConnect.add(columnsPoints);
-        }
-
-
-        for (int i = 0; i < pointsToConnect.size(); i++) {
-            boolean conflict = false;
-            NodeHandler tempNodeHandler = new ArrayNodeHandler();
-            for (int j = 0; j < pointsToConnect.get(i).size(); j++) {
-                boolean conf = connect(tempNodeHandler, pointsToConnect.get(i).get(j).get(0), pointsToConnect.get(i).get(j).get(1), j + 1);
-                if (conf) conflict = true;
-            }
-
-            if (!conflict) {
-                for (int j = 0; j < pointsToConnect.get(i).size(); j++) {
-                    connect(nodeHandler, pointsToConnect.get(i).get(j).get(0), pointsToConnect.get(i).get(j).get(1), j + 1);
-                }
-            } else {
-                for (int j = 0, k = pointsToConnect.get(i).size() - 1; j < pointsToConnect.get(i).size(); j++, k--) {
-                    connect(nodeHandler, pointsToConnect.get(i).get(j).get(0), pointsToConnect.get(i).get(j).get(1), k + 1);
-                }
-            }
         }
 
         for (CircuitColumn circuitColumn : circuitColumns) {
@@ -172,26 +139,21 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
     }
 
     private int calculateNeededSpace(List<Double> outputPosYs, List<Double> inputPosYs) {
-        int neededSpace = outputPosYs.size() + 2; //we want to minimize it
-        boolean done = false;
-        while(!done && (neededSpace) > 5){
-            NodeHandler nodeHandler = new ArrayNodeHandler();
-            boolean conflictHappened = false;
-            for (int i = 0; i < outputPosYs.size(); i++) {
-                boolean goesUp = connect(nodeHandler, new Vector2D(0, outputPosYs.get(i)), new Vector2D(neededSpace, inputPosYs.get(i)), i);
-                if(conflict) conflictHappened = true;
-            }
-            if(conflictHappened){
-                done = true;
-                neededSpace++;
-            }
-            else{
-                neededSpace--;
-            }
-
-
+        int neededSpace = 2;
+        for (int i = 0; i < outputPosYs.size(); i++) {
+            if(!outputPosYs.get(i).equals(inputPosYs.get(i))) neededSpace++;
         }
         return neededSpace;
+    }
+
+    private List<Boolean> getCrookedLines(List<Double> outputPosYs, List<Double> inputPosYs) {
+        List<Boolean> crooked = new ArrayList<>();
+
+        for (int i = 0; i < outputPosYs.size(); i++) {
+            if(!outputPosYs.get(i).equals(inputPosYs.get(i))) crooked.add(true);
+            else crooked.add(false);
+        }
+        return crooked;
     }
 
 
