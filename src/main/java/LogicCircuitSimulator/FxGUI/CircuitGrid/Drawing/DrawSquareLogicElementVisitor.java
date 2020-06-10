@@ -1,6 +1,5 @@
 package LogicCircuitSimulator.FxGUI.CircuitGrid.Drawing;
 
-import LogicCircuitSimulator.BooleanExpressionParser.CircuitGenerator.GhostGate;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.BoardDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementVisitor;
@@ -86,11 +85,6 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     @Override
     public void visit(InputGate inputGate) {
         drawGate(inputGate, "IN");
-    }
-
-    @Override
-    public void visit(GhostGate ghostGate) {
-        drawGate(ghostGate, "GH");
     }
 
     @Override

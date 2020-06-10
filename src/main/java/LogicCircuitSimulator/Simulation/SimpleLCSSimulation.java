@@ -1,12 +1,14 @@
 package LogicCircuitSimulator.Simulation;
 
-import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.ComputedValue;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.NodeHandler.ArrayNodeHandler;
+import LogicCircuitSimulator.Simulation.NodeHandler.Generator;
+import LogicCircuitSimulator.Simulation.NodeHandler.Node;
+import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;

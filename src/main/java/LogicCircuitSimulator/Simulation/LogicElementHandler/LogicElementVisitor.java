@@ -1,6 +1,5 @@
 package LogicCircuitSimulator.Simulation.LogicElementHandler;
 
-import LogicCircuitSimulator.BooleanExpressionParser.CircuitGenerator.GhostGate;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 
 public interface LogicElementVisitor {
@@ -17,5 +16,4 @@ public interface LogicElementVisitor {
     void visit(ButtonLogicElement buttonLogicElement);
     void visit(OutputGate outputGate);
     void visit(InputGate inputGate);
-    void visit(GhostGate ghostGate);
 }

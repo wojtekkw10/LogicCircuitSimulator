@@ -1,9 +1,7 @@
 package LogicCircuitSimulator.BooleanExpressionParser.CircuitGenerator;
 
-import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.AndGate;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElement;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.LogicElementFactory;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNode;
 import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 

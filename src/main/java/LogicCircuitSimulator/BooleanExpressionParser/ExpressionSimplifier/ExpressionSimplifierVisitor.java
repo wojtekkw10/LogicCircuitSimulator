@@ -2,7 +2,6 @@ package LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier;
 
 import LogicCircuitSimulator.BooleanExpressionParser.GrammarParser.BooleanExprBaseVisitor;
 import LogicCircuitSimulator.BooleanExpressionParser.GrammarParser.BooleanExprParser;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 public class ExpressionSimplifierVisitor extends BooleanExprBaseVisitor<String> {
 

@@ -1,13 +1,11 @@
 package LogicCircuitSimulator.Simulation.NodeHandler;
 
-import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNode;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.ArrayNodeGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.NodeGrid;
 import LogicCircuitSimulator.Simulation.NodeHandler.NodeGrid.UnboundGrid.UnboundHashMapGrid;
 import LogicCircuitSimulator.Simulation.Orientation;
-import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.*;

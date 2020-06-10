@@ -23,7 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.Vector;
 
 import static LogicCircuitSimulator.App.primaryStage;
 
@@ -124,9 +123,9 @@ public class BoardController {
 
     public void onFromBooleanExpressionAction(ActionEvent actionEvent) {
         BooleanExpressionParser parser = new SimpleBooleanExpressionParser();
-        SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
+        //SelectionDTO parsed = parser.parse("((a AND b) AND c) AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
+        SelectionDTO parsed = parser.parse("((a AND b) AND c AND c AND d) OR d AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c) OR ((a AND b) AND c AND c AND d) OR d AND (((d AND e) AND (f OR g OR h OR j)) AND a) OR ((a AND b) AND c)");
         //SelectionDTO parsed = parser.parse("(((a AND b) AND c) AND d)");
         simulationController.setPasted(parsed);
-
     }
 }

@@ -52,12 +52,13 @@ DONE:
 - fix selection bugs
 
 DOING:
-TODO: import as Canonical
+TODO: import as Canonical - connecting the same IDENTIFIER at the beginning
 
 TO BE DONE:
 
 TODO: minimization algorithm
 TODO: aggregate circuit DTO
+TODO: rotating pasted circuit
 
 MAYBE:
 TODO: ctrl-z, ctrl-shift-z - way too hard

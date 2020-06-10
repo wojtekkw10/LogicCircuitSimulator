@@ -2,24 +2,18 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController;
 
 import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.EventHandlers.*;
-import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDataStorage;
 import LogicCircuitSimulator.Simulation.LCSSimulation;
-import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
-import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
 import LogicCircuitSimulator.Vector2D;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static LogicCircuitSimulator.App.primaryStage;
 

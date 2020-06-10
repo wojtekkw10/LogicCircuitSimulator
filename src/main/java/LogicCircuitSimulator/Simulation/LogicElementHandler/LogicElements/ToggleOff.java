@@ -5,7 +5,6 @@ import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geomet
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.Geometry.ZeroInOneOut;
 import LogicCircuitSimulator.Simulation.LogicState;
 import LogicCircuitSimulator.Simulation.Rotation;
-import javafx.scene.control.Toggle;
 
 import java.util.ArrayList;
 import java.util.List;
