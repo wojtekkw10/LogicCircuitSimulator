@@ -10,14 +10,13 @@ import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.ArrayNodeHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.NodeHandler;
-import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
+import LogicCircuitSimulator.Simulation.NodeHandler.*;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.Vector;
 
 public class SimpleCircuitGenerator implements CircuitGenerator {
     @Override
@@ -30,6 +29,12 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         ExpressionTreeGenerator treeGenerator = new SimpleExpressionTreeGenerator();
         ExpressionNode tree = treeGenerator.generate(simplifiedExpression);
         int maxDepth = findMaxDepth(tree);
+        List<String> identifiers = getIdentifiers(tree);
+        System.out.println(identifiers);
+        List<String> identifiersWithNoRepetitions = removeRepetitions(identifiers);
+        System.out.println(identifiersWithNoRepetitions);
+        int neededSpace = getNeededSpaceForIdentifiers(identifiers, identifiersWithNoRepetitions) + 2;
+        System.out.println(neededSpace);
 
         assignDepths(tree, maxDepth);
         moveInputsToBottom(tree, maxDepth);
@@ -39,11 +44,77 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         generateAndAddWires(nodeHandler, circuitColumns);
         addLogicElements(logicElementHandler, circuitColumns);
 
+        //INPUTS
+
+        for (int i = 0; i < identifiersWithNoRepetitions.size(); i++) {
+            Vector2D output = new Vector2D(-neededSpace, i);
+            List<Double> ys = getYsForIdentifier(identifiersWithNoRepetitions.get(i), identifiers);
+            List<Vector2D> inputs = new ArrayList<>();
+            for (int j = 0; j < ys.size(); j++) {
+                inputs.add(new Vector2D(0, ys.get(j)));
+            }
+            System.out.println("CONNECTING: "+output+" "+inputs+" "+i);
+            connectIdentifiers(nodeHandler, output, inputs, neededSpace-i-1);
+        }
+
         SelectionDTO selectionDTO = new SelectionDTO();
         selectionDTO.setLogicElementHandler(logicElementHandler);
         selectionDTO.setNodeHandler(nodeHandler);
 
         return selectionDTO;
+    }
+
+    private List<Double> getYsForIdentifier(String identifier, List<String> allIdentifiers){
+        List<Double> ys = new ArrayList<>();
+        for (int i = 0; i < allIdentifiers.size(); i++) {
+            if(identifier.equals(allIdentifiers.get(i))){
+                ys.add((double)i);
+            }
+        }
+        return ys;
+    }
+
+    void connectIdentifiers(NodeHandler nodeHandler, Vector2D output, List<Vector2D> inputs, int shift){
+        double minY = getMinY(inputs);
+        double maxY = getMaxY(inputs);
+        for (int i = 0; i < shift; i++) {
+            nodeHandler.setRightWire(new Vector2D(output.getX() + i, output.getY()), WireState.LOW);
+        }
+
+        for (int i = 0; i < output.getY() - minY; i++) {
+            nodeHandler.setUpWire(new Vector2D(output.getX() + shift, output.getY() - i), WireState.LOW);
+        }
+        for (int i = 0; i < maxY - output.getY(); i++) {
+            nodeHandler.setDownWire(new Vector2D(output.getX() + shift, output.getY() + i), WireState.LOW);
+            if(i < maxY - output.getY() - 1) nodeHandler.setCrossing(new Vector2D(output.getX() + shift, output.getY() + i + 1), Crossing.NOT_TOUCHING);
+        }
+
+        for (int i = 0; i < inputs.size(); i++) {
+            for (int j = 0; j < Math.abs(inputs.get(i).getX() - (output.getX() + shift)); j++) {
+                nodeHandler.setLeftWire(new Vector2D(inputs.get(i).getX() - j, inputs.get(i).getY()), WireState.LOW);
+            }
+            nodeHandler.setCrossing(new Vector2D(output.getX() + shift, inputs.get(i).getY()), Crossing.TOUCHING);
+        }
+
+    }
+
+    private double getMaxY(List<Vector2D> points){
+        double maxY = -Double.MAX_VALUE;
+        for (int i = 0; i < points.size(); i++) {
+            if(points.get(i).getY() > maxY){
+                maxY = points.get(i).getY();
+            }
+        }
+        return maxY;
+    }
+    private double getMinY(List<Vector2D> points){
+        double minY = Double.MAX_VALUE;
+        for (int i = 0; i < points.size(); i++) {
+            if(points.get(i).getY() < minY){
+                minY = points.get(i).getY();
+            }
+        }
+        return minY;
     }
 
     private void generateAndAddWires(NodeHandler nodeHandler, List<CircuitColumn> circuitColumns){
@@ -71,13 +142,60 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         }
     }
 
-    void addLogicElements(LogicElementHandler logicElementHandler, List<CircuitColumn> circuitColumns){
+    private List<Double> getIdentifierOutputYs(List<String> identifiers){
+        List<Double> ys = new ArrayList<>();
+        double counter = 0;
+        for (int i = 0; i < identifiers.size(); i++) {
+            ys.add(counter);
+            counter++;
+        }
+        return ys;
+    }
+
+    private int getNeededSpaceForIdentifiers(List<String> allIdentifiers, List<String> identifierWithNoRepetitions){
+        int neededSpace = identifierWithNoRepetitions.size();
+        return neededSpace;
+
+    }
+
+    private void addLogicElements(LogicElementHandler logicElementHandler, List<CircuitColumn> circuitColumns){
         for (CircuitColumn circuitColumn : circuitColumns) {
             List<LogicElement> logicElements = circuitColumn.getLogicElements();
             for (LogicElement logicElement : logicElements) {
                 logicElementHandler.add(logicElement);
             }
         }
+    }
+
+    private List<String> removeRepetitions(List<String> identifiers){
+        List<String> used = new ArrayList<>();
+        for (int i = 0; i < identifiers.size(); i++) {
+            if(!used.contains(identifiers.get(i))){
+                used.add(identifiers.get(i));
+            }
+        }
+        return used;
+
+    }
+
+    private List<String> getIdentifiers(ExpressionNode tree){
+        List<String> identifiers = new ArrayList<>();
+        Stack<ExpressionNode> nodeStack = new Stack<>();
+        nodeStack.add(tree);
+        while (!nodeStack.isEmpty()) {
+            ExpressionNode currentNode = nodeStack.pop();
+            if(currentNode.getTerminalText() != null){
+                identifiers.add(currentNode.getTerminalText());
+            }
+
+            if (currentNode.getSecondNode() != null) {
+                nodeStack.add(currentNode.getSecondNode());
+            }
+            if (currentNode.getFirstNode() != null) {
+                nodeStack.add(currentNode.getFirstNode());
+            }
+        }
+        return identifiers;
     }
 
     private List<CircuitColumn> generateCircuitColumns(ExpressionNode tree, int maxDepth){
@@ -102,7 +220,7 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
                 }
                 circuitColumns.get(currentNode.getDepth()).addLogicElement(newLogicElement);
             } else if (currentNode.getTerminalText() != null) {
-                circuitColumns.get(currentNode.getDepth()).addLogicElement(new InputGate());
+                circuitColumns.get(currentNode.getDepth()).addLogicElement(new BufferGate());
             }
 
             if (currentNode.getSecondNode() != null) {
