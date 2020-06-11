@@ -50,15 +50,16 @@ DONE:
 - ctrl-s
 - optimizing selection
 - fix selection bugs
-
+- import as boolean Expression - connecting the same IDENTIFIER at the beginning
 DOING:
-TODO: import as Canonical - connecting the same IDENTIFIER at the beginning
+
 
 TO BE DONE:
 
 TODO: minimization algorithm
 TODO: aggregate circuit DTO
 TODO: rotating pasted circuit
+TODO: circuitGeneration error handling
 
 MAYBE:
 TODO: ctrl-z, ctrl-shift-z - way too hard
