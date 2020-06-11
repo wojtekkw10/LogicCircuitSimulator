@@ -30,18 +30,28 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         ExpressionNode tree = treeGenerator.generate(simplifiedExpression);
         int maxDepth = findMaxDepth(tree);
 
-        List<String> identifiers = getIdentifiers(tree);
-        List<String> identifiersWithNoRepetitions = removeRepetitions(identifiers);
-        int neededSpace = getNeededSpaceForIdentifiers(identifiers, identifiersWithNoRepetitions);
+        addInputs(nodeHandler, logicElementHandler, tree);
 
         assignDepths(tree, maxDepth);
         moveInputsToBottom(tree, maxDepth);
         assignDepths(tree, maxDepth);
 
         List<CircuitColumn> circuitColumns = generateCircuitColumns(tree, maxDepth);
+        circuitColumns.remove(0);
         generateAndAddWires(nodeHandler, circuitColumns);
         addLogicElements(logicElementHandler, circuitColumns);
 
+        SelectionDTO selectionDTO = new SelectionDTO();
+        selectionDTO.setLogicElementHandler(logicElementHandler);
+        selectionDTO.setNodeHandler(nodeHandler);
+
+        return selectionDTO;
+    }
+
+    private void addInputs(NodeHandler nodeHandler, LogicElementHandler logicElementHandler, ExpressionNode tree){
+        List<String> identifiers = getIdentifiers(tree);
+        List<String> identifiersWithNoRepetitions = removeRepetitions(identifiers);
+        int neededSpace = getNeededSpaceForIdentifiers(identifiers, identifiersWithNoRepetitions);
         //INPUTS
         int shift = neededSpace;
         boolean alreadyShifted = false;
@@ -60,12 +70,6 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
             connectIdentifiers(nodeHandler, output, inputs, shift);
             logicElementHandler.add(new InputGate(-neededSpace-1, i, Rotation.RIGHT));
         }
-
-        SelectionDTO selectionDTO = new SelectionDTO();
-        selectionDTO.setLogicElementHandler(logicElementHandler);
-        selectionDTO.setNodeHandler(nodeHandler);
-
-        return selectionDTO;
     }
 
     private List<Double> getYsForIdentifier(String identifier, List<String> allIdentifiers){
@@ -344,7 +348,7 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
     private int findMaxDepth(ExpressionNode tree) {
         Stack<ExpressionNode> nodeStack = new Stack<>();
         int maxDepth = 0;
-        tree.setDepth(0); //so that it counts from zero
+        tree.setDepth(0);
         nodeStack.add(tree);
 
         //Setting depth of every node
