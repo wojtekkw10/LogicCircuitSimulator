@@ -139,7 +139,7 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawGateLegs(LogicElement le, Vector2D inputLegDirection, Vector2D outputLegDirection) {
-        double labelDisappearingFactor = 3;
+        double labelDisappearingFactor = 8;
         if(boardDTO.getProjection2D().getScale() > boardDTO.getMIN_ZOOM() * labelDisappearingFactor){
             List<Vector2D> inputPositions = le.getGeometry().getInputPositions();
             drawLinesFrom(inputPositions, inputLegDirection);
@@ -157,7 +157,7 @@ public class DrawSquareLogicElementVisitor implements LogicElementVisitor {
     }
 
     private void drawGateLabel(double x, double y, String text, double degrees, GraphicsContext gc) {
-        double labelDisappearingFactor = 3;
+        double labelDisappearingFactor = 8;
         if(boardDTO.getProjection2D().getScale() > boardDTO.getMIN_ZOOM() * labelDisappearingFactor){
             graphicsContext.setFill(activeColor);
             gc.save();

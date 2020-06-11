@@ -38,7 +38,7 @@ public class SimulationCanvasBackground {
         int gridShiftX = (int)(gridShift.getX()/scale);
         int gridShiftY = (int)(gridShift.getY()/scale);
 
-        double backgroundDisappearingFactor = 3;
+        double backgroundDisappearingFactor = 8;
 
         if(scale > boardDTO.getMIN_ZOOM() * backgroundDisappearingFactor){
             for (int i = -gridShiftX; i < amountHorizontally - gridShiftX; i++) {
