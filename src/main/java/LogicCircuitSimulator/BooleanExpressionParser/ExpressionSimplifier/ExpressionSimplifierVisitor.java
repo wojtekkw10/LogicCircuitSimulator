@@ -54,6 +54,9 @@ public class ExpressionSimplifierVisitor extends BooleanExprBaseVisitor<String> 
             }
 
         }
+        else if(ctx.NOT() != null){
+            expr = "NOT "+visitOrExpression(ctx.orExpression())+"";
+        }
         else{
             expr = ctx.getText();
         }

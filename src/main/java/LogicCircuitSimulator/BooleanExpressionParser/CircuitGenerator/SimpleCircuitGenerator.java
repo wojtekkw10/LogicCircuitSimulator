@@ -11,12 +11,12 @@ import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.SimpleLogicElementHandler;
 import LogicCircuitSimulator.Simulation.NodeHandler.*;
+import LogicCircuitSimulator.Simulation.Rotation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 public class SimpleCircuitGenerator implements CircuitGenerator {
     @Override
@@ -29,12 +29,10 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         ExpressionTreeGenerator treeGenerator = new SimpleExpressionTreeGenerator();
         ExpressionNode tree = treeGenerator.generate(simplifiedExpression);
         int maxDepth = findMaxDepth(tree);
+
         List<String> identifiers = getIdentifiers(tree);
-        System.out.println(identifiers);
         List<String> identifiersWithNoRepetitions = removeRepetitions(identifiers);
-        System.out.println(identifiersWithNoRepetitions);
-        int neededSpace = getNeededSpaceForIdentifiers(identifiers, identifiersWithNoRepetitions) + 2;
-        System.out.println(neededSpace);
+        int neededSpace = getNeededSpaceForIdentifiers(identifiers, identifiersWithNoRepetitions);
 
         assignDepths(tree, maxDepth);
         moveInputsToBottom(tree, maxDepth);
@@ -45,16 +43,22 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         addLogicElements(logicElementHandler, circuitColumns);
 
         //INPUTS
-
+        int shift = neededSpace;
+        boolean alreadyShifted = false;
         for (int i = 0; i < identifiersWithNoRepetitions.size(); i++) {
             Vector2D output = new Vector2D(-neededSpace, i);
             List<Double> ys = getYsForIdentifier(identifiersWithNoRepetitions.get(i), identifiers);
             List<Vector2D> inputs = new ArrayList<>();
             for (int j = 0; j < ys.size(); j++) {
                 inputs.add(new Vector2D(0, ys.get(j)));
+                if(output.getY() != ys.get(j) && !alreadyShifted) {
+                    shift--;
+                    alreadyShifted = true;
+                }
             }
-            System.out.println("CONNECTING: "+output+" "+inputs+" "+i);
-            connectIdentifiers(nodeHandler, output, inputs, neededSpace-i-1);
+            alreadyShifted = false;
+            connectIdentifiers(nodeHandler, output, inputs, shift);
+            logicElementHandler.add(new InputGate(-neededSpace-1, i, Rotation.RIGHT));
         }
 
         SelectionDTO selectionDTO = new SelectionDTO();
@@ -93,7 +97,8 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
             for (int j = 0; j < Math.abs(inputs.get(i).getX() - (output.getX() + shift)); j++) {
                 nodeHandler.setLeftWire(new Vector2D(inputs.get(i).getX() - j, inputs.get(i).getY()), WireState.LOW);
             }
-            nodeHandler.setCrossing(new Vector2D(output.getX() + shift, inputs.get(i).getY()), Crossing.TOUCHING);
+            if(nodeHandler.getLeftWire(new Vector2D(output.getX() + shift, inputs.get(i).getY())) == WireState.NONE)
+                nodeHandler.setCrossing(new Vector2D(output.getX() + shift, inputs.get(i).getY()), Crossing.TOUCHING);
         }
 
     }
@@ -142,19 +147,21 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         }
     }
 
-    private List<Double> getIdentifierOutputYs(List<String> identifiers){
-        List<Double> ys = new ArrayList<>();
-        double counter = 0;
-        for (int i = 0; i < identifiers.size(); i++) {
-            ys.add(counter);
-            counter++;
-        }
-        return ys;
-    }
-
     private int getNeededSpaceForIdentifiers(List<String> allIdentifiers, List<String> identifierWithNoRepetitions){
-        int neededSpace = identifierWithNoRepetitions.size();
-        return neededSpace;
+        int shift = -1;
+        boolean alreadyShifted = false;
+        for (int i = 0; i < identifierWithNoRepetitions.size(); i++) {
+            List<Double> ys = getYsForIdentifier(identifierWithNoRepetitions.get(i), allIdentifiers);
+            for (int j = 0; j < ys.size(); j++) {
+                if(i != ys.get(j) && !alreadyShifted) {
+                    shift--;
+                    alreadyShifted = true;
+                }
+            }
+            alreadyShifted = false;
+        }
+
+        return -shift;
 
     }
 

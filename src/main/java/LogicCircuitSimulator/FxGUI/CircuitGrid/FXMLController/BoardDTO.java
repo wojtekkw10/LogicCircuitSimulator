@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BoardDTO {
     private final double MAX_ZOOM = 50;
-    private final double MIN_ZOOM = 5;
+    private final double MIN_ZOOM = 1;
 
     private IntegerProperty TARGET_UPS = new SimpleIntegerProperty(25);
     private final AtomicInteger updatesSinceLastFrame = new AtomicInteger();
