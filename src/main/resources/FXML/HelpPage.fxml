@@ -38,6 +38,7 @@
                   <Label styleClass="label_text" text="Ctrl-C: copy circuit" />
                   <Label styleClass="label_text" text="Ctrl-V: paste circuit" />
                   <Label layoutX="10.0" layoutY="370.0" prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../stylesheets/MainStylesheet.css" text="OTHER" />
+                  <Label styleClass="label_text" text="Middle Mouse Button: moving the board" />
                   <Label layoutX="10.0" layoutY="544.0" styleClass="label_text" text="P: Toggle FPS/UPS stats" />
                   <ButtonBar buttonMinWidth="100.0" maxHeight="1.7976931348623157E308" prefHeight="60.0" prefWidth="200.0">
                     <buttons>
