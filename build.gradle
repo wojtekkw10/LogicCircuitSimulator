@@ -14,9 +14,6 @@ plugins {
     //Apply the shadow plugin to add support for creating a fat jar
     id "com.github.johnrengelman.shadow" version "5.2.0"
 
-    //Apply the jlink plugin to add support for creating custom runtime images
-    id "org.beryx.jlink" version "2.19.0"
-
     //Apply the ANTLR java parser generator plugin
     id 'antlr'
 }
@@ -73,16 +70,5 @@ test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
-    }
-}
-
-jlink {
-    options = ['--ignore-signing-information', '--strip-debug', '--compress', '0', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'simulator'
-    }
-
-    mergedModule {
-        requires "java.xml"
     }
 }
