@@ -116,6 +116,7 @@ public class SimpleLCSSimulationSerializer implements LCSSimulationSerializer {
         else if(stringRotation.equals("UP")) rotation = Rotation.UP;
         else if(stringRotation.equals("RIGHT")) rotation = Rotation.RIGHT;
 
+        if(name.equals("BTN")) return LogicElementFactory.buttonInstance(intX, intY, rotation, false);
         return LogicElementFactory.instance(name, intX, intY, rotation);
     }
 }

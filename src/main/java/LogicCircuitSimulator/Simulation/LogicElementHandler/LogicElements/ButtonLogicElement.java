@@ -12,8 +12,9 @@ import java.util.List;
 public class ButtonLogicElement extends LogicElement{
     private int counter = 20;
 
-    public ButtonLogicElement(int x, int y, Rotation rot) {
+    public ButtonLogicElement(int x, int y, Rotation rot, boolean startON) {
         super(x, y, rot);
+        if(!startON) counter = 0;
     }
     public ButtonLogicElement(){}
 

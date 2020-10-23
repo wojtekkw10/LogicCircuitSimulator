@@ -31,9 +31,11 @@ public class StartMenuController {
     }
 
     public void onLoadButton(ActionEvent actionEvent) {
+
         FXMLLoader loader = App.loadAndSetNewScene("/FXML/Board.fxml");
-        App.primaryStage.setResizable(true);
         BoardController boardController = loader.getController();
         boardController.onLoadButtonClicked(null);
+
+        App.primaryStage.setResizable(true);
     }
 }

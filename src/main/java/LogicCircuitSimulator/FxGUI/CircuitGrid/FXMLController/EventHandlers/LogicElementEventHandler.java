@@ -103,7 +103,7 @@ public class LogicElementEventHandler {
                         else if(selectedElement.getName().equals("BTN")){
                             Vector2D pos = getPosition();
                             removeLogicElement();
-                            LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
+                            LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation(), true);
                             boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
                         }
                     }

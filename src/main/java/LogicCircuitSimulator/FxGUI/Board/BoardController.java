@@ -1,5 +1,6 @@
 package LogicCircuitSimulator.FxGUI.Board;
 
+import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionParser;
 import LogicCircuitSimulator.BooleanExpressionParser.SimpleBooleanExpressionParser;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
@@ -78,6 +79,10 @@ public class BoardController {
             LCSSimulation simulation =  new SimpleLCSSimulationSerializer().deserialize(serializedSimulation);
             simulationController.setSimulation(simulation);
         }
+        else{
+            App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+        }
+
     }
 
     public void onNotButtonAction(ActionEvent actionEvent) {
@@ -102,7 +107,7 @@ public class BoardController {
     }
 
     public void onButtonButtonAction(ActionEvent actionEvent) {
-        simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT));
+        simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT, true));
     }
 
     public void onClkButtonAction(ActionEvent actionEvent) {
