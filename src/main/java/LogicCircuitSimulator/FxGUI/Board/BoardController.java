@@ -45,6 +45,9 @@ public class BoardController {
     @FXML
     void initialize(){
         IntegerProperty ups = simulationController.getTargetUpsProperty();
+        String labelText = String.format("%d", 25);
+        upsLabel.textProperty().setValue(labelText);
+
         upsSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -107,7 +110,7 @@ public class BoardController {
     }
 
     public void onButtonButtonAction(ActionEvent actionEvent) {
-        simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT, true));
+        simulationController.setLogicGateDragged(new ButtonLogicElement(0,0, Rotation.RIGHT, false));
     }
 
     public void onClkButtonAction(ActionEvent actionEvent) {

@@ -100,7 +100,7 @@ public class LogicElementEventHandler {
                             LogicElement toggleOn = new ToggleOn((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation());
                             boardDTO.getSimulation().getLogicElementHandler().add(toggleOn);
                         }
-                        else if(selectedElement.getName().equals("BTN")){
+                        else if(selectedElement.getName().equals("BTN") && event.isStillSincePress() && !boardDTO.getIsLogicGateLifted().get()){
                             Vector2D pos = getPosition();
                             removeLogicElement();
                             LogicElement toggleOn = new ButtonLogicElement((int)pos.getX(), (int)pos.getY(), selectedElement.getRotation(), true);
@@ -118,7 +118,7 @@ public class LogicElementEventHandler {
                 }.getElementFromMousePosition(new Vector2D(event.getX(), event.getY()), boardDTO.getProjection2D());
             }
         };
-        boardDTO.getCanvas().addEventFilter(MouseEvent.MOUSE_RELEASED, onMouseReleasedEventHandler);
+        boardDTO.getCanvas().addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseReleasedEventHandler);
 
 
         EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {

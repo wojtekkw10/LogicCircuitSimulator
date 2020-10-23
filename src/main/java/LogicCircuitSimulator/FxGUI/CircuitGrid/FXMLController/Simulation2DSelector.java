@@ -28,7 +28,8 @@ public class Simulation2DSelector {
             double y = element.getGeometry().getPosition().getY();
             if(x > boardDTO.getSelectFirstPoint().getX() && x < boardDTO.getSelectSecondPoint().getX() &&
                     y > boardDTO.getSelectFirstPoint().getY() && y < boardDTO.getSelectSecondPoint().getY()){
-                selectedLogicElements.add(
+                if(element.getName().equals("BTN")) selectedLogicElements.add(LogicElementFactory.buttonInstance((int)element.getX(), (int)element.getY(), element.getRotation(), false));
+                else selectedLogicElements.add(
                         LogicElementFactory.instance(
                                 element.getName(), (int)element.getX(), (int)element.getY(), element.getRotation()));
             }
