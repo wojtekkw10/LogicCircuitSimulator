@@ -15,5 +15,5 @@ install_win:
 	cp build/launch4j/Simulator.exe Simulator.exe
 
 install_jlink:
-	gradle jlink
+	./gradlew jlink
 	cp build/image image

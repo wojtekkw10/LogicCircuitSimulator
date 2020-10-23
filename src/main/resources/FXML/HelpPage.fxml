@@ -9,7 +9,7 @@
 
 <AnchorPane minWidth="300.0" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogicCircuitSimulator.FxGUI.HelpPage.HelpPageController">
    <children>
-      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" style="-fx-background-color: #666666;" stylesheets="@../stylesheets/MainStylesheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" style="-fx-background-color: #666666;" stylesheets="@../stylesheets/MainStylesheet.css" vvalue="0.98" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
             <AnchorPane prefHeight="400.0" prefWidth="800.0">
                <children>
@@ -34,6 +34,7 @@
                         <Label layoutX="10.0" layoutY="457.0" styleClass="label_text" text="Right Mouse Click: Remove wire" />
                         <Label prefHeight="7.0" prefWidth="844.0" styleClass="label_h1" stylesheets="@../stylesheets/MainStylesheet.css" text="SELECTING" />
                         <Label layoutX="10.0" layoutY="308.0" styleClass="label_text" text="Hold SHIFT button: select area" />
+                        <Label styleClass="label_text" text="Select area + BACKSAPCE = remove circuit from selected area" />
                         <Label layoutX="10.0" layoutY="426.0" styleClass="label_text" text="Ctrl-X: cut circuit" />
                         <Label styleClass="label_text" text="Ctrl-C: copy circuit" />
                         <Label styleClass="label_text" text="Ctrl-V: paste circuit" />

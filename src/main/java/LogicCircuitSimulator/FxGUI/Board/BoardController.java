@@ -44,7 +44,6 @@ public class BoardController {
     @FXML
     void initialize(){
         IntegerProperty ups = simulationController.getTargetUpsProperty();
-        //ups.bindBidirectional(upsSlider.valueProperty());
         upsSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {

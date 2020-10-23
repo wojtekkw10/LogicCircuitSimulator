@@ -103,12 +103,18 @@ public class SimpleLCSSimulationSerializer implements LCSSimulationSerializer {
         int intY = (int)y;
         String stringRotation = scanner.next();
 
-        Rotation rotation = switch (stringRotation) {
+/*        Rotation rotation = switch (stringRotation) {
             case "DOWN" -> Rotation.DOWN;
             case "LEFT" -> Rotation.LEFT;
             case "UP" -> Rotation.UP;
             default -> Rotation.RIGHT;
-        };
+        };*/
+
+        Rotation rotation = null;
+        if(stringRotation.equals("DOWN")) rotation = Rotation.DOWN;
+        else if(stringRotation.equals("LEFT")) rotation = Rotation.LEFT;
+        else if(stringRotation.equals("UP")) rotation = Rotation.UP;
+        else if(stringRotation.equals("RIGHT")) rotation = Rotation.RIGHT;
 
         return LogicElementFactory.instance(name, intX, intY, rotation);
     }

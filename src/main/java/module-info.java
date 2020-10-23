@@ -1,4 +1,4 @@
-module LogicCircuitSimulator {
+module LogicCircuitSimulatorModule {
     requires javafx.controls;
     requires javafx.fxml;
     requires jsr305;

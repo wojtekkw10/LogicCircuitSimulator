@@ -44,7 +44,10 @@ public class BoardEventHandler {
             if(event.getCode() == KeyCode.ESCAPE){
                 if(!boardDTO.isShouldDrawSelectionRect()){
                     boardDTO.getExecutor().shutdownNow();
+                    App.primaryStage.setHeight(535);
+                    App.primaryStage.setWidth(800);
                     App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+
                 }
                 else{
                     boardDTO.setShouldDrawSelectionRect(false);

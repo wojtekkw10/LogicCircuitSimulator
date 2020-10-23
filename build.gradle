@@ -55,13 +55,13 @@ generateGrammarSource {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator.Launcher'
+    mainClassName = 'LogicCircuitSimulatorModule/LogicCircuitSimulator.Launcher'
 }
 
 javafx{
@@ -77,8 +77,12 @@ test {
 }
 
 jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    options = ['--ignore-signing-information', '--strip-debug', '--compress', '0', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'simulator'
+    }
+
+    mergedModule {
+        requires "java.xml"
     }
 }
