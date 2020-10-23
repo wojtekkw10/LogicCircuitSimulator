@@ -61,7 +61,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'LogicCircuitSimulator/LogicCircuitSimulator.Launcher'
+    mainClassName = 'LogicCircuitSimulator.Launcher'
 }
 
 javafx{

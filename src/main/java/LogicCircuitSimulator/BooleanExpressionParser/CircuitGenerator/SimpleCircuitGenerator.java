@@ -68,7 +68,7 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
             }
             alreadyShifted = false;
             connectIdentifiers(nodeHandler, output, inputs, shift);
-            logicElementHandler.add(new InputGate(-neededSpace-1, i, Rotation.RIGHT));
+            logicElementHandler.add(new ToggleOff(-neededSpace-1, i, Rotation.RIGHT));
         }
     }
 

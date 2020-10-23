@@ -27,8 +27,6 @@ public class App  extends Application {
         primaryStage = stage;
         app = this;
 
-
-        //System.out.println(app.getClass());
         primaryStage.setTitle(stageTitle);
         stage.getIcons().add(new Image("file:resources/other/logo_grey.png"));
         loadAndSetNewScene("/FXML/StartMenu.fxml");

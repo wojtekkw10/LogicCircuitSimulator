@@ -14,6 +14,4 @@ public interface LogicElementVisitor {
     void visit(ToggleOn toggleOn);
     void visit(ToggleOff toggleOff);
     void visit(ButtonLogicElement buttonLogicElement);
-    void visit(OutputGate outputGate);
-    void visit(InputGate inputGate);
 }

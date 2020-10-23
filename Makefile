@@ -1,14 +1,17 @@
 run:
-	gradle shadowjar
-	java -jar build/libs/LogicCircuitSimulator-all.jar
+	./gradlew run
+
+check:
+	./gradlew shadowjar
+	java -jar build/libs/LogicCircuitSimulator-all.jar Simulator.jar
 
 install:
-	gradle shadowjar
+	./gradlew shadowjar
 	cp build/libs/LogicCircuitSimulator-all.jar Simulator.jar
 	chmod +x Simulator.jar
 
 install_win:
-	gradle createExe
+	./gradlew createExe
 	cp build/launch4j/Simulator.exe Simulator.exe
 
 install_jlink:

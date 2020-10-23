@@ -118,14 +118,6 @@ public class BoardController {
         simulationController.setLogicGateDragged(new LogicOne(0,0, Rotation.RIGHT));
     }
 
-    public void onInButtonAction(ActionEvent actionEvent) {
-        simulationController.setLogicGateDragged(new InputGate(0,0, Rotation.RIGHT));
-    }
-
-    public void onOutButtonAction(ActionEvent actionEvent) {
-        simulationController.setLogicGateDragged(new OutputGate(0,0, Rotation.RIGHT));
-    }
-
     public void onFromBooleanExpressionAction(ActionEvent actionEvent) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setResizable(true);
