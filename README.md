@@ -2,18 +2,12 @@
 # Logic Circuit Simulator
 Logic Circuit Simulator is a desktop application that allows for creating complex logic circuits and simulating them in real time. 
 
-# Installation
-1. Download the repository or click [here](https://github.com/wojtekkw10/LogicCircuitSimulator/archive/master.zip).
-2. Unpack it in a desired directory
-3. If you're on windows, go to ``simulator-win/bin`` directory
-4. If you're on linux, go to ``simulator-lin/bin`` directory
-5. Run the ``simulator`` file
-
+# How to run
 Note: This will get you the latest release version. If you want the latest development version you need to:
 1. Be on linux
-2. Install openjdk-14 e.g. with 
+2. Install openjdk-11 e.g. with 
     ```bash
-    sudo apt install openjdk-14-jdk
+    sudo apt install openjdk-11-jdk
     ```
 3. Run command 
     ```bash
