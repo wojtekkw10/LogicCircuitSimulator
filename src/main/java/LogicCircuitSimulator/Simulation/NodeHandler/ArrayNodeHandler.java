@@ -47,6 +47,11 @@ public final class ArrayNodeHandler implements NodeHandler {
     }
 
     @Override
+    public void removeNode(Vector2D pos) {
+        nodeGrid.removeNode(pos);
+    }
+
+    @Override
     public void setRightWire(Vector2D pos, WireState state) {
         nodeGrid.setRightWire(pos, state);
 
@@ -114,6 +119,10 @@ public final class ArrayNodeHandler implements NodeHandler {
         if(isDefaultNode(nodeGrid.getNode(pos))){
             nodeGrid.removeNode(pos);
         }
+    }
+
+    public Node getNode(Vector2D pos) {
+        return nodeGrid.getNode(pos);
     }
 
     @Override
@@ -226,9 +235,7 @@ public final class ArrayNodeHandler implements NodeHandler {
         return ArrayNode.fromNode(nodeGrid.getNode(pos));
     }
 
-    private Node getNode(Vector2D pos) {
-        return nodeGrid.getNode(pos);
-    }
+
 
     @Override
     public String toString() {
