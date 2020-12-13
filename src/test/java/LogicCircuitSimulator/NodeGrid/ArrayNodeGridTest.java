@@ -134,8 +134,8 @@ class ArrayNodeGridTest {
 
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,21), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(20,20), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(20,21), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,21), Orientation.HORIZONTALLY));
     }
 
     @Test
@@ -156,8 +156,8 @@ class ArrayNodeGridTest {
         nodeGrid.setCrossing(new Vector2D(20, 20), Crossing.NOT_TOUCHING);
         nodeGrid.setCrossing(new Vector2D(21, 20), Crossing.NOT_TOUCHING);
 
-        assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeGrid.getState(new Vector2D(21,20), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(21,20), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(20,20), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeGrid.getState(new Vector2D(21,20), Orientation.HORIZONTALLY));
     }

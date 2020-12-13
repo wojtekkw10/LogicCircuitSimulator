@@ -2,6 +2,7 @@ package LogicCircuitSimulator.FxGUI.Board;
 
 import LogicCircuitSimulator.App;
 import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionParser;
+import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.InvalidExpressionException;
 import LogicCircuitSimulator.BooleanExpressionParser.SimpleBooleanExpressionParser;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SimulationCanvasController;
@@ -9,6 +10,7 @@ import LogicCircuitSimulator.Simulation.ExternalDataStorage.FileSystemExternalDa
 import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElements.*;
 import LogicCircuitSimulator.Simulation.Rotation;
+import LogicCircuitSimulator.Simulation.Serialization.InvalidSerializedSimulationException;
 import LogicCircuitSimulator.Simulation.Serialization.SimpleLCSSimulationSerializer;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -79,18 +81,25 @@ public class BoardController {
         String serializedSimulation = new FileSystemExternalDataStorage().load(null);
 
         if(serializedSimulation != null){
-            LCSSimulation simulation =  new SimpleLCSSimulationSerializer().deserialize(serializedSimulation);
-            simulationController.setSimulation(simulation);
+            LCSSimulation simulation = null;
+            try {
+                simulation = new SimpleLCSSimulationSerializer().deserialize(serializedSimulation);
+                simulationController.setSimulation(simulation);
+                App.setLoadSucceeded(true);
+            } catch (InvalidSerializedSimulationException e) {
+                App.setLoadSucceeded(false);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "The file is invalid", ButtonType.OK);
+                alert.show();
+            }
         }
         else{
-            App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+            App.setLoadSucceeded(false);
         }
 
     }
 
     public void onNotButtonAction(ActionEvent actionEvent) {
         simulationController.setLogicGateDragged(new NotGate(0,0, Rotation.RIGHT));
-
     }
 
     public void onOrButtonAction(ActionEvent actionEvent) {
@@ -164,7 +173,16 @@ public class BoardController {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(booleanExpression -> {
             BooleanExpressionParser parser = new SimpleBooleanExpressionParser();
-            simulationController.setPasted(parser.parse(booleanExpression));
+            SelectionDTO circuit = null;
+            try {
+                circuit = parser.parse(booleanExpression);
+                simulationController.setPasted(circuit);
+
+            } catch (InvalidExpressionException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.show();
+            }
+
         });
     }
 }

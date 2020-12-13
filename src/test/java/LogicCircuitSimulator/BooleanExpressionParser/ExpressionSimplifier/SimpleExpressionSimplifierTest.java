@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleExpressionSimplifierTest {
     @Test
-    void simplifyTerminal(){
+    void simplifyTerminal() throws InvalidExpressionException {
         ExpressionSimplifier simplifier = new SimpleExpressionSimplifier();
         String result = simplifier.simplify("(TRUE)");
 
@@ -14,7 +14,7 @@ class SimpleExpressionSimplifierTest {
     }
 
     @Test
-    void simplifyNestedParensAroundTerminal(){
+    void simplifyNestedParensAroundTerminal() throws InvalidExpressionException {
         ExpressionSimplifier simplifier = new SimpleExpressionSimplifier();
         String result = simplifier.simplify("((((((((TRUE))))))))");
 
@@ -22,7 +22,7 @@ class SimpleExpressionSimplifierTest {
     }
 
     @Test
-    void simplifyNestedParensAroundComplexExpression(){
+    void simplifyNestedParensAroundComplexExpression() throws InvalidExpressionException {
         ExpressionSimplifier simplifier = new SimpleExpressionSimplifier();
         String result = simplifier.simplify("((TRUE OR ((FALSE))) AND (((FALSE))))");
 
@@ -30,7 +30,7 @@ class SimpleExpressionSimplifierTest {
     }
 
     @Test
-    void dontSimplifyParallelParens(){
+    void dontSimplifyParallelParens() throws InvalidExpressionException {
         ExpressionSimplifier simplifier = new SimpleExpressionSimplifier();
         String result = simplifier.simplify("(TRUE OR FALSE) AND (FALSE AND TRUE)");
 

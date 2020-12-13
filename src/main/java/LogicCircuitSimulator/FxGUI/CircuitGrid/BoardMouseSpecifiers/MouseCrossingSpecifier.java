@@ -3,6 +3,7 @@ package LogicCircuitSimulator.FxGUI.CircuitGrid.BoardMouseSpecifiers;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.GraphicalProjection.Projection2D;
 import LogicCircuitSimulator.Simulation.LCSSimulation;
 import LogicCircuitSimulator.Simulation.NodeHandler.Crossing;
+import LogicCircuitSimulator.Simulation.NodeHandler.WireState;
 import LogicCircuitSimulator.Vector2D;
 
 public abstract class MouseCrossingSpecifier {
@@ -59,6 +60,15 @@ public abstract class MouseCrossingSpecifier {
 
     public Crossing getCrossing(){
         return currentCrossing;
+    }
+
+    public int getNumberOfWiresAround(){
+        int numberOfWires = 0;
+        if(simulation.getNodeHandler().getDownWire(currentPosition) != WireState.NONE) numberOfWires++;
+        if(simulation.getNodeHandler().getUpWire(currentPosition) != WireState.NONE) numberOfWires++;
+        if(simulation.getNodeHandler().getLeftWire(currentPosition) != WireState.NONE) numberOfWires++;
+        if(simulation.getNodeHandler().getRightWire(currentPosition) != WireState.NONE) numberOfWires++;
+        return numberOfWires;
     }
 
 }

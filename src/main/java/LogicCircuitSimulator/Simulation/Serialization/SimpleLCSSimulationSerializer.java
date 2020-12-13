@@ -11,6 +11,7 @@ import LogicCircuitSimulator.Simulation.SimpleLCSSimulation;
 import LogicCircuitSimulator.Vector2D;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class SimpleLCSSimulationSerializer implements LCSSimulationSerializer {
@@ -49,27 +50,33 @@ public class SimpleLCSSimulationSerializer implements LCSSimulationSerializer {
     }
 
     @Override
-    public LCSSimulation deserialize(String simulation) {
+    public LCSSimulation deserialize(String simulation) throws InvalidSerializedSimulationException {
         LCSSimulation newSimulation = new SimpleLCSSimulation();
         NodeHandler nodeHandler = new ArrayNodeHandler();
         LogicElementHandler logicElements = new SimpleLogicElementHandler();
 
-        Scanner scanner = new Scanner(simulation);
+        try{
+            Scanner scanner = new Scanner(simulation);
 
-        while(scanner.hasNextLine()){
-            String line = scanner.nextLine();
-            Scanner lineScanner = new Scanner(line);
-            String label = lineScanner.next();
-            if(label.equals("WI")){
-                Node node = deserializeNode(lineScanner);
-                nodeHandler.setNode(node);
-            }
-            if(label.equals("LE")){
-                LogicElement logicElement = deserializeLogicElement(lineScanner);
-                logicElements.add(logicElement);
-            }
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                Scanner lineScanner = new Scanner(line);
+                String label = lineScanner.next();
+                if(label.equals("WI")){
+                    Node node = deserializeNode(lineScanner);
+                    nodeHandler.setNode(node);
+                }
+                if(label.equals("LE")){
+                    LogicElement logicElement = deserializeLogicElement(lineScanner);
+                    logicElements.add(logicElement);
+                }
 
+            }
         }
+        catch(NoSuchElementException e){
+            throw new InvalidSerializedSimulationException();
+        }
+
         newSimulation.setLogicElementHandler(logicElements);
         newSimulation.setNodeHandler(nodeHandler);
         return newSimulation;

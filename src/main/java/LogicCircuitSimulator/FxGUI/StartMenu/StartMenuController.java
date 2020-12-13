@@ -19,7 +19,6 @@ public class StartMenuController {
         App.primaryStage.setResizable(true);
         App.primaryStage.setHeight(700);
         App.primaryStage.setWidth(1200);
-
     }
 
     public void onExitButton(ActionEvent actionEvent) {
@@ -36,6 +35,11 @@ public class StartMenuController {
         BoardController boardController = loader.getController();
         boardController.onLoadButtonClicked(null);
 
-        App.primaryStage.setResizable(true);
+        if(!App.isLoadSucceeded()){
+            App.loadAndSetNewScene("/FXML/StartMenu.fxml");
+        }
+        else {
+            App.primaryStage.setResizable(true);
+        }
     }
 }

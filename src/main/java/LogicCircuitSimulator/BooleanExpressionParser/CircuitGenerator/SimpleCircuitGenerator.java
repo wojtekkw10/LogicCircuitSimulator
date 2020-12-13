@@ -5,6 +5,7 @@ import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.Expre
 import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.Operand;
 import LogicCircuitSimulator.BooleanExpressionParser.BooleanExpressionTree.SimpleExpressionTreeGenerator;
 import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.ExpressionSimplifier;
+import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.InvalidExpressionException;
 import LogicCircuitSimulator.BooleanExpressionParser.ExpressionSimplifier.SimpleExpressionSimplifier;
 import LogicCircuitSimulator.FxGUI.CircuitGrid.FXMLController.SelectionDTO;
 import LogicCircuitSimulator.Simulation.LogicElementHandler.LogicElementHandler;
@@ -20,7 +21,7 @@ import java.util.Stack;
 
 public class SimpleCircuitGenerator implements CircuitGenerator {
     @Override
-    public SelectionDTO generate(String expression) {
+    public SelectionDTO generate(String expression) throws InvalidExpressionException {
         NodeHandler nodeHandler = new ArrayNodeHandler();
         LogicElementHandler logicElementHandler = new SimpleLogicElementHandler();
 
@@ -126,8 +127,9 @@ public class SimpleCircuitGenerator implements CircuitGenerator {
         return minY;
     }
 
-    private void generateAndAddWires(NodeHandler nodeHandler, List<CircuitColumn> circuitColumns){
+    private void generateAndAddWires(NodeHandler nodeHandler, List<CircuitColumn> circuitColumns) throws InvalidExpressionException {
         double sumX = 0;
+        if(circuitColumns.size() == 0) throw new InvalidExpressionException("The expression needs to be longer");
         circuitColumns.get(0).setX(0);
         for (int i = 0; i < circuitColumns.size()-1; i++) {
 

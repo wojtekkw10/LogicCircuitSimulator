@@ -27,8 +27,10 @@ public class NodeEventHandler {
                     new MouseCrossingSpecifier(boardDTO.getSimulation()){
                         @Override
                         public void doAction() {
-                            if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
-                            else updateCrossing(Crossing.TOUCHING);
+                            if(getNumberOfWiresAround() >= 3){
+                                if (getCrossing() == Crossing.TOUCHING) updateCrossing(Crossing.NOT_TOUCHING);
+                                else updateCrossing(Crossing.TOUCHING);
+                            }
                         }
                     }.performTransformation(mousePos, boardDTO.getProjection2D());
                 }

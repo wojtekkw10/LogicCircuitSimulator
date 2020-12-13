@@ -52,7 +52,7 @@ class ArrayNodeHandlerTest {
         generators.add(new Generator(new Vector2D(5,5), Orientation.HORIZONTALLY));
         nodeHandler.propagateGenerators(generators);
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
@@ -63,7 +63,7 @@ class ArrayNodeHandlerTest {
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
 
         //VERTICALLY
         generators = new ArrayList<>();
@@ -71,14 +71,14 @@ class ArrayNodeHandlerTest {
         nodeHandler.propagateGenerators(generators);
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(4,7), Orientation.VERTICALLY));
 
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.VERTICALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
         assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
@@ -100,18 +100,18 @@ class ArrayNodeHandlerTest {
         generators.add(new Generator(new Vector2D(5,5), Orientation.HORIZONTALLY));
         nodeHandler.propagateGenerators(generators);
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.VERTICALLY));
 
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
     }
 
     @Test
@@ -164,18 +164,18 @@ class ArrayNodeHandlerTest {
         generators.add(new Generator(new Vector2D(5,10), Orientation.VERTICALLY));
         nodeHandler.propagateGenerators(generators);
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.VERTICALLY));
 
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
     }
 
     @Test
@@ -193,18 +193,18 @@ class ArrayNodeHandlerTest {
         generators.add(new Generator(new Vector2D(10,5), Orientation.HORIZONTALLY));
         nodeHandler.propagateGenerators(generators);
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(9,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,9), Orientation.VERTICALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(7,4), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(4,7), Orientation.VERTICALLY));
 
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.HORIZONTALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(5,3), Orientation.VERTICALLY));
         assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.HORIZONTALLY));
-        assertEquals(LogicState.LOW, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
+        assertEquals(LogicState.HIGH, nodeHandler.getState(new Vector2D(3,5), Orientation.VERTICALLY));
     }
 
     @Test

@@ -235,8 +235,6 @@ public final class ArrayNodeHandler implements NodeHandler {
         return ArrayNode.fromNode(nodeGrid.getNode(pos));
     }
 
-
-
     @Override
     public String toString() {
         return nodeGrid.toString();

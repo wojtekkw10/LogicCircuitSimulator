@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class App  extends Application {
+public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -21,11 +21,13 @@ public class App  extends Application {
     public static Stage primaryStage;
     private static final String stageTitle = "Logic Circuit Simulator";
     static App app;
+    public static boolean loadSucceeded;
 
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
         app = this;
+        loadSucceeded = false;
 
         primaryStage.setTitle(stageTitle);
         stage.getIcons().add(new Image("file:resources/other/logo_grey.png"));
@@ -54,5 +56,13 @@ public class App  extends Application {
             primaryStage.setOnCloseRequest(e -> controller.shutdown());
         }
         return loader;
+    }
+
+    public static boolean isLoadSucceeded() {
+        return loadSucceeded;
+    }
+
+    public static void setLoadSucceeded(boolean loadSucceeded) {
+        App.loadSucceeded = loadSucceeded;
     }
 }

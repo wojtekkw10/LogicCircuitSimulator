@@ -121,17 +121,38 @@ public class ArrayNodeGrid implements NodeGrid {
             if(orientation == Orientation.VERTICALLY){
                 if(arrayNode.getDownWire() == WireState.HIGH) return LogicState.HIGH;
 
+                if(getNumberOfWiresAround(pos) < 3){
+                    if(arrayNode.getRightWire() == WireState.HIGH) return LogicState.HIGH;
+                    if(getArrayNode(new Vector2D(x-1, y)).getRightWire() == WireState.HIGH) return LogicState.HIGH;
+                }
+
                 ArrayNode upperArrayNode = getArrayNode(new Vector2D(x, y-1));
                 if(upperArrayNode.getDownWire() == WireState.HIGH) return LogicState.HIGH;
             }
             else{
                 if(arrayNode.getRightWire() == WireState.HIGH) return LogicState.HIGH;
 
+                if(getNumberOfWiresAround(pos) < 3){
+                    if(getArrayNode(new Vector2D(x, y-1)).getDownWire() == WireState.HIGH) return LogicState.HIGH;
+                    if(arrayNode.getDownWire() == WireState.HIGH) return LogicState.HIGH;
+                }
+
                 ArrayNode arrayNodeToLeft = getArrayNode(new Vector2D(x-1, y));
                 if(arrayNodeToLeft.getRightWire() == WireState.HIGH) return LogicState.HIGH;
             }
         }
         return LogicState.LOW;
+    }
+
+    private int getNumberOfWiresAround(Vector2D pos){
+        double x = pos.getX();
+        double y = pos.getY();
+        int numberOfWires = 0;
+        if(getArrayNode(pos).getDownWire() != WireState.NONE) numberOfWires++;
+        if(getArrayNode(pos).getRightWire() != WireState.NONE) numberOfWires++;
+        if(getArrayNode(new Vector2D(x-1, y)).getRightWire() != WireState.NONE) numberOfWires++;
+        if(getArrayNode(new Vector2D(x, y-1)).getDownWire() != WireState.NONE) numberOfWires++;
+        return numberOfWires;
     }
 
     private ArrayNode getArrayNode(Vector2D pos){

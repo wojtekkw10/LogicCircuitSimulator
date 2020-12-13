@@ -39,7 +39,7 @@ class SimpleLCSSimulationSerializerTest {
     }
 
     @Test
-    void deserializeWireTest(){
+    void deserializeWireTest() throws InvalidSerializedSimulationException {
         String serialized = "WI 40 45 HIGH NONE NOT_TOUCHING \n" +
                 "WI 20 30 NONE LOW TOUCHING ";
         LCSSimulation simulation = new SimpleLCSSimulationSerializer().deserialize(serialized);
@@ -69,7 +69,7 @@ class SimpleLCSSimulationSerializerTest {
     }
 
     @Test
-    void deserializeLogicElementTest(){
+    void deserializeLogicElementTest() throws InvalidSerializedSimulationException {
         String serialized = "LE XOR 30 50 UP\n" +
                 "LE CLK 324 1 LEFT\n" +
                 "LE NOT -45 -1 DOWN";
