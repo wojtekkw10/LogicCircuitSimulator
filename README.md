@@ -1,6 +1,8 @@
 ![LCS Logo](src/main/resources/other/logo_grey_low_res.png) 
 # Logic Circuit Simulator
-Logic Circuit Simulator is a desktop application that allows for creating complex logic circuits and simulating them in real time. 
+Logic Circuit Simulator is a desktop application that allows for creating complex logic circuits and simulating them in real time.
+![Simulation](src/main/resources/Github/Example.png)
+![Start](src/main/resources/Github/Start.png)
 
 # How to run
 Note: This will get you the latest release version. If you want the latest development version you need to:
