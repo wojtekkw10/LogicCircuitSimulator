@@ -5,7 +5,7 @@ Logic Circuit Simulator is a desktop application that lets the user create compl
 ![Simulation](src/main/resources/Github/Example.png)
 
 # How to run
-Note: This will get you the latest release version. If you want the latest development version you need to:
+Note: This will get you the latest **release** version. If you want the latest development version you need to:
 1. Be on linux
 2. Download the program by clicking [here](https://github.com/wojtekkw10/LogicCircuitSimulator/archive/master.zip)
 3. Install openjdk-11 e.g. with 
